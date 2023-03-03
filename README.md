@@ -1,6 +1,6 @@
-# Music Programming Language
+# MusiCPP
 
-This is a simple music programming language.
+MusiCPP is a simple music programming language.
 
 ## Idea
 
@@ -90,11 +90,9 @@ while (true)
 }
 ```
 
-## Compiler Type
+## How to run
 
-Interpreter, as we can do a live demo in a REPL and it's somewhat easy? to build.
-
-## Tech Stack
-
-- C++
-- ...
+1. `cmake -S . -B build`
+2. `cd build`
+3. `make`
+4. `./musicpp`
