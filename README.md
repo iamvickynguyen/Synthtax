@@ -1,28 +1,8 @@
-# MusiCPP
+# MusiCPP ( :construction: under construction :construction: )
 
 MusiCPP is a simple music programming language.
 
 ## Idea
-
-There are 2 ways we can do this:
-
-### 1. Easy
-
-A language that allows users to write a basic score like MusicV ([github.com/MUSICV](https://github.com/vlazzarini/MUSICV)). Here is an example taken from MusicV ([github.com/MUSICV/scores/score1](https://github.com/vlazzarini/MUSICV/blob/master/scores/score1))
-
-```bash
- INS 0 1 ;
- IOS P5 P6 B2 F1 P30 ;
- OUT B2 B1 ;
- END ;
- GEN 0 1 2 0 0 .999 50 .999 205 -.999 306 -.999 461 0 511 ;
- GEN 0 2 1 512 1 1 ;
- NOT 1 1 5 500 5.0984;
- TER 8.00 ;
-```
-
-
-### 2. Challenging
 
 A language that allows users to write their own sounds, and supports loops, conditionals, etc. like Chuck ([github.com/chuck](https://github.com/ccrma/chuck)), BUT much simpler.
 
