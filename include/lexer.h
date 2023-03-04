@@ -1,6 +1,9 @@
 #ifndef LEXER_H
 #define LEXER_H
 
+#include <string>
+#include <vector>
+
 namespace lex {
 	enum TokenType {
 		IDENTIFIER,
@@ -37,19 +40,17 @@ namespace lex {
 		RETURN,
 		
 		// Unique
-		EOF
+		TOK_EOF,
+		UNKNOWN
 	};
 
 	struct Token {
 		TokenType type;
-		char* value;
-		int length;
+		std::string value;
 	};
 
 	struct TokenArray {
-		Token* tokens;
-		int size;
-		int capacity;
+		std::vector<Token> tokens;
 	};
 
 	struct Tokenizer {
@@ -63,15 +64,11 @@ namespace lex {
 	bool is_numeric(char c);
 
 	void ignore_comments_and_whitespaces(Tokenizer& tokenizer);
-
+	
 	Token get_token(Tokenizer& tokenizer);
+	TokenArray lex_input(std::string input);
 
-	void delete_token_array_contents(TokenArray arr);
-	void delete_tokens(TokenArray arr); 
-	void init_token_array(TokenArray& arr, unsigned int size);
-	void resize_token_array(TokenArray& arr, unsigned int size);
-
-	TokenArray lex_input(char* input);
+	void debug_print_token_array(TokenArray& arr);
 } // namespace lex
 
 #endif
