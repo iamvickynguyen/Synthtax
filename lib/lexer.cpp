@@ -19,15 +19,17 @@ namespace lex {
 	}
 
 	void ignore_comments_and_whitespaces(Tokenizer& tokenizer) {
-		if (is_whitespace(tokenizer.pos[0])) ++tokenizer.pos;
+		if (is_whitespace(tokenizer.input[tokenizer.pos])) ++tokenizer.pos;
 
 		// Look for // and /* symbols
-		if (tokenizer.pos[0] == '/' && tokenizer.pos[1] == '/') {
-			while (!is_end_of_line(tokenizer.pos[0])) ++tokenizer.pos;
-			++tokenizer.pos;
-		} else if (tokenizer.pos[0] == '/' && tokenizer.pos[1] == '*') {
-			while (!(tokenizer.pos[0] == '*' && tokenizer.pos[1] == '/')) ++tokenizer.pos;
-			tokenizer.pos += 2;
+		if (tokenizer.pos < tokenizer.input.length() - 1) {
+			if (tokenizer.input[tokenizer.pos] == '/' && tokenizer.input[tokenizer.pos + 1] == '/') {
+				while (!is_end_of_line(tokenizer.input[tokenizer.pos])) ++tokenizer.pos;
+				++tokenizer.pos;
+			} else if (tokenizer.input[tokenizer.pos] == '/' && tokenizer.input[tokenizer.pos + 1] == '*') {
+				while (!(tokenizer.input[tokenizer.pos] == '*' && tokenizer.input[tokenizer.pos + 1] == '/')) ++tokenizer.pos;
+				tokenizer.pos += 2;
+			}
 		}
 	}
 
@@ -36,7 +38,7 @@ namespace lex {
 		
 		ignore_comments_and_whitespaces(tokenizer);
 		
-		switch(tokenizer.pos[0]) {
+		switch(tokenizer.input[tokenizer.pos]) { // current char in the input
 			case '\0':
 				{
 					token.type = TOK_EOF;
@@ -64,14 +66,14 @@ namespace lex {
 					++tokenizer.pos; // skip "
 
 					token.type = STRING;
-					char* start_pos = tokenizer.pos;
+					int start_pos = tokenizer.pos;
 
-					while (tokenizer.pos[0] != '"') {
+					while (tokenizer.input[tokenizer.pos] != '"') {
 						++tokenizer.pos;
 
 						// TODO: throw semantic exception with line and offset?
 						// error: forgot to close quotation
-						if (tokenizer.pos[0] == '\0') {
+						if (tokenizer.pos >= tokenizer.input.length()) {
 							std::cerr << "Error: Missing closing quotation mark\n";
 							token.type = UNKNOWN;
 							break;
@@ -80,7 +82,7 @@ namespace lex {
 
 					// copy string to token value
 					while (start_pos != tokenizer.pos) {
-						token.value.push_back(*start_pos);
+						token.value.push_back(tokenizer.input[start_pos]);
 						++start_pos;
 					}
 
@@ -89,18 +91,18 @@ namespace lex {
 
 			default:
 				{
-					if (is_letter(tokenizer.pos[0])) {
-						char* start_pos = tokenizer.pos;
+					if (is_letter(tokenizer.input[tokenizer.pos])) {
+						int start_pos = tokenizer.pos;
 						token.type = IDENTIFIER;
 
 						// unlimited length for now
-						while (is_letter(tokenizer.pos[0]) || is_numeric(tokenizer.pos[0]) || tokenizer.pos[0] == '_') {
+						while (is_letter(tokenizer.input[tokenizer.pos]) || is_numeric(tokenizer.input[tokenizer.pos]) || tokenizer.input[tokenizer.pos] == '_') {
 							++tokenizer.pos;
 						}
 						
 						// copy to token value
 						while (start_pos != tokenizer.pos) {
-							token.value.push_back(*start_pos);
+							token.value.push_back(tokenizer.input[start_pos]);
 							++start_pos;
 						}
 
@@ -110,15 +112,18 @@ namespace lex {
 						else if (token.value == "for") token.type = FOR;
 						else if (token.value == "return") token.type = RETURN;
 						else if (token.value == "true" || token.value == "false") token.type = BOOL;
-					} else if (is_numeric(tokenizer.pos[0])) {
+					}
+					
+					// number
+					else if (is_numeric(tokenizer.input[tokenizer.pos])) {
 						int dot_count = 0;
-						char* start_pos = tokenizer.pos;
+						int start_pos = tokenizer.pos;
 						token.type = DIGIT;
 
-						while (is_numeric(tokenizer.pos[0])) {
+						while (is_numeric(tokenizer.input[tokenizer.pos])) {
 							++tokenizer.pos;
 
-							if (tokenizer.pos[0] == '.') {
+							if (tokenizer.input[tokenizer.pos] == '.') {
 								++dot_count;
 								++tokenizer.pos;
 								token.type = FLOAT;
@@ -135,8 +140,8 @@ namespace lex {
 						// Eat leading 0's
 						// TODO: should handle big number
 						int value = 0;
-						while (start_pos != tokenizer.pos && start_pos[0] != '.') {
-							int d = *start_pos - '0';
+						while (start_pos != tokenizer.pos && tokenizer.input[start_pos] != '.') {
+							int d = tokenizer.input[start_pos] - '0';
 							value = value * 10 + d;
 							++start_pos;
 						}
@@ -150,7 +155,7 @@ namespace lex {
 						}
 
 						while (start_pos != tokenizer.pos) {
-							token.value.push_back(*start_pos);
+							token.value.push_back(tokenizer.input[start_pos]);
 							++start_pos;
 						}
 					}
@@ -161,15 +166,16 @@ namespace lex {
 	}
 
 
-	TokenArray lex_input(char* input) {
+	TokenArray lex_input(const std::string& input) {
 		TokenArray token_array;
 		Tokenizer tokenizer;
-		tokenizer.pos = input;
+		tokenizer.input = input;
+		tokenizer.pos = 0;
 		
 		while (true) {
 			token_array.tokens.push_back(std::move(get_token(tokenizer)));
-			++tokenizer.count;
-			if (token_array.tokens[tokenizer.count - 1].type == TOK_EOF)
+			++tokenizer.pos;
+			if (token_array.tokens.back().type == TOK_EOF)
 				break;
 		}
 

@@ -1,16 +1,14 @@
 #include <iostream>
+#include <string>
 #include <lexer.h>
-#include <stdio.h>
-#include <cstring>
 
 int main() {
-	char* input = new char[15];
-	strcpy(input, "0023.4+56;");
-	
+	std::string line;
+	std::cerr << "musicpp> ";
+	getline(std::cin, line);;
 	lex::TokenArray arr;
-	arr = lex::lex_input(input);
+	arr = lex::lex_input(line);
+	lex::debug_print_token_array(arr);
 
-	delete[] input;
-	//lex::debug_print_token_array(arr);
 	return 0;
 }

@@ -54,8 +54,8 @@ namespace lex {
 	};
 
 	struct Tokenizer {
-		char* pos;
-		int count;
+		std::string input;
+		int pos;
 	};
 
 	bool is_whitespace(char c);
@@ -66,7 +66,7 @@ namespace lex {
 	void ignore_comments_and_whitespaces(Tokenizer& tokenizer);
 	
 	Token get_token(Tokenizer& tokenizer);
-	TokenArray lex_input(std::string input);
+	TokenArray lex_input(const std::string& input);
 
 	void debug_print_token_array(TokenArray& arr);
 } // namespace lex
