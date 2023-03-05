@@ -5,70 +5,70 @@
 #include <vector>
 
 namespace lex {
-	enum TokenType {
-		IDENTIFIER,
+enum TokenType {
+  IDENTIFIER,
 
-		// Literals
-		DIGIT,
-		FLOAT,
-		STRING,
-		BOOL,
+  // Literals
+  DIGIT,
+  FLOAT,
+  STRING,
+  BOOL,
 
-		// Operators
-		PLUS,
-		MINUS,
-		MUL,
-		DIV,
-		EQUAL,
-		LESS,
-		LEQ,
-		NOT,
+  // Operators
+  PLUS,
+  MINUS,
+  MUL,
+  DIV,
+  EQUAL,
+  LESS,
+  LEQ,
+  NOT,
 
-		// Seperators
-		LPAREN,
-		RPAREN,
-		LBRACKET,
-		RBRACKET,
-		LBRACE,
-		RBRACE,
-		SEMICOLON,
+  // Seperators
+  LPAREN,
+  RPAREN,
+  LBRACKET,
+  RBRACKET,
+  LBRACE,
+  RBRACE,
+  SEMICOLON,
 
-		// Keywords
-		IF,
-		WHILE,
-		FOR,
-		RETURN,
-		
-		// Unique
-		TOK_EOF,
-		UNKNOWN
-	};
+  // Keywords
+  IF,
+  WHILE,
+  FOR,
+  RETURN,
 
-	struct Token {
-		TokenType type;
-		std::string value;
-	};
+  // Unique
+  TOK_EOF,
+  UNKNOWN
+};
 
-	struct TokenArray {
-		std::vector<Token> tokens;
-	};
+struct Token {
+  TokenType type;
+  std::string value;
+};
 
-	struct Tokenizer {
-		std::string input;
-		int pos;
-	};
+struct TokenArray {
+  std::vector<Token> tokens;
+};
 
-	bool is_whitespace(char c);
-	bool is_end_of_line(char c);
-	bool is_letter(char c);
-	bool is_numeric(char c);
+struct Tokenizer {
+  std::string input;
+  int pos;
+};
 
-	void ignore_comments_and_whitespaces(Tokenizer& tokenizer);
-	
-	Token get_token(Tokenizer& tokenizer);
-	TokenArray lex_input(const std::string& input);
+bool is_whitespace(char c);
+bool is_end_of_line(char c);
+bool is_letter(char c);
+bool is_numeric(char c);
 
-	void debug_print_token_array(TokenArray& arr);
+void ignore_comments_and_whitespaces(Tokenizer &tokenizer);
+
+Token get_token(Tokenizer &tokenizer);
+TokenArray lex_input(const std::string &input);
+
+void debug_print_token_array(TokenArray &arr);
 } // namespace lex
 
 #endif
