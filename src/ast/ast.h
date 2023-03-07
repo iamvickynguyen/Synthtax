@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <utility>
 
 namespace parser {
 
@@ -26,8 +27,8 @@ public:
 // Statement Nodes
 class ASTProgramNode : public ASTNode {
 public:
-  explicit ASTProgramNode(std::vector<ASTNode *>);
-  std::vector<ASTNode *> statements;
+  explicit ASTProgramNode(std::vector<ASTNode*>);
+  std::vector<ASTNode*> statements;
   void accept(visitor::Visitor *) override;
 };
 
