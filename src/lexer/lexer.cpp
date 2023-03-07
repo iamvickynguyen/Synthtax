@@ -1,5 +1,5 @@
 #include <iostream>
-#include <lexer.h>
+#include "lexer.h"
 
 namespace lex {
 bool is_whitespace(char c) {
