@@ -76,3 +76,9 @@ while (true)
 2. `cd build`
 3. `make`
 4. `./musicpp`
+
+## References
+
+1. [LLVM Frontend - Kaleidoscope Tutorial](https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html)
+2. [github.com/StafaH/cpp-lexer](https://github.com/StafaH/cpp-lexer)
+3. [github.com/drmenguin/minilang-interpreter](https://github.com/drmenguin/minilang-interpreter)
