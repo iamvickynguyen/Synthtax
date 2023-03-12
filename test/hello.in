@@ -1,0 +1,9 @@
+main() {
+	a = 2
+  b = 'b'
+	s = Osc("sine", 400, 1) // 's' is sine,  no phase
+ /* block comment
+  something here... */
+
+	d = "hello   world!"
+}

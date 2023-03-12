@@ -1,0 +1,19 @@
+get_int() {
+	return 2
+}
+
+get_string() {
+	return "hi"
+}
+
+sum(a, b, s) {
+ c = s
+ return a + b
+}
+
+main() {
+ a = get_int()
+ b = get_string()
+ c = sum(200, 300, "hello")
+ s = Osc("sine", c, 1) 
+}
