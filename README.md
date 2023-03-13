@@ -77,6 +77,13 @@ while (true)
 3. `make`
 4. `./musicpp`
 
+## Resources
+
+### Note: will write lexer and parser from scratch if have time :) Use ANTLR for now
+
+1. [Antlr4 for C++ blog](https://beyondtheloop.dev/Antlr-cpp-cmake/)
+2. [lab.antlr.org](http://lab.antlr.org/)
+
 ## References
 
 1. [LLVM Frontend - Kaleidoscope Tutorial](https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html)
