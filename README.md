@@ -1,6 +1,6 @@
-# MusiCPP ( :construction: under construction :construction: )
+# Synthtax ( :construction: under construction :construction: )
 
-MusiCPP is a simple music programming language.
+Synthtax is a simple music programming language.
 
 ## Idea
 
@@ -75,7 +75,7 @@ while (true)
 1. `cmake -S . -B build`
 2. `cd build`
 3. `make`
-4. `./musicpp`
+4. `./synthtax`
 
 ## Resources
 
