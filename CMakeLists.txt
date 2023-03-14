@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.26)
-project(musicpp LANGUAGES CXX)
+project(synthtax LANGUAGES CXX)
 
-add_executable(musicpp
-	src/musicpp.cpp
+add_executable(synthtax
+	src/synthtax.cpp
 	src/lexer/lexer.cpp
 	src/lexer/lexer.h)
