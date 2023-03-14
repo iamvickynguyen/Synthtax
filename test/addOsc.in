@@ -1,0 +1,6 @@
+main() {
+  a = Osc("sine", 400.5, 1.0);
+  b = Osc("sine", 300.2, 0.5);
+  c = a + b;
+  play(c, 500);
+}

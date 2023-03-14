@@ -83,6 +83,7 @@ while (true)
 
 1. [Antlr4 for C++ blog](https://beyondtheloop.dev/Antlr-cpp-cmake/)
 2. [lab.antlr.org](http://lab.antlr.org/)
+3. [Getting Started with ANTLR in C++](https://tomassetti.me/getting-started-antlr-cpp/)
 
 ## References
 

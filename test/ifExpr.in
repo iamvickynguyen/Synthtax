@@ -1,0 +1,9 @@
+main() {
+  out = NULL;
+  if (4 % 2 == 0) {
+    out = Osc("sine", 440, 1);
+  } else {
+    out = Osc("triangle", 200, 1);
+  }
+  play(out, 1000);
+}
