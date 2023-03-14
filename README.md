@@ -1,6 +1,6 @@
 # Synthtax ( :construction: under construction :construction: )
 
-Synthtax is a simple music programming language.
+Synthtax is a simple dynamically typed, imperative music programming language.
 
 ## Idea
 
@@ -70,13 +70,6 @@ while (true)
 }
 ```
 
-## How to run
-
-1. `cmake -S . -B build`
-2. `cd build`
-3. `make`
-4. `./synthtax`
-
 ## Resources
 
 ### Note: will write lexer and parser from scratch if have time :) Use ANTLR for now
@@ -84,9 +77,15 @@ while (true)
 1. [Antlr4 for C++ blog](https://beyondtheloop.dev/Antlr-cpp-cmake/)
 2. [lab.antlr.org](http://lab.antlr.org/)
 3. [Getting Started with ANTLR in C++](https://tomassetti.me/getting-started-antlr-cpp/)
+4. [Demo application for the ANTLR4 C++ target](https://github.com/antlr/antlr4/tree/master/runtime/Cpp/demo) : current `*.g4` are taken from this demo for testing ANTLR4
 
-## References
+## How to run
 
-1. [LLVM Frontend - Kaleidoscope Tutorial](https://llvm.org/docs/tutorial/MyFirstLanguageFrontend/index.html)
-2. [github.com/StafaH/cpp-lexer](https://github.com/StafaH/cpp-lexer)
-3. [github.com/drmenguin/minilang-interpreter](https://github.com/drmenguin/minilang-interpreter)
+I don't have the grammar for Synthtax yet. `*.g4` are taken from the ANTLR4 demo. To generate the lexer, parser (and visitor) classes, run: `./generate.sh`
+
+## TODO
+
+1. Grammmar file
+2. See what ANTLR4 generates for the AST
+3. Write semantic checks
+4. IR or generate a C++ file? because I need `RTAudio` library to play sound
