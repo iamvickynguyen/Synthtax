@@ -1,96 +1,99 @@
 grammar Synthtax;
 
-prog: function+ EOF;
+/* Parser */
 
-function: funcDeclarion funcBody;
+prog : function + EOF;
 
-funcDeclaration: identifier OPENPAREN formalParameters CLOSEPAREN;
+function : funcDeclaration funcBody;
 
-funcBody: OPENBRACKET statement* CLOSEBRACKET
+funcDeclaration : identifier OPENPAREN formalParameters ? CLOSEPAREN;
 
-statement: SEMICOLON
-	| expressionStatement
-	| ifStatement
-	| whileStatement
-	| returnStatement
-	| assignmentStatement
-	;
+formalParameters : identifier(COMMA identifier) *;
 
-expressionStatement: expression;
+funcBody : OPENBRACKET statement *CLOSEBRACKET;
 
-ifStatement:
-	IF OPENPAREN expression CLOSEPAREN block ELSE block
-	| IF OPENPAREN expression CLOSEPAREN block
-	;
+statement : | expressionStatement | ifStatement | whileStatement |
+            returnStatement | assignmentStatement | SEMICOLON;
 
-whileStatement:
-	WHILE OPENPAREN expression CLOSEPAREN block;
+expressionStatement : expression;
 
-returnStatement: RETURN expression;
+ifStatement : IF OPENPAREN expression CLOSEPAREN block ELSE block |
+              IF OPENPAREN expression CLOSEPAREN block;
 
-assignmentStatement: identifier ASSIGN expression;
+whileStatement : WHILE OPENPAREN expression CLOSEPAREN block;
 
-block: OPENPAREN statement* CLOSEPAREN;
+returnStatement : RETURN expression;
 
-expression: lessExpression (EQUALITY lessExpression)*
+assignmentStatement : identifier ASSIGN expression;
 
-lessExpression: addSubExpression (LESS addSubExpression)*;
+block : OPENPAREN statement *CLOSEPAREN;
 
-addSubExpression:
-	mulExpression (ADD mulExpression)*
-	| mulExpression (SUB mulExpression)*
-	;
+expression : lessExpression(EQUALITY lessExpression) *;
 
-mulDivExpression:
-	atom (MUL atom)*
-	| atom (DIV atom)*
-	;
+lessExpression : addSubExpression(LESS addSubExpression) *;
 
-atom: 
-	OPENPAREN expression CLOSEPAREN
-	| identifier OPENPAREN expression CLOSEPAREN
-	| identifier
-	| literal
-	;
+addSubExpression : mulDivExpression(ADD mulDivExpression) * |
+    mulDivExpression(SUB mulDivExpression) *;
 
-identifier: ('a'..'z' | 'A'..'Z' | '_') ('a'..'z' | 'A'..'Z' | '_' | '0'..'9')*;
+mulDivExpression : atom(MUL atom) * | atom(DIV atom) *;
 
-literal:
-	STRING
-	| INT
-	| FLOAT
-	| CHAR
-	| BOOL
-	;
+atom : OPENPAREN expression CLOSEPAREN |
+       identifier OPENPAREN expression CLOSEPAREN | identifier | literal;
 
-STRING: '\u0022' ('a'..'z' | 'A'..'Z' | '0'..'9' | '!' | ',' | '.' | ':' | '_' | '{' | '}' | ' ')* '\u0022';
+literal : STRING | INT | FLOAT | CHAR | BOOL;
 
-INT: ('1'..'9')('0'..'9')*;
+identifier : LETTER *;
 
-FLOAT: INT+ '.' INT+;
+/* Lexer */
 
-CHAR: '\u0027' ('a'..'z' | 'A'..'Z' | '0'..'9' | '!' | ',' | '.' | ':' | '_' | '{' | '}' | ' ') '\u0027';
+STRING : '"'.*? '"';
 
-BOOL: 'true' | 'false';
+INT : [1 - 9][0 - 9] *;
 
-SEMICOLON: ';'
-OPENPAREN: '(';
-CLOSEPAREN: ')';
-OPENBRACKET: '{';
-CLOSEBRACKET: '}';
-IF: 'if';
-ELSE: 'else';
-WHILE: 'while';
-RETURN: 'return';
-ASSIGN: '=';
+FLOAT : INT + '.' INT + ;
 
-EQUALITY: '==';
-LESS: '<';
-ADD: '+';
-SUB: '-';
-MUL: '*';
-DIV: '/';
+CHAR : '\'' LETTER '\'';
 
-WS: ( '\t' | ' ' | ('\r' | '\n') )+ { $channel = HIDDEN;};
+LETTER : [a - zA - Z\u0080-\u{10FFFF}];
 
-COMMENT: '//' ~('\r' | '\n')* ('\r' | '\n' | EOF) { $channel = HIDDEN;};
+BOOL : 'true' | 'false';
+
+COMMA : ',';
+
+SEMICOLON : ';';
+
+OPENPAREN : '(';
+
+CLOSEPAREN : ')';
+
+OPENBRACKET : '{';
+
+CLOSEBRACKET : '}';
+
+IF : 'if';
+
+ELSE : 'else';
+
+WHILE : 'while';
+
+RETURN : 'return';
+
+ASSIGN : '=';
+
+EQUALITY : '==';
+
+LESS : '<';
+
+ADD : '+';
+
+SUB : '-';
+
+MUL : '*';
+
+DIV : '/';
+
+WS : ('\t' | ' ' | ('\r' | '\n')) +->skip;
+
+BLOCKCOMMENT : '/*'.*? '*/'->skip;
+
+LINECOMMENT : '//' ~[\r\n] * -> skip;
