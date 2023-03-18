@@ -77,15 +77,15 @@ while (true)
 1. [Antlr4 for C++ blog](https://beyondtheloop.dev/Antlr-cpp-cmake/)
 2. [lab.antlr.org](http://lab.antlr.org/)
 3. [Getting Started with ANTLR in C++](https://tomassetti.me/getting-started-antlr-cpp/)
-4. [Demo application for the ANTLR4 C++ target](https://github.com/antlr/antlr4/tree/master/runtime/Cpp/demo) : current `*.g4` are taken from this demo for testing ANTLR4
+4. [Demo application for the ANTLR4 C++ target](https://github.com/antlr/antlr4/tree/master/runtime/Cpp/demo)
 
 ## How to run
 
-I don't have the grammar for Synthtax yet. `*.g4` are taken from the ANTLR4 demo. To generate the lexer, parser (and visitor) classes, run: `./generate.sh`
+To generate the lexer and  parser classes, run: `./generate.sh`
 
 ## TODO
 
-1. Grammmar file
+1. Grammmar file (fix bug empty string)
 2. See what ANTLR4 generates for the AST
 3. Write semantic checks
 4. IR or generate a C++ file? because I need `RTAudio` library to play sound
