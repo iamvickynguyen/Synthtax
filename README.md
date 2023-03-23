@@ -83,6 +83,10 @@ while (true)
 
 To generate the lexer and  parser classes, run: `./generate.sh`
 
+## Reference
+
+1. [github.com/antlr/antlr4/tree/master/runtime/Cpp/cmake](https://github.com/antlr/antlr4/tree/master/runtime/Cpp/cmake): build files for many platforms
+
 ## TODO
 
 1. Grammmar file (fix bug empty string)
