@@ -1,13 +1,15 @@
 
-// Generated from Synthtax.g4 by ANTLR 4.12.0
+// Generated from SynthtaxParser.g4 by ANTLR 4.12.0
 
 
-#include "SynthtaxVisitor.h"
+#include "SynthtaxParserListener.h"
+#include "SynthtaxParserVisitor.h"
 
 #include "SynthtaxParser.h"
 
 
 using namespace antlrcpp;
+using namespace synthtax_antlr;
 
 using namespace antlr4;
 
@@ -36,11 +38,11 @@ struct SynthtaxParserStaticData final {
   std::unique_ptr<antlr4::atn::ATN> atn;
 };
 
-::antlr4::internal::OnceFlag synthtaxParserOnceFlag;
-SynthtaxParserStaticData *synthtaxParserStaticData = nullptr;
+::antlr4::internal::OnceFlag synthtaxparserParserOnceFlag;
+SynthtaxParserStaticData *synthtaxparserParserStaticData = nullptr;
 
-void synthtaxParserInitialize() {
-  assert(synthtaxParserStaticData == nullptr);
+void synthtaxparserParserInitialize() {
+  assert(synthtaxparserParserStaticData == nullptr);
   auto staticData = std::make_unique<SynthtaxParserStaticData>(
     std::vector<std::string>{
       "prog", "function", "funcDeclaration", "formalParameters", "funcBody", 
@@ -49,19 +51,16 @@ void synthtaxParserInitialize() {
       "addSubExpression", "mulDivExpression", "atom", "literal", "identifier"
     },
     std::vector<std::string>{
-      "", "", "", "", "", "", "", "','", "';'", "'('", "')'", "'{'", "'}'", 
-      "'if'", "'else'", "'while'", "'return'", "'='", "'=='", "'<'", "'+'", 
-      "'-'", "'*'", "'/'"
     },
     std::vector<std::string>{
-      "", "STRING", "INT", "FLOAT", "CHAR", "LETTER", "BOOL", "COMMA", "SEMICOLON", 
-      "OPENPAREN", "CLOSEPAREN", "OPENBRACKET", "CLOSEBRACKET", "IF", "ELSE", 
-      "WHILE", "RETURN", "ASSIGN", "EQUALITY", "LESS", "ADD", "SUB", "MUL", 
-      "DIV", "NEWLINE", "WS", "BLOCKCOMMENT", "LINECOMMENT"
+      "", "OPENPAREN", "CLOSEPAREN", "COMMA", "OPENBRACKET", "CLOSEBRACKET", 
+      "SEMICOLON", "IF", "ELSE", "WHILE", "RETURN", "ASSIGN", "EQUALITY", 
+      "LESS", "ADD", "SUB", "MUL", "DIV", "STRING", "INT", "FLOAT", "CHAR", 
+      "BOOL", "LETTER"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,27,193,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,23,193,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
   	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,1,0,4,0,40,8,0,11,0,12,0,41,
   	1,0,1,0,1,1,1,1,1,1,1,2,1,2,1,2,3,2,52,8,2,1,2,1,2,1,3,1,3,1,3,5,3,59,
@@ -76,51 +75,51 @@ void synthtaxParserInitialize() {
   	1,15,1,15,5,15,166,8,15,10,15,12,15,169,9,15,3,15,171,8,15,1,16,1,16,
   	1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,3,16,184,8,16,1,17,1,17,
   	1,18,4,18,189,8,18,11,18,12,18,190,1,18,0,0,19,0,2,4,6,8,10,12,14,16,
-  	18,20,22,24,26,28,30,32,34,36,0,1,2,0,1,4,6,6,196,0,39,1,0,0,0,2,45,1,
-  	0,0,0,4,48,1,0,0,0,6,55,1,0,0,0,8,63,1,0,0,0,10,78,1,0,0,0,12,80,1,0,
-  	0,0,14,96,1,0,0,0,16,98,1,0,0,0,18,104,1,0,0,0,20,107,1,0,0,0,22,111,
-  	1,0,0,0,24,120,1,0,0,0,26,128,1,0,0,0,28,152,1,0,0,0,30,170,1,0,0,0,32,
+  	18,20,22,24,26,28,30,32,34,36,0,1,1,0,18,22,196,0,39,1,0,0,0,2,45,1,0,
+  	0,0,4,48,1,0,0,0,6,55,1,0,0,0,8,63,1,0,0,0,10,78,1,0,0,0,12,80,1,0,0,
+  	0,14,96,1,0,0,0,16,98,1,0,0,0,18,104,1,0,0,0,20,107,1,0,0,0,22,111,1,
+  	0,0,0,24,120,1,0,0,0,26,128,1,0,0,0,28,152,1,0,0,0,30,170,1,0,0,0,32,
   	183,1,0,0,0,34,185,1,0,0,0,36,188,1,0,0,0,38,40,3,2,1,0,39,38,1,0,0,0,
   	40,41,1,0,0,0,41,39,1,0,0,0,41,42,1,0,0,0,42,43,1,0,0,0,43,44,5,0,0,1,
   	44,1,1,0,0,0,45,46,3,4,2,0,46,47,3,8,4,0,47,3,1,0,0,0,48,49,3,36,18,0,
-  	49,51,5,9,0,0,50,52,3,6,3,0,51,50,1,0,0,0,51,52,1,0,0,0,52,53,1,0,0,0,
-  	53,54,5,10,0,0,54,5,1,0,0,0,55,60,3,36,18,0,56,57,5,7,0,0,57,59,3,36,
-  	18,0,58,56,1,0,0,0,59,62,1,0,0,0,60,58,1,0,0,0,60,61,1,0,0,0,61,7,1,0,
-  	0,0,62,60,1,0,0,0,63,67,5,11,0,0,64,66,3,10,5,0,65,64,1,0,0,0,66,69,1,
-  	0,0,0,67,65,1,0,0,0,67,68,1,0,0,0,68,70,1,0,0,0,69,67,1,0,0,0,70,71,5,
-  	12,0,0,71,9,1,0,0,0,72,79,3,12,6,0,73,79,3,14,7,0,74,79,3,16,8,0,75,79,
-  	3,18,9,0,76,79,3,20,10,0,77,79,5,8,0,0,78,72,1,0,0,0,78,73,1,0,0,0,78,
-  	74,1,0,0,0,78,75,1,0,0,0,78,76,1,0,0,0,78,77,1,0,0,0,79,11,1,0,0,0,80,
-  	81,3,24,12,0,81,13,1,0,0,0,82,83,5,13,0,0,83,84,5,9,0,0,84,85,3,24,12,
-  	0,85,86,5,10,0,0,86,87,3,22,11,0,87,88,5,14,0,0,88,89,3,22,11,0,89,97,
-  	1,0,0,0,90,91,5,13,0,0,91,92,5,9,0,0,92,93,3,24,12,0,93,94,5,10,0,0,94,
-  	95,3,22,11,0,95,97,1,0,0,0,96,82,1,0,0,0,96,90,1,0,0,0,97,15,1,0,0,0,
-  	98,99,5,15,0,0,99,100,5,9,0,0,100,101,3,24,12,0,101,102,5,10,0,0,102,
-  	103,3,22,11,0,103,17,1,0,0,0,104,105,5,16,0,0,105,106,3,24,12,0,106,19,
-  	1,0,0,0,107,108,3,36,18,0,108,109,5,17,0,0,109,110,3,24,12,0,110,21,1,
-  	0,0,0,111,115,5,9,0,0,112,114,3,10,5,0,113,112,1,0,0,0,114,117,1,0,0,
-  	0,115,113,1,0,0,0,115,116,1,0,0,0,116,118,1,0,0,0,117,115,1,0,0,0,118,
-  	119,5,10,0,0,119,23,1,0,0,0,120,125,3,26,13,0,121,122,5,18,0,0,122,124,
-  	3,26,13,0,123,121,1,0,0,0,124,127,1,0,0,0,125,123,1,0,0,0,125,126,1,0,
-  	0,0,126,25,1,0,0,0,127,125,1,0,0,0,128,133,3,28,14,0,129,130,5,19,0,0,
-  	130,132,3,28,14,0,131,129,1,0,0,0,132,135,1,0,0,0,133,131,1,0,0,0,133,
-  	134,1,0,0,0,134,27,1,0,0,0,135,133,1,0,0,0,136,141,3,30,15,0,137,138,
-  	5,20,0,0,138,140,3,30,15,0,139,137,1,0,0,0,140,143,1,0,0,0,141,139,1,
-  	0,0,0,141,142,1,0,0,0,142,153,1,0,0,0,143,141,1,0,0,0,144,149,3,30,15,
-  	0,145,146,5,21,0,0,146,148,3,30,15,0,147,145,1,0,0,0,148,151,1,0,0,0,
-  	149,147,1,0,0,0,149,150,1,0,0,0,150,153,1,0,0,0,151,149,1,0,0,0,152,136,
-  	1,0,0,0,152,144,1,0,0,0,153,29,1,0,0,0,154,159,3,32,16,0,155,156,5,22,
-  	0,0,156,158,3,32,16,0,157,155,1,0,0,0,158,161,1,0,0,0,159,157,1,0,0,0,
-  	159,160,1,0,0,0,160,171,1,0,0,0,161,159,1,0,0,0,162,167,3,32,16,0,163,
-  	164,5,23,0,0,164,166,3,32,16,0,165,163,1,0,0,0,166,169,1,0,0,0,167,165,
-  	1,0,0,0,167,168,1,0,0,0,168,171,1,0,0,0,169,167,1,0,0,0,170,154,1,0,0,
-  	0,170,162,1,0,0,0,171,31,1,0,0,0,172,173,5,9,0,0,173,174,3,24,12,0,174,
-  	175,5,10,0,0,175,184,1,0,0,0,176,177,3,36,18,0,177,178,5,9,0,0,178,179,
-  	3,24,12,0,179,180,5,10,0,0,180,184,1,0,0,0,181,184,3,36,18,0,182,184,
-  	3,34,17,0,183,172,1,0,0,0,183,176,1,0,0,0,183,181,1,0,0,0,183,182,1,0,
-  	0,0,184,33,1,0,0,0,185,186,7,0,0,0,186,35,1,0,0,0,187,189,5,5,0,0,188,
-  	187,1,0,0,0,189,190,1,0,0,0,190,188,1,0,0,0,190,191,1,0,0,0,191,37,1,
-  	0,0,0,17,41,51,60,67,78,96,115,125,133,141,149,152,159,167,170,183,190
+  	49,51,5,1,0,0,50,52,3,6,3,0,51,50,1,0,0,0,51,52,1,0,0,0,52,53,1,0,0,0,
+  	53,54,5,2,0,0,54,5,1,0,0,0,55,60,3,36,18,0,56,57,5,3,0,0,57,59,3,36,18,
+  	0,58,56,1,0,0,0,59,62,1,0,0,0,60,58,1,0,0,0,60,61,1,0,0,0,61,7,1,0,0,
+  	0,62,60,1,0,0,0,63,67,5,4,0,0,64,66,3,10,5,0,65,64,1,0,0,0,66,69,1,0,
+  	0,0,67,65,1,0,0,0,67,68,1,0,0,0,68,70,1,0,0,0,69,67,1,0,0,0,70,71,5,5,
+  	0,0,71,9,1,0,0,0,72,79,3,12,6,0,73,79,3,14,7,0,74,79,3,16,8,0,75,79,3,
+  	18,9,0,76,79,3,20,10,0,77,79,5,6,0,0,78,72,1,0,0,0,78,73,1,0,0,0,78,74,
+  	1,0,0,0,78,75,1,0,0,0,78,76,1,0,0,0,78,77,1,0,0,0,79,11,1,0,0,0,80,81,
+  	3,24,12,0,81,13,1,0,0,0,82,83,5,7,0,0,83,84,5,1,0,0,84,85,3,24,12,0,85,
+  	86,5,2,0,0,86,87,3,22,11,0,87,88,5,8,0,0,88,89,3,22,11,0,89,97,1,0,0,
+  	0,90,91,5,7,0,0,91,92,5,1,0,0,92,93,3,24,12,0,93,94,5,2,0,0,94,95,3,22,
+  	11,0,95,97,1,0,0,0,96,82,1,0,0,0,96,90,1,0,0,0,97,15,1,0,0,0,98,99,5,
+  	9,0,0,99,100,5,1,0,0,100,101,3,24,12,0,101,102,5,2,0,0,102,103,3,22,11,
+  	0,103,17,1,0,0,0,104,105,5,10,0,0,105,106,3,24,12,0,106,19,1,0,0,0,107,
+  	108,3,36,18,0,108,109,5,11,0,0,109,110,3,24,12,0,110,21,1,0,0,0,111,115,
+  	5,1,0,0,112,114,3,10,5,0,113,112,1,0,0,0,114,117,1,0,0,0,115,113,1,0,
+  	0,0,115,116,1,0,0,0,116,118,1,0,0,0,117,115,1,0,0,0,118,119,5,2,0,0,119,
+  	23,1,0,0,0,120,125,3,26,13,0,121,122,5,12,0,0,122,124,3,26,13,0,123,121,
+  	1,0,0,0,124,127,1,0,0,0,125,123,1,0,0,0,125,126,1,0,0,0,126,25,1,0,0,
+  	0,127,125,1,0,0,0,128,133,3,28,14,0,129,130,5,13,0,0,130,132,3,28,14,
+  	0,131,129,1,0,0,0,132,135,1,0,0,0,133,131,1,0,0,0,133,134,1,0,0,0,134,
+  	27,1,0,0,0,135,133,1,0,0,0,136,141,3,30,15,0,137,138,5,14,0,0,138,140,
+  	3,30,15,0,139,137,1,0,0,0,140,143,1,0,0,0,141,139,1,0,0,0,141,142,1,0,
+  	0,0,142,153,1,0,0,0,143,141,1,0,0,0,144,149,3,30,15,0,145,146,5,15,0,
+  	0,146,148,3,30,15,0,147,145,1,0,0,0,148,151,1,0,0,0,149,147,1,0,0,0,149,
+  	150,1,0,0,0,150,153,1,0,0,0,151,149,1,0,0,0,152,136,1,0,0,0,152,144,1,
+  	0,0,0,153,29,1,0,0,0,154,159,3,32,16,0,155,156,5,16,0,0,156,158,3,32,
+  	16,0,157,155,1,0,0,0,158,161,1,0,0,0,159,157,1,0,0,0,159,160,1,0,0,0,
+  	160,171,1,0,0,0,161,159,1,0,0,0,162,167,3,32,16,0,163,164,5,17,0,0,164,
+  	166,3,32,16,0,165,163,1,0,0,0,166,169,1,0,0,0,167,165,1,0,0,0,167,168,
+  	1,0,0,0,168,171,1,0,0,0,169,167,1,0,0,0,170,154,1,0,0,0,170,162,1,0,0,
+  	0,171,31,1,0,0,0,172,173,5,1,0,0,173,174,3,24,12,0,174,175,5,2,0,0,175,
+  	184,1,0,0,0,176,177,3,36,18,0,177,178,5,1,0,0,178,179,3,24,12,0,179,180,
+  	5,2,0,0,180,184,1,0,0,0,181,184,3,36,18,0,182,184,3,34,17,0,183,172,1,
+  	0,0,0,183,176,1,0,0,0,183,181,1,0,0,0,183,182,1,0,0,0,184,33,1,0,0,0,
+  	185,186,7,0,0,0,186,35,1,0,0,0,187,189,5,23,0,0,188,187,1,0,0,0,189,190,
+  	1,0,0,0,190,188,1,0,0,0,190,191,1,0,0,0,191,37,1,0,0,0,17,41,51,60,67,
+  	78,96,115,125,133,141,149,152,159,167,170,183,190
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -132,7 +131,7 @@ void synthtaxParserInitialize() {
   for (size_t i = 0; i < count; i++) { 
     staticData->decisionToDFA.emplace_back(staticData->atn->getDecisionState(i), i);
   }
-  synthtaxParserStaticData = staticData.release();
+  synthtaxparserParserStaticData = staticData.release();
 }
 
 }
@@ -141,7 +140,7 @@ SynthtaxParser::SynthtaxParser(TokenStream *input) : SynthtaxParser(input, antlr
 
 SynthtaxParser::SynthtaxParser(TokenStream *input, const antlr4::atn::ParserATNSimulatorOptions &options) : Parser(input) {
   SynthtaxParser::initialize();
-  _interpreter = new atn::ParserATNSimulator(this, *synthtaxParserStaticData->atn, synthtaxParserStaticData->decisionToDFA, synthtaxParserStaticData->sharedContextCache, options);
+  _interpreter = new atn::ParserATNSimulator(this, *synthtaxparserParserStaticData->atn, synthtaxparserParserStaticData->decisionToDFA, synthtaxparserParserStaticData->sharedContextCache, options);
 }
 
 SynthtaxParser::~SynthtaxParser() {
@@ -149,23 +148,23 @@ SynthtaxParser::~SynthtaxParser() {
 }
 
 const atn::ATN& SynthtaxParser::getATN() const {
-  return *synthtaxParserStaticData->atn;
+  return *synthtaxparserParserStaticData->atn;
 }
 
 std::string SynthtaxParser::getGrammarFileName() const {
-  return "Synthtax.g4";
+  return "SynthtaxParser.g4";
 }
 
 const std::vector<std::string>& SynthtaxParser::getRuleNames() const {
-  return synthtaxParserStaticData->ruleNames;
+  return synthtaxparserParserStaticData->ruleNames;
 }
 
 const dfa::Vocabulary& SynthtaxParser::getVocabulary() const {
-  return synthtaxParserStaticData->vocabulary;
+  return synthtaxparserParserStaticData->vocabulary;
 }
 
 antlr4::atn::SerializedATNView SynthtaxParser::getSerializedATN() const {
-  return synthtaxParserStaticData->serializedATN;
+  return synthtaxparserParserStaticData->serializedATN;
 }
 
 
@@ -192,9 +191,21 @@ size_t SynthtaxParser::ProgContext::getRuleIndex() const {
   return SynthtaxParser::RuleProg;
 }
 
+void SynthtaxParser::ProgContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterProg(this);
+}
+
+void SynthtaxParser::ProgContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitProg(this);
+}
+
 
 std::any SynthtaxParser::ProgContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitProg(this);
   else
     return visitor->visitChildren(this);
@@ -256,9 +267,21 @@ size_t SynthtaxParser::FunctionContext::getRuleIndex() const {
   return SynthtaxParser::RuleFunction;
 }
 
+void SynthtaxParser::FunctionContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterFunction(this);
+}
+
+void SynthtaxParser::FunctionContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitFunction(this);
+}
+
 
 std::any SynthtaxParser::FunctionContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitFunction(this);
   else
     return visitor->visitChildren(this);
@@ -319,9 +342,21 @@ size_t SynthtaxParser::FuncDeclarationContext::getRuleIndex() const {
   return SynthtaxParser::RuleFuncDeclaration;
 }
 
+void SynthtaxParser::FuncDeclarationContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterFuncDeclaration(this);
+}
+
+void SynthtaxParser::FuncDeclarationContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitFuncDeclaration(this);
+}
+
 
 std::any SynthtaxParser::FuncDeclarationContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitFuncDeclaration(this);
   else
     return visitor->visitChildren(this);
@@ -393,9 +428,21 @@ size_t SynthtaxParser::FormalParametersContext::getRuleIndex() const {
   return SynthtaxParser::RuleFormalParameters;
 }
 
+void SynthtaxParser::FormalParametersContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterFormalParameters(this);
+}
+
+void SynthtaxParser::FormalParametersContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitFormalParameters(this);
+}
+
 
 std::any SynthtaxParser::FormalParametersContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitFormalParameters(this);
   else
     return visitor->visitChildren(this);
@@ -467,9 +514,21 @@ size_t SynthtaxParser::FuncBodyContext::getRuleIndex() const {
   return SynthtaxParser::RuleFuncBody;
 }
 
+void SynthtaxParser::FuncBodyContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterFuncBody(this);
+}
+
+void SynthtaxParser::FuncBodyContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitFuncBody(this);
+}
+
 
 std::any SynthtaxParser::FuncBodyContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitFuncBody(this);
   else
     return visitor->visitChildren(this);
@@ -495,7 +554,7 @@ SynthtaxParser::FuncBodyContext* SynthtaxParser::funcBody() {
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 107390) != 0)) {
+      ((1ULL << _la) & 16516802) != 0)) {
       setState(64);
       statement();
       setState(69);
@@ -550,9 +609,21 @@ size_t SynthtaxParser::StatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleStatement;
 }
 
+void SynthtaxParser::StatementContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterStatement(this);
+}
+
+void SynthtaxParser::StatementContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitStatement(this);
+}
+
 
 std::any SynthtaxParser::StatementContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitStatement(this);
   else
     return visitor->visitChildren(this);
@@ -644,9 +715,21 @@ size_t SynthtaxParser::ExpressionStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleExpressionStatement;
 }
 
+void SynthtaxParser::ExpressionStatementContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterExpressionStatement(this);
+}
+
+void SynthtaxParser::ExpressionStatementContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitExpressionStatement(this);
+}
+
 
 std::any SynthtaxParser::ExpressionStatementContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitExpressionStatement(this);
   else
     return visitor->visitChildren(this);
@@ -717,9 +800,21 @@ size_t SynthtaxParser::IfStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleIfStatement;
 }
 
+void SynthtaxParser::IfStatementContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterIfStatement(this);
+}
+
+void SynthtaxParser::IfStatementContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitIfStatement(this);
+}
+
 
 std::any SynthtaxParser::IfStatementContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitIfStatement(this);
   else
     return visitor->visitChildren(this);
@@ -819,9 +914,21 @@ size_t SynthtaxParser::WhileStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleWhileStatement;
 }
 
+void SynthtaxParser::WhileStatementContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterWhileStatement(this);
+}
+
+void SynthtaxParser::WhileStatementContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitWhileStatement(this);
+}
+
 
 std::any SynthtaxParser::WhileStatementContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitWhileStatement(this);
   else
     return visitor->visitChildren(this);
@@ -880,9 +987,21 @@ size_t SynthtaxParser::ReturnStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleReturnStatement;
 }
 
+void SynthtaxParser::ReturnStatementContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterReturnStatement(this);
+}
+
+void SynthtaxParser::ReturnStatementContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitReturnStatement(this);
+}
+
 
 std::any SynthtaxParser::ReturnStatementContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitReturnStatement(this);
   else
     return visitor->visitChildren(this);
@@ -939,9 +1058,21 @@ size_t SynthtaxParser::AssignmentStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleAssignmentStatement;
 }
 
+void SynthtaxParser::AssignmentStatementContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterAssignmentStatement(this);
+}
+
+void SynthtaxParser::AssignmentStatementContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitAssignmentStatement(this);
+}
+
 
 std::any SynthtaxParser::AssignmentStatementContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitAssignmentStatement(this);
   else
     return visitor->visitChildren(this);
@@ -1004,9 +1135,21 @@ size_t SynthtaxParser::BlockContext::getRuleIndex() const {
   return SynthtaxParser::RuleBlock;
 }
 
+void SynthtaxParser::BlockContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterBlock(this);
+}
+
+void SynthtaxParser::BlockContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitBlock(this);
+}
+
 
 std::any SynthtaxParser::BlockContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitBlock(this);
   else
     return visitor->visitChildren(this);
@@ -1032,7 +1175,7 @@ SynthtaxParser::BlockContext* SynthtaxParser::block() {
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 107390) != 0)) {
+      ((1ULL << _la) & 16516802) != 0)) {
       setState(112);
       statement();
       setState(117);
@@ -1079,9 +1222,21 @@ size_t SynthtaxParser::ExpressionContext::getRuleIndex() const {
   return SynthtaxParser::RuleExpression;
 }
 
+void SynthtaxParser::ExpressionContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterExpression(this);
+}
+
+void SynthtaxParser::ExpressionContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitExpression(this);
+}
+
 
 std::any SynthtaxParser::ExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitExpression(this);
   else
     return visitor->visitChildren(this);
@@ -1153,9 +1308,21 @@ size_t SynthtaxParser::LessExpressionContext::getRuleIndex() const {
   return SynthtaxParser::RuleLessExpression;
 }
 
+void SynthtaxParser::LessExpressionContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterLessExpression(this);
+}
+
+void SynthtaxParser::LessExpressionContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitLessExpression(this);
+}
+
 
 std::any SynthtaxParser::LessExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitLessExpression(this);
   else
     return visitor->visitChildren(this);
@@ -1235,9 +1402,21 @@ size_t SynthtaxParser::AddSubExpressionContext::getRuleIndex() const {
   return SynthtaxParser::RuleAddSubExpression;
 }
 
+void SynthtaxParser::AddSubExpressionContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterAddSubExpression(this);
+}
+
+void SynthtaxParser::AddSubExpressionContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitAddSubExpression(this);
+}
+
 
 std::any SynthtaxParser::AddSubExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitAddSubExpression(this);
   else
     return visitor->visitChildren(this);
@@ -1346,9 +1525,21 @@ size_t SynthtaxParser::MulDivExpressionContext::getRuleIndex() const {
   return SynthtaxParser::RuleMulDivExpression;
 }
 
+void SynthtaxParser::MulDivExpressionContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterMulDivExpression(this);
+}
+
+void SynthtaxParser::MulDivExpressionContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitMulDivExpression(this);
+}
+
 
 std::any SynthtaxParser::MulDivExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitMulDivExpression(this);
   else
     return visitor->visitChildren(this);
@@ -1453,9 +1644,21 @@ size_t SynthtaxParser::AtomContext::getRuleIndex() const {
   return SynthtaxParser::RuleAtom;
 }
 
+void SynthtaxParser::AtomContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterAtom(this);
+}
+
+void SynthtaxParser::AtomContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitAtom(this);
+}
+
 
 std::any SynthtaxParser::AtomContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitAtom(this);
   else
     return visitor->visitChildren(this);
@@ -1559,9 +1762,21 @@ size_t SynthtaxParser::LiteralContext::getRuleIndex() const {
   return SynthtaxParser::RuleLiteral;
 }
 
+void SynthtaxParser::LiteralContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterLiteral(this);
+}
+
+void SynthtaxParser::LiteralContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitLiteral(this);
+}
+
 
 std::any SynthtaxParser::LiteralContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitLiteral(this);
   else
     return visitor->visitChildren(this);
@@ -1584,7 +1799,7 @@ SynthtaxParser::LiteralContext* SynthtaxParser::literal() {
     setState(185);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 94) != 0))) {
+      ((1ULL << _la) & 8126464) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
@@ -1621,9 +1836,21 @@ size_t SynthtaxParser::IdentifierContext::getRuleIndex() const {
   return SynthtaxParser::RuleIdentifier;
 }
 
+void SynthtaxParser::IdentifierContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterIdentifier(this);
+}
+
+void SynthtaxParser::IdentifierContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitIdentifier(this);
+}
+
 
 std::any SynthtaxParser::IdentifierContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxVisitor*>(visitor))
+  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
     return parserVisitor->visitIdentifier(this);
   else
     return visitor->visitChildren(this);
@@ -1673,5 +1900,5 @@ SynthtaxParser::IdentifierContext* SynthtaxParser::identifier() {
 }
 
 void SynthtaxParser::initialize() {
-  ::antlr4::internal::call_once(synthtaxParserOnceFlag, synthtaxParserInitialize);
+  ::antlr4::internal::call_once(synthtaxparserParserOnceFlag, synthtaxparserParserInitialize);
 }

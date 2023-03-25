@@ -1,5 +1,5 @@
 
-// Generated from Synthtax.g4 by ANTLR 4.12.0
+// Generated from SynthtaxLexer.g4 by ANTLR 4.12.0
 
 
 #include "SynthtaxLexer.h"
@@ -7,6 +7,7 @@
 
 using namespace antlr4;
 
+using namespace synthtax_antlr;
 
 
 using namespace antlr4;
@@ -160,7 +161,7 @@ SynthtaxLexer::~SynthtaxLexer() {
 }
 
 std::string SynthtaxLexer::getGrammarFileName() const {
-  return "Synthtax.g4";
+  return "SynthtaxLexer.g4";
 }
 
 const std::vector<std::string>& SynthtaxLexer::getRuleNames() const {

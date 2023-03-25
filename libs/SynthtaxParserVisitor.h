@@ -1,5 +1,5 @@
 
-// Generated from Synthtax.g4 by ANTLR 4.12.0
+// Generated from SynthtaxParser.g4 by ANTLR 4.12.0
 
 #pragma once
 
@@ -8,12 +8,13 @@
 #include "SynthtaxParser.h"
 
 
+namespace synthtax_antlr {
 
 /**
  * This class defines an abstract visitor for a parse tree
  * produced by SynthtaxParser.
  */
-class  SynthtaxVisitor : public antlr4::tree::AbstractParseTreeVisitor {
+class  SynthtaxParserVisitor : public antlr4::tree::AbstractParseTreeVisitor {
 public:
 
   /**
@@ -60,3 +61,4 @@ public:
 
 };
 
+}  // namespace synthtax_antlr

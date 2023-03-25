@@ -1,5 +1,5 @@
 
-// Generated from Synthtax.g4 by ANTLR 4.12.0
+// Generated from SynthtaxLexer.g4 by ANTLR 4.12.0
 
 #pragma once
 
@@ -7,6 +7,7 @@
 #include "antlr4-runtime.h"
 
 
+namespace synthtax_antlr {
 
 
 class  SynthtaxLexer : public antlr4::Lexer {
@@ -51,3 +52,4 @@ private:
 
 };
 
+}  // namespace synthtax_antlr

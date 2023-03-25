@@ -1,18 +1,20 @@
 
-// Generated from Synthtax.g4 by ANTLR 4.12.0
+// Generated from SynthtaxParser.g4 by ANTLR 4.12.0
 
 #pragma once
 
 
 #include "antlr4-runtime.h"
-#include "SynthtaxVisitor.h"
+#include "SynthtaxParserVisitor.h"
 
+
+namespace synthtax_antlr {
 
 /**
- * This class provides an empty implementation of SynthtaxVisitor, which can be
+ * This class provides an empty implementation of SynthtaxParserVisitor, which can be
  * extended to create a visitor which only needs to handle a subset of the available methods.
  */
-class  SynthtaxBaseVisitor : public SynthtaxVisitor {
+class  SynthtaxParserBaseVisitor : public SynthtaxParserVisitor {
 public:
 
   virtual std::any visitProg(SynthtaxParser::ProgContext *ctx) override {
@@ -94,3 +96,4 @@ public:
 
 };
 
+}  // namespace synthtax_antlr

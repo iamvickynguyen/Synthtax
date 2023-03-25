@@ -1,10 +1,9 @@
 #include <iostream>
 
-//#include "antlr4-runtime.h"
+#include "antlr4-runtime.h"
 #include "libs/SynthtaxLexer.h"
-//#include "libs/SynthtaxParser.h"
+#include "libs/SynthtaxParser.h"
 
-using namespace std;
 using namespace antlr4;
 
 int main(int argc, const char* argv[]) {
@@ -12,15 +11,12 @@ int main(int argc, const char* argv[]) {
     stream.open("test/hello.in");
     
     ANTLRInputStream input(stream);
-    SynthtaxLexer lexer(&input);
+		synthtax_antlr::SynthtaxLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
-    SynthtaxParser parser(&tokens);    
+		synthtax_antlr::SynthtaxParser parser(&tokens);    
     
-		SynthtaxParser::FileContext* tree = parser.file();
-
-//    ImageVisitor visitor;
-//    Synthtax scene = std::any_cast<Synthtax>(visitor.visitFile(tree));
-//    scene.draw();	
+		tree::ParseTree* tree = parser.prog();
+	  std::cout << tree->toStringTree(&parser) << "\n\n";
 
     return 0;
 }

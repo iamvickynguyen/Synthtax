@@ -1,5 +1,5 @@
 
-// Generated from Synthtax.g4 by ANTLR 4.12.0
+// Generated from SynthtaxParser.g4 by ANTLR 4.12.0
 
 #pragma once
 
@@ -7,16 +7,16 @@
 #include "antlr4-runtime.h"
 
 
+namespace synthtax_antlr {
 
 
 class  SynthtaxParser : public antlr4::Parser {
 public:
   enum {
-    STRING = 1, INT = 2, FLOAT = 3, CHAR = 4, LETTER = 5, BOOL = 6, COMMA = 7, 
-    SEMICOLON = 8, OPENPAREN = 9, CLOSEPAREN = 10, OPENBRACKET = 11, CLOSEBRACKET = 12, 
-    IF = 13, ELSE = 14, WHILE = 15, RETURN = 16, ASSIGN = 17, EQUALITY = 18, 
-    LESS = 19, ADD = 20, SUB = 21, MUL = 22, DIV = 23, NEWLINE = 24, WS = 25, 
-    BLOCKCOMMENT = 26, LINECOMMENT = 27
+    OPENPAREN = 1, CLOSEPAREN = 2, COMMA = 3, OPENBRACKET = 4, CLOSEBRACKET = 5, 
+    SEMICOLON = 6, IF = 7, ELSE = 8, WHILE = 9, RETURN = 10, ASSIGN = 11, 
+    EQUALITY = 12, LESS = 13, ADD = 14, SUB = 15, MUL = 16, DIV = 17, STRING = 18, 
+    INT = 19, FLOAT = 20, CHAR = 21, BOOL = 22, LETTER = 23
   };
 
   enum {
@@ -72,6 +72,8 @@ public:
     std::vector<FunctionContext *> function();
     FunctionContext* function(size_t i);
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -86,6 +88,8 @@ public:
     FuncDeclarationContext *funcDeclaration();
     FuncBodyContext *funcBody();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -102,6 +106,8 @@ public:
     antlr4::tree::TerminalNode *CLOSEPAREN();
     FormalParametersContext *formalParameters();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -118,6 +124,8 @@ public:
     std::vector<antlr4::tree::TerminalNode *> COMMA();
     antlr4::tree::TerminalNode* COMMA(size_t i);
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -134,6 +142,8 @@ public:
     std::vector<StatementContext *> statement();
     StatementContext* statement(size_t i);
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -152,6 +162,8 @@ public:
     AssignmentStatementContext *assignmentStatement();
     antlr4::tree::TerminalNode *SEMICOLON();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -165,6 +177,8 @@ public:
     virtual size_t getRuleIndex() const override;
     ExpressionContext *expression();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -184,6 +198,8 @@ public:
     BlockContext* block(size_t i);
     antlr4::tree::TerminalNode *ELSE();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -201,6 +217,8 @@ public:
     antlr4::tree::TerminalNode *CLOSEPAREN();
     BlockContext *block();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -215,6 +233,8 @@ public:
     antlr4::tree::TerminalNode *RETURN();
     ExpressionContext *expression();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -230,6 +250,8 @@ public:
     antlr4::tree::TerminalNode *ASSIGN();
     ExpressionContext *expression();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -246,6 +268,8 @@ public:
     std::vector<StatementContext *> statement();
     StatementContext* statement(size_t i);
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -262,6 +286,8 @@ public:
     std::vector<antlr4::tree::TerminalNode *> EQUALITY();
     antlr4::tree::TerminalNode* EQUALITY(size_t i);
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -278,6 +304,8 @@ public:
     std::vector<antlr4::tree::TerminalNode *> LESS();
     antlr4::tree::TerminalNode* LESS(size_t i);
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -296,6 +324,8 @@ public:
     std::vector<antlr4::tree::TerminalNode *> SUB();
     antlr4::tree::TerminalNode* SUB(size_t i);
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -314,6 +344,8 @@ public:
     std::vector<antlr4::tree::TerminalNode *> DIV();
     antlr4::tree::TerminalNode* DIV(size_t i);
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -331,6 +363,8 @@ public:
     IdentifierContext *identifier();
     LiteralContext *literal();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -348,6 +382,8 @@ public:
     antlr4::tree::TerminalNode *CHAR();
     antlr4::tree::TerminalNode *BOOL();
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -362,6 +398,8 @@ public:
     std::vector<antlr4::tree::TerminalNode *> LETTER();
     antlr4::tree::TerminalNode* LETTER(size_t i);
 
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
     virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -378,3 +416,4 @@ public:
 private:
 };
 
+}  // namespace synthtax_antlr
