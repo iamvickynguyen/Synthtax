@@ -1,9 +1,9 @@
 main() {
-  a = 2;
+  a = 02;
   b = 'b';
-  s = Osc("sine", 400, 1); // 's' is sine,  no phase
   /* block comment
    something here... */
 
-  d = "hello   world!";
+  d = "hello   world";
+	c = 2.0 + 31 * 4.000032;
 }

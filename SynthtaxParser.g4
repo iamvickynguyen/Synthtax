@@ -24,7 +24,7 @@ returnStatement : RETURN expression;
 
 assignmentStatement : identifier ASSIGN expression;
 
-block : OPENPAREN statement*CLOSEPAREN;
+block : OPENPAREN statement* CLOSEPAREN;
 
 expression : lessExpression(EQUALITY lessExpression)*;
 

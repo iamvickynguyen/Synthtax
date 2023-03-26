@@ -13,11 +13,11 @@ namespace synthtax_antlr {
 class  SynthtaxLexer : public antlr4::Lexer {
 public:
   enum {
-    STRING = 1, INT = 2, FLOAT = 3, CHAR = 4, LETTER = 5, BOOL = 6, COMMA = 7, 
-    SEMICOLON = 8, OPENPAREN = 9, CLOSEPAREN = 10, OPENBRACKET = 11, CLOSEBRACKET = 12, 
-    IF = 13, ELSE = 14, WHILE = 15, RETURN = 16, ASSIGN = 17, EQUALITY = 18, 
-    LESS = 19, ADD = 20, SUB = 21, MUL = 22, DIV = 23, NEWLINE = 24, WS = 25, 
-    BLOCKCOMMENT = 26, LINECOMMENT = 27
+    STRING = 1, DIGIT = 2, INT = 3, FLOAT = 4, CHAR = 5, LETTER = 6, BOOL = 7, 
+    COMMA = 8, SEMICOLON = 9, OPENPAREN = 10, CLOSEPAREN = 11, OPENBRACKET = 12, 
+    CLOSEBRACKET = 13, IF = 14, ELSE = 15, WHILE = 16, RETURN = 17, ASSIGN = 18, 
+    EQUALITY = 19, LESS = 20, ADD = 21, SUB = 22, MUL = 23, DIV = 24, NEWLINE = 25, 
+    WS = 26, BLOCKCOMMENT = 27, LINECOMMENT = 28
   };
 
   explicit SynthtaxLexer(antlr4::CharStream *input);

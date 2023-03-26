@@ -1,10 +1,12 @@
 lexer grammar SynthtaxLexer;
 
-STRING : '"' (LETTER | [0-9])*? '"';
+STRING : '"' (LETTER | DIGIT | WS)* '"'; // no new line
 
-INT : [1-9][0-9]*;
+DIGIT: [0-9];
 
-FLOAT : INT+ '.' INT+ ;
+INT : DIGIT+; // can have leading 0s, [BUG]: cannot have 1 digit
+
+FLOAT : DIGIT+ '.' DIGIT+;
 
 CHAR : '\'' LETTER '\'';
 
