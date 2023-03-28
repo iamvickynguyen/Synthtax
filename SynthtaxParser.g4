@@ -40,4 +40,4 @@ atom : OPENPAREN expression CLOSEPAREN |
 
 literal : STRING | INT | FLOAT | CHAR | BOOL;
 
-identifier : LETTER+;
+identifier : ID;

@@ -16,7 +16,7 @@ public:
     OPENPAREN = 1, CLOSEPAREN = 2, COMMA = 3, OPENBRACKET = 4, CLOSEBRACKET = 5, 
     SEMICOLON = 6, IF = 7, ELSE = 8, WHILE = 9, RETURN = 10, ASSIGN = 11, 
     EQUALITY = 12, LESS = 13, ADD = 14, SUB = 15, MUL = 16, DIV = 17, STRING = 18, 
-    INT = 19, FLOAT = 20, CHAR = 21, BOOL = 22, LETTER = 23
+    INT = 19, FLOAT = 20, CHAR = 21, BOOL = 22, ID = 23
   };
 
   enum {
@@ -395,8 +395,7 @@ public:
   public:
     IdentifierContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    std::vector<antlr4::tree::TerminalNode *> LETTER();
-    antlr4::tree::TerminalNode* LETTER(size_t i);
+    antlr4::tree::TerminalNode *ID();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

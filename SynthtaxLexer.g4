@@ -1,16 +1,14 @@
 lexer grammar SynthtaxLexer;
 
-STRING : '"' (LETTER | DIGIT | WS)* '"'; // no new line
+STRING : '"' [a-zA-Z_ ]* '"'; // no new line
 
-DIGIT: [0-9];
+INT : [0-9]+; // can have leading 0s, [BUG]: cannot have 1 digit
 
-INT : DIGIT+; // can have leading 0s, [BUG]: cannot have 1 digit
+FLOAT : [0-9]+ '.' [0-9]+;
 
-FLOAT : DIGIT+ '.' DIGIT+;
+CHAR : '\'' [a-zA-Z_ ] '\'';
 
-CHAR : '\'' LETTER '\'';
-
-LETTER : [a-zA-Z_];
+ID : [a-zA-Z_][a-zA-Z_0-9]* ;
 
 BOOL : 'true' | 'false';
 
