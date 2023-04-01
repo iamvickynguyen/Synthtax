@@ -89,10 +89,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual std::any visitIdentifier(SynthtaxParser::IdentifierContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
 
 };
 

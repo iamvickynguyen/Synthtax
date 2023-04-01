@@ -48,76 +48,76 @@ void synthtaxparserParserInitialize() {
       "prog", "function", "funcDeclaration", "formalParameters", "funcBody", 
       "statement", "expressionStatement", "ifStatement", "whileStatement", 
       "returnStatement", "assignmentStatement", "block", "expression", "lessExpression", 
-      "addSubExpression", "mulDivExpression", "atom", "literal", "identifier"
+      "addSubExpression", "mulDivExpression", "atom", "literal"
     },
     std::vector<std::string>{
     },
     std::vector<std::string>{
-      "", "DEF", "OPENPAREN", "CLOSEPAREN", "COMMA", "OPENBRACKET", "CLOSEBRACKET", 
-      "SEMICOLON", "IF", "ELSE", "WHILE", "RETURN", "ASSIGN", "EQUALITY", 
-      "LESS", "ADD", "SUB", "MUL", "DIV", "STRING", "INT", "FLOAT", "CHAR", 
-      "BOOL", "ID"
+      "", "DEF", "ID", "OPENPAREN", "CLOSEPAREN", "COMMA", "OPENBRACKET", 
+      "CLOSEBRACKET", "SEMICOLON", "IF", "ELSE", "WHILE", "RETURN", "ASSIGN", 
+      "EQUALITY", "LESS", "ADD", "SUB", "MUL", "DIV", "STRING", "INT", "FLOAT", 
+      "CHAR", "BOOL"
     }
   );
   static const int32_t serializedATNSegment[] = {
-  	4,1,24,188,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
+  	4,1,24,187,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,
   	7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,
-  	14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,1,0,4,0,40,8,0,11,0,12,0,41,
-  	1,0,1,0,1,1,1,1,1,1,1,2,1,2,1,2,1,2,1,2,1,3,1,3,1,3,5,3,57,8,3,10,3,12,
-  	3,60,9,3,1,4,1,4,5,4,64,8,4,10,4,12,4,67,9,4,1,4,1,4,1,5,1,5,1,5,1,5,
-  	1,5,1,5,3,5,77,8,5,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,
-  	7,1,7,1,7,1,7,3,7,95,8,7,1,8,1,8,1,8,1,8,1,8,1,8,1,9,1,9,1,9,1,10,1,10,
-  	1,10,1,10,1,11,1,11,5,11,112,8,11,10,11,12,11,115,9,11,1,11,1,11,1,12,
-  	1,12,1,12,5,12,122,8,12,10,12,12,12,125,9,12,1,13,1,13,1,13,5,13,130,
-  	8,13,10,13,12,13,133,9,13,1,14,1,14,1,14,5,14,138,8,14,10,14,12,14,141,
-  	9,14,1,14,1,14,1,14,5,14,146,8,14,10,14,12,14,149,9,14,3,14,151,8,14,
-  	1,15,1,15,1,15,5,15,156,8,15,10,15,12,15,159,9,15,1,15,1,15,1,15,5,15,
-  	164,8,15,10,15,12,15,167,9,15,3,15,169,8,15,1,16,1,16,1,16,1,16,1,16,
-  	1,16,1,16,1,16,1,16,1,16,1,16,3,16,182,8,16,1,17,1,17,1,18,1,18,1,18,
-  	0,0,19,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,0,1,1,0,19,
-  	23,189,0,39,1,0,0,0,2,45,1,0,0,0,4,48,1,0,0,0,6,53,1,0,0,0,8,61,1,0,0,
-  	0,10,76,1,0,0,0,12,78,1,0,0,0,14,94,1,0,0,0,16,96,1,0,0,0,18,102,1,0,
-  	0,0,20,105,1,0,0,0,22,109,1,0,0,0,24,118,1,0,0,0,26,126,1,0,0,0,28,150,
-  	1,0,0,0,30,168,1,0,0,0,32,181,1,0,0,0,34,183,1,0,0,0,36,185,1,0,0,0,38,
-  	40,3,2,1,0,39,38,1,0,0,0,40,41,1,0,0,0,41,39,1,0,0,0,41,42,1,0,0,0,42,
-  	43,1,0,0,0,43,44,5,0,0,1,44,1,1,0,0,0,45,46,3,4,2,0,46,47,3,8,4,0,47,
-  	3,1,0,0,0,48,49,5,1,0,0,49,50,3,36,18,0,50,51,5,2,0,0,51,52,5,3,0,0,52,
-  	5,1,0,0,0,53,58,3,36,18,0,54,55,5,4,0,0,55,57,3,36,18,0,56,54,1,0,0,0,
-  	57,60,1,0,0,0,58,56,1,0,0,0,58,59,1,0,0,0,59,7,1,0,0,0,60,58,1,0,0,0,
-  	61,65,5,5,0,0,62,64,3,10,5,0,63,62,1,0,0,0,64,67,1,0,0,0,65,63,1,0,0,
-  	0,65,66,1,0,0,0,66,68,1,0,0,0,67,65,1,0,0,0,68,69,5,6,0,0,69,9,1,0,0,
-  	0,70,77,3,12,6,0,71,77,3,14,7,0,72,77,3,16,8,0,73,77,3,18,9,0,74,77,3,
-  	20,10,0,75,77,5,7,0,0,76,70,1,0,0,0,76,71,1,0,0,0,76,72,1,0,0,0,76,73,
-  	1,0,0,0,76,74,1,0,0,0,76,75,1,0,0,0,77,11,1,0,0,0,78,79,3,24,12,0,79,
-  	13,1,0,0,0,80,81,5,8,0,0,81,82,5,2,0,0,82,83,3,24,12,0,83,84,5,3,0,0,
-  	84,85,3,22,11,0,85,86,5,9,0,0,86,87,3,22,11,0,87,95,1,0,0,0,88,89,5,8,
-  	0,0,89,90,5,2,0,0,90,91,3,24,12,0,91,92,5,3,0,0,92,93,3,22,11,0,93,95,
-  	1,0,0,0,94,80,1,0,0,0,94,88,1,0,0,0,95,15,1,0,0,0,96,97,5,10,0,0,97,98,
-  	5,2,0,0,98,99,3,24,12,0,99,100,5,3,0,0,100,101,3,22,11,0,101,17,1,0,0,
-  	0,102,103,5,11,0,0,103,104,3,24,12,0,104,19,1,0,0,0,105,106,3,36,18,0,
-  	106,107,5,12,0,0,107,108,3,24,12,0,108,21,1,0,0,0,109,113,5,2,0,0,110,
-  	112,3,10,5,0,111,110,1,0,0,0,112,115,1,0,0,0,113,111,1,0,0,0,113,114,
-  	1,0,0,0,114,116,1,0,0,0,115,113,1,0,0,0,116,117,5,3,0,0,117,23,1,0,0,
-  	0,118,123,3,26,13,0,119,120,5,13,0,0,120,122,3,26,13,0,121,119,1,0,0,
-  	0,122,125,1,0,0,0,123,121,1,0,0,0,123,124,1,0,0,0,124,25,1,0,0,0,125,
-  	123,1,0,0,0,126,131,3,28,14,0,127,128,5,14,0,0,128,130,3,28,14,0,129,
-  	127,1,0,0,0,130,133,1,0,0,0,131,129,1,0,0,0,131,132,1,0,0,0,132,27,1,
-  	0,0,0,133,131,1,0,0,0,134,139,3,30,15,0,135,136,5,15,0,0,136,138,3,30,
-  	15,0,137,135,1,0,0,0,138,141,1,0,0,0,139,137,1,0,0,0,139,140,1,0,0,0,
-  	140,151,1,0,0,0,141,139,1,0,0,0,142,147,3,30,15,0,143,144,5,16,0,0,144,
-  	146,3,30,15,0,145,143,1,0,0,0,146,149,1,0,0,0,147,145,1,0,0,0,147,148,
-  	1,0,0,0,148,151,1,0,0,0,149,147,1,0,0,0,150,134,1,0,0,0,150,142,1,0,0,
-  	0,151,29,1,0,0,0,152,157,3,32,16,0,153,154,5,17,0,0,154,156,3,32,16,0,
-  	155,153,1,0,0,0,156,159,1,0,0,0,157,155,1,0,0,0,157,158,1,0,0,0,158,169,
-  	1,0,0,0,159,157,1,0,0,0,160,165,3,32,16,0,161,162,5,18,0,0,162,164,3,
-  	32,16,0,163,161,1,0,0,0,164,167,1,0,0,0,165,163,1,0,0,0,165,166,1,0,0,
-  	0,166,169,1,0,0,0,167,165,1,0,0,0,168,152,1,0,0,0,168,160,1,0,0,0,169,
-  	31,1,0,0,0,170,171,5,2,0,0,171,172,3,24,12,0,172,173,5,3,0,0,173,182,
-  	1,0,0,0,174,175,3,36,18,0,175,176,5,2,0,0,176,177,3,24,12,0,177,178,5,
-  	3,0,0,178,182,1,0,0,0,179,182,3,36,18,0,180,182,3,34,17,0,181,170,1,0,
-  	0,0,181,174,1,0,0,0,181,179,1,0,0,0,181,180,1,0,0,0,182,33,1,0,0,0,183,
-  	184,7,0,0,0,184,35,1,0,0,0,185,186,5,24,0,0,186,37,1,0,0,0,15,41,58,65,
-  	76,94,113,123,131,139,147,150,157,165,168,181
+  	14,2,15,7,15,2,16,7,16,2,17,7,17,1,0,4,0,38,8,0,11,0,12,0,39,1,0,1,0,
+  	1,1,1,1,1,1,1,2,1,2,1,2,1,2,3,2,51,8,2,1,2,1,2,1,3,1,3,1,3,5,3,58,8,3,
+  	10,3,12,3,61,9,3,1,4,1,4,5,4,65,8,4,10,4,12,4,68,9,4,1,4,1,4,1,5,1,5,
+  	1,5,1,5,1,5,1,5,3,5,78,8,5,1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,7,1,
+  	7,1,7,1,7,1,7,1,7,1,7,3,7,96,8,7,1,8,1,8,1,8,1,8,1,8,1,8,1,9,1,9,1,9,
+  	1,10,1,10,1,10,1,10,1,11,1,11,5,11,113,8,11,10,11,12,11,116,9,11,1,11,
+  	1,11,1,12,1,12,1,12,5,12,123,8,12,10,12,12,12,126,9,12,1,13,1,13,1,13,
+  	5,13,131,8,13,10,13,12,13,134,9,13,1,14,1,14,1,14,5,14,139,8,14,10,14,
+  	12,14,142,9,14,1,14,1,14,1,14,5,14,147,8,14,10,14,12,14,150,9,14,3,14,
+  	152,8,14,1,15,1,15,1,15,5,15,157,8,15,10,15,12,15,160,9,15,1,15,1,15,
+  	1,15,5,15,165,8,15,10,15,12,15,168,9,15,3,15,170,8,15,1,16,1,16,1,16,
+  	1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,3,16,183,8,16,1,17,1,17,1,17,
+  	0,0,18,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,0,1,1,0,20,24,
+  	190,0,37,1,0,0,0,2,43,1,0,0,0,4,46,1,0,0,0,6,54,1,0,0,0,8,62,1,0,0,0,
+  	10,77,1,0,0,0,12,79,1,0,0,0,14,95,1,0,0,0,16,97,1,0,0,0,18,103,1,0,0,
+  	0,20,106,1,0,0,0,22,110,1,0,0,0,24,119,1,0,0,0,26,127,1,0,0,0,28,151,
+  	1,0,0,0,30,169,1,0,0,0,32,182,1,0,0,0,34,184,1,0,0,0,36,38,3,2,1,0,37,
+  	36,1,0,0,0,38,39,1,0,0,0,39,37,1,0,0,0,39,40,1,0,0,0,40,41,1,0,0,0,41,
+  	42,5,0,0,1,42,1,1,0,0,0,43,44,3,4,2,0,44,45,3,8,4,0,45,3,1,0,0,0,46,47,
+  	5,1,0,0,47,48,5,2,0,0,48,50,5,3,0,0,49,51,3,6,3,0,50,49,1,0,0,0,50,51,
+  	1,0,0,0,51,52,1,0,0,0,52,53,5,4,0,0,53,5,1,0,0,0,54,59,5,2,0,0,55,56,
+  	5,5,0,0,56,58,5,2,0,0,57,55,1,0,0,0,58,61,1,0,0,0,59,57,1,0,0,0,59,60,
+  	1,0,0,0,60,7,1,0,0,0,61,59,1,0,0,0,62,66,5,6,0,0,63,65,3,10,5,0,64,63,
+  	1,0,0,0,65,68,1,0,0,0,66,64,1,0,0,0,66,67,1,0,0,0,67,69,1,0,0,0,68,66,
+  	1,0,0,0,69,70,5,7,0,0,70,9,1,0,0,0,71,78,3,12,6,0,72,78,3,14,7,0,73,78,
+  	3,16,8,0,74,78,3,18,9,0,75,78,3,20,10,0,76,78,5,8,0,0,77,71,1,0,0,0,77,
+  	72,1,0,0,0,77,73,1,0,0,0,77,74,1,0,0,0,77,75,1,0,0,0,77,76,1,0,0,0,78,
+  	11,1,0,0,0,79,80,3,24,12,0,80,13,1,0,0,0,81,82,5,9,0,0,82,83,5,3,0,0,
+  	83,84,3,24,12,0,84,85,5,4,0,0,85,86,3,22,11,0,86,87,5,10,0,0,87,88,3,
+  	22,11,0,88,96,1,0,0,0,89,90,5,9,0,0,90,91,5,3,0,0,91,92,3,24,12,0,92,
+  	93,5,4,0,0,93,94,3,22,11,0,94,96,1,0,0,0,95,81,1,0,0,0,95,89,1,0,0,0,
+  	96,15,1,0,0,0,97,98,5,11,0,0,98,99,5,3,0,0,99,100,3,24,12,0,100,101,5,
+  	4,0,0,101,102,3,22,11,0,102,17,1,0,0,0,103,104,5,12,0,0,104,105,3,24,
+  	12,0,105,19,1,0,0,0,106,107,5,2,0,0,107,108,5,13,0,0,108,109,3,24,12,
+  	0,109,21,1,0,0,0,110,114,5,3,0,0,111,113,3,10,5,0,112,111,1,0,0,0,113,
+  	116,1,0,0,0,114,112,1,0,0,0,114,115,1,0,0,0,115,117,1,0,0,0,116,114,1,
+  	0,0,0,117,118,5,4,0,0,118,23,1,0,0,0,119,124,3,26,13,0,120,121,5,14,0,
+  	0,121,123,3,26,13,0,122,120,1,0,0,0,123,126,1,0,0,0,124,122,1,0,0,0,124,
+  	125,1,0,0,0,125,25,1,0,0,0,126,124,1,0,0,0,127,132,3,28,14,0,128,129,
+  	5,15,0,0,129,131,3,28,14,0,130,128,1,0,0,0,131,134,1,0,0,0,132,130,1,
+  	0,0,0,132,133,1,0,0,0,133,27,1,0,0,0,134,132,1,0,0,0,135,140,3,30,15,
+  	0,136,137,5,16,0,0,137,139,3,30,15,0,138,136,1,0,0,0,139,142,1,0,0,0,
+  	140,138,1,0,0,0,140,141,1,0,0,0,141,152,1,0,0,0,142,140,1,0,0,0,143,148,
+  	3,30,15,0,144,145,5,17,0,0,145,147,3,30,15,0,146,144,1,0,0,0,147,150,
+  	1,0,0,0,148,146,1,0,0,0,148,149,1,0,0,0,149,152,1,0,0,0,150,148,1,0,0,
+  	0,151,135,1,0,0,0,151,143,1,0,0,0,152,29,1,0,0,0,153,158,3,32,16,0,154,
+  	155,5,18,0,0,155,157,3,32,16,0,156,154,1,0,0,0,157,160,1,0,0,0,158,156,
+  	1,0,0,0,158,159,1,0,0,0,159,170,1,0,0,0,160,158,1,0,0,0,161,166,3,32,
+  	16,0,162,163,5,19,0,0,163,165,3,32,16,0,164,162,1,0,0,0,165,168,1,0,0,
+  	0,166,164,1,0,0,0,166,167,1,0,0,0,167,170,1,0,0,0,168,166,1,0,0,0,169,
+  	153,1,0,0,0,169,161,1,0,0,0,170,31,1,0,0,0,171,172,5,3,0,0,172,173,3,
+  	24,12,0,173,174,5,4,0,0,174,183,1,0,0,0,175,176,5,2,0,0,176,177,5,3,0,
+  	0,177,178,3,24,12,0,178,179,5,4,0,0,179,183,1,0,0,0,180,183,5,2,0,0,181,
+  	183,3,34,17,0,182,171,1,0,0,0,182,175,1,0,0,0,182,180,1,0,0,0,182,181,
+  	1,0,0,0,183,33,1,0,0,0,184,185,7,0,0,0,185,35,1,0,0,0,16,39,50,59,66,
+  	77,95,114,124,132,140,148,151,158,166,169,182
   };
   staticData->serializedATN = antlr4::atn::SerializedATNView(serializedATNSegment, sizeof(serializedATNSegment) / sizeof(serializedATNSegment[0]));
 
@@ -223,17 +223,17 @@ SynthtaxParser::ProgContext* SynthtaxParser::prog() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(39); 
+    setState(37); 
     _errHandler->sync(this);
     _la = _input->LA(1);
     do {
-      setState(38);
+      setState(36);
       function();
-      setState(41); 
+      setState(39); 
       _errHandler->sync(this);
       _la = _input->LA(1);
     } while (_la == SynthtaxParser::DEF);
-    setState(43);
+    setState(41);
     match(SynthtaxParser::EOF);
    
   }
@@ -298,9 +298,9 @@ SynthtaxParser::FunctionContext* SynthtaxParser::function() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(45);
+    setState(43);
     funcDeclaration();
-    setState(46);
+    setState(44);
     funcBody();
    
   }
@@ -323,8 +323,8 @@ tree::TerminalNode* SynthtaxParser::FuncDeclarationContext::DEF() {
   return getToken(SynthtaxParser::DEF, 0);
 }
 
-SynthtaxParser::IdentifierContext* SynthtaxParser::FuncDeclarationContext::identifier() {
-  return getRuleContext<SynthtaxParser::IdentifierContext>(0);
+tree::TerminalNode* SynthtaxParser::FuncDeclarationContext::ID() {
+  return getToken(SynthtaxParser::ID, 0);
 }
 
 tree::TerminalNode* SynthtaxParser::FuncDeclarationContext::OPENPAREN() {
@@ -333,6 +333,10 @@ tree::TerminalNode* SynthtaxParser::FuncDeclarationContext::OPENPAREN() {
 
 tree::TerminalNode* SynthtaxParser::FuncDeclarationContext::CLOSEPAREN() {
   return getToken(SynthtaxParser::CLOSEPAREN, 0);
+}
+
+SynthtaxParser::FormalParametersContext* SynthtaxParser::FuncDeclarationContext::formalParameters() {
+  return getRuleContext<SynthtaxParser::FormalParametersContext>(0);
 }
 
 
@@ -363,6 +367,7 @@ std::any SynthtaxParser::FuncDeclarationContext::accept(tree::ParseTreeVisitor *
 SynthtaxParser::FuncDeclarationContext* SynthtaxParser::funcDeclaration() {
   FuncDeclarationContext *_localctx = _tracker.createInstance<FuncDeclarationContext>(_ctx, getState());
   enterRule(_localctx, 4, SynthtaxParser::RuleFuncDeclaration);
+  size_t _la = 0;
 
 #if __cplusplus > 201703L
   auto onExit = finally([=, this] {
@@ -373,13 +378,21 @@ SynthtaxParser::FuncDeclarationContext* SynthtaxParser::funcDeclaration() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(48);
+    setState(46);
     match(SynthtaxParser::DEF);
-    setState(49);
-    identifier();
-    setState(50);
+    setState(47);
+    match(SynthtaxParser::ID);
+    setState(48);
     match(SynthtaxParser::OPENPAREN);
-    setState(51);
+    setState(50);
+    _errHandler->sync(this);
+
+    _la = _input->LA(1);
+    if (_la == SynthtaxParser::ID) {
+      setState(49);
+      formalParameters();
+    }
+    setState(52);
     match(SynthtaxParser::CLOSEPAREN);
    
   }
@@ -398,12 +411,12 @@ SynthtaxParser::FormalParametersContext::FormalParametersContext(ParserRuleConte
   : ParserRuleContext(parent, invokingState) {
 }
 
-std::vector<SynthtaxParser::IdentifierContext *> SynthtaxParser::FormalParametersContext::identifier() {
-  return getRuleContexts<SynthtaxParser::IdentifierContext>();
+std::vector<tree::TerminalNode *> SynthtaxParser::FormalParametersContext::ID() {
+  return getTokens(SynthtaxParser::ID);
 }
 
-SynthtaxParser::IdentifierContext* SynthtaxParser::FormalParametersContext::identifier(size_t i) {
-  return getRuleContext<SynthtaxParser::IdentifierContext>(i);
+tree::TerminalNode* SynthtaxParser::FormalParametersContext::ID(size_t i) {
+  return getToken(SynthtaxParser::ID, i);
 }
 
 std::vector<tree::TerminalNode *> SynthtaxParser::FormalParametersContext::COMMA() {
@@ -453,17 +466,17 @@ SynthtaxParser::FormalParametersContext* SynthtaxParser::formalParameters() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(53);
-    identifier();
-    setState(58);
+    setState(54);
+    match(SynthtaxParser::ID);
+    setState(59);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == SynthtaxParser::COMMA) {
-      setState(54);
-      match(SynthtaxParser::COMMA);
       setState(55);
-      identifier();
-      setState(60);
+      match(SynthtaxParser::COMMA);
+      setState(56);
+      match(SynthtaxParser::ID);
+      setState(61);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -539,20 +552,20 @@ SynthtaxParser::FuncBodyContext* SynthtaxParser::funcBody() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(61);
+    setState(62);
     match(SynthtaxParser::OPENBRACKET);
-    setState(65);
+    setState(66);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 33033604) != 0)) {
-      setState(62);
+      ((1ULL << _la) & 32512780) != 0)) {
+      setState(63);
       statement();
-      setState(67);
+      setState(68);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(68);
+    setState(69);
     match(SynthtaxParser::CLOSEBRACKET);
    
   }
@@ -632,47 +645,47 @@ SynthtaxParser::StatementContext* SynthtaxParser::statement() {
     exitRule();
   });
   try {
-    setState(76);
+    setState(77);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 3, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 4, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(70);
+      setState(71);
       expressionStatement();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(71);
+      setState(72);
       ifStatement();
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(72);
+      setState(73);
       whileStatement();
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(73);
+      setState(74);
       returnStatement();
       break;
     }
 
     case 5: {
       enterOuterAlt(_localctx, 5);
-      setState(74);
+      setState(75);
       assignmentStatement();
       break;
     }
 
     case 6: {
       enterOuterAlt(_localctx, 6);
-      setState(75);
+      setState(76);
       match(SynthtaxParser::SEMICOLON);
       break;
     }
@@ -739,7 +752,7 @@ SynthtaxParser::ExpressionStatementContext* SynthtaxParser::expressionStatement(
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(78);
+    setState(79);
     expression();
    
   }
@@ -823,39 +836,39 @@ SynthtaxParser::IfStatementContext* SynthtaxParser::ifStatement() {
     exitRule();
   });
   try {
-    setState(94);
+    setState(95);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 4, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 5, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(80);
-      match(SynthtaxParser::IF);
       setState(81);
-      match(SynthtaxParser::OPENPAREN);
+      match(SynthtaxParser::IF);
       setState(82);
-      expression();
+      match(SynthtaxParser::OPENPAREN);
       setState(83);
-      match(SynthtaxParser::CLOSEPAREN);
+      expression();
       setState(84);
-      block();
+      match(SynthtaxParser::CLOSEPAREN);
       setState(85);
-      match(SynthtaxParser::ELSE);
+      block();
       setState(86);
+      match(SynthtaxParser::ELSE);
+      setState(87);
       block();
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(88);
-      match(SynthtaxParser::IF);
       setState(89);
-      match(SynthtaxParser::OPENPAREN);
+      match(SynthtaxParser::IF);
       setState(90);
-      expression();
+      match(SynthtaxParser::OPENPAREN);
       setState(91);
-      match(SynthtaxParser::CLOSEPAREN);
+      expression();
       setState(92);
+      match(SynthtaxParser::CLOSEPAREN);
+      setState(93);
       block();
       break;
     }
@@ -938,15 +951,15 @@ SynthtaxParser::WhileStatementContext* SynthtaxParser::whileStatement() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(96);
-    match(SynthtaxParser::WHILE);
     setState(97);
-    match(SynthtaxParser::OPENPAREN);
+    match(SynthtaxParser::WHILE);
     setState(98);
-    expression();
+    match(SynthtaxParser::OPENPAREN);
     setState(99);
-    match(SynthtaxParser::CLOSEPAREN);
+    expression();
     setState(100);
+    match(SynthtaxParser::CLOSEPAREN);
+    setState(101);
     block();
    
   }
@@ -1011,9 +1024,9 @@ SynthtaxParser::ReturnStatementContext* SynthtaxParser::returnStatement() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(102);
-    match(SynthtaxParser::RETURN);
     setState(103);
+    match(SynthtaxParser::RETURN);
+    setState(104);
     expression();
    
   }
@@ -1032,8 +1045,8 @@ SynthtaxParser::AssignmentStatementContext::AssignmentStatementContext(ParserRul
   : ParserRuleContext(parent, invokingState) {
 }
 
-SynthtaxParser::IdentifierContext* SynthtaxParser::AssignmentStatementContext::identifier() {
-  return getRuleContext<SynthtaxParser::IdentifierContext>(0);
+tree::TerminalNode* SynthtaxParser::AssignmentStatementContext::ID() {
+  return getToken(SynthtaxParser::ID, 0);
 }
 
 tree::TerminalNode* SynthtaxParser::AssignmentStatementContext::ASSIGN() {
@@ -1082,11 +1095,11 @@ SynthtaxParser::AssignmentStatementContext* SynthtaxParser::assignmentStatement(
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(105);
-    identifier();
     setState(106);
-    match(SynthtaxParser::ASSIGN);
+    match(SynthtaxParser::ID);
     setState(107);
+    match(SynthtaxParser::ASSIGN);
+    setState(108);
     expression();
    
   }
@@ -1160,20 +1173,20 @@ SynthtaxParser::BlockContext* SynthtaxParser::block() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(109);
+    setState(110);
     match(SynthtaxParser::OPENPAREN);
-    setState(113);
+    setState(114);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while ((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 33033604) != 0)) {
-      setState(110);
+      ((1ULL << _la) & 32512780) != 0)) {
+      setState(111);
       statement();
-      setState(115);
+      setState(116);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
-    setState(116);
+    setState(117);
     match(SynthtaxParser::CLOSEPAREN);
    
   }
@@ -1247,17 +1260,17 @@ SynthtaxParser::ExpressionContext* SynthtaxParser::expression() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(118);
+    setState(119);
     lessExpression();
-    setState(123);
+    setState(124);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == SynthtaxParser::EQUALITY) {
-      setState(119);
-      match(SynthtaxParser::EQUALITY);
       setState(120);
+      match(SynthtaxParser::EQUALITY);
+      setState(121);
       lessExpression();
-      setState(125);
+      setState(126);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1333,17 +1346,17 @@ SynthtaxParser::LessExpressionContext* SynthtaxParser::lessExpression() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(126);
+    setState(127);
     addSubExpression();
-    setState(131);
+    setState(132);
     _errHandler->sync(this);
     _la = _input->LA(1);
     while (_la == SynthtaxParser::LESS) {
-      setState(127);
-      match(SynthtaxParser::LESS);
       setState(128);
+      match(SynthtaxParser::LESS);
+      setState(129);
       addSubExpression();
-      setState(133);
+      setState(134);
       _errHandler->sync(this);
       _la = _input->LA(1);
     }
@@ -1426,22 +1439,22 @@ SynthtaxParser::AddSubExpressionContext* SynthtaxParser::addSubExpression() {
     exitRule();
   });
   try {
-    setState(150);
+    setState(151);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 10, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 11, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(134);
+      setState(135);
       mulDivExpression();
-      setState(139);
+      setState(140);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == SynthtaxParser::ADD) {
-        setState(135);
-        match(SynthtaxParser::ADD);
         setState(136);
+        match(SynthtaxParser::ADD);
+        setState(137);
         mulDivExpression();
-        setState(141);
+        setState(142);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
@@ -1450,17 +1463,17 @@ SynthtaxParser::AddSubExpressionContext* SynthtaxParser::addSubExpression() {
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(142);
+      setState(143);
       mulDivExpression();
-      setState(147);
+      setState(148);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == SynthtaxParser::SUB) {
-        setState(143);
-        match(SynthtaxParser::SUB);
         setState(144);
+        match(SynthtaxParser::SUB);
+        setState(145);
         mulDivExpression();
-        setState(149);
+        setState(150);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
@@ -1549,22 +1562,22 @@ SynthtaxParser::MulDivExpressionContext* SynthtaxParser::mulDivExpression() {
     exitRule();
   });
   try {
-    setState(168);
+    setState(169);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 13, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 14, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(152);
+      setState(153);
       atom();
-      setState(157);
+      setState(158);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == SynthtaxParser::MUL) {
-        setState(153);
-        match(SynthtaxParser::MUL);
         setState(154);
+        match(SynthtaxParser::MUL);
+        setState(155);
         atom();
-        setState(159);
+        setState(160);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
@@ -1573,17 +1586,17 @@ SynthtaxParser::MulDivExpressionContext* SynthtaxParser::mulDivExpression() {
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(160);
+      setState(161);
       atom();
-      setState(165);
+      setState(166);
       _errHandler->sync(this);
       _la = _input->LA(1);
       while (_la == SynthtaxParser::DIV) {
-        setState(161);
-        match(SynthtaxParser::DIV);
         setState(162);
+        match(SynthtaxParser::DIV);
+        setState(163);
         atom();
-        setState(167);
+        setState(168);
         _errHandler->sync(this);
         _la = _input->LA(1);
       }
@@ -1622,8 +1635,8 @@ tree::TerminalNode* SynthtaxParser::AtomContext::CLOSEPAREN() {
   return getToken(SynthtaxParser::CLOSEPAREN, 0);
 }
 
-SynthtaxParser::IdentifierContext* SynthtaxParser::AtomContext::identifier() {
-  return getRuleContext<SynthtaxParser::IdentifierContext>(0);
+tree::TerminalNode* SynthtaxParser::AtomContext::ID() {
+  return getToken(SynthtaxParser::ID, 0);
 }
 
 SynthtaxParser::LiteralContext* SynthtaxParser::AtomContext::literal() {
@@ -1667,43 +1680,43 @@ SynthtaxParser::AtomContext* SynthtaxParser::atom() {
     exitRule();
   });
   try {
-    setState(181);
+    setState(182);
     _errHandler->sync(this);
-    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 14, _ctx)) {
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 15, _ctx)) {
     case 1: {
       enterOuterAlt(_localctx, 1);
-      setState(170);
-      match(SynthtaxParser::OPENPAREN);
       setState(171);
-      expression();
+      match(SynthtaxParser::OPENPAREN);
       setState(172);
+      expression();
+      setState(173);
       match(SynthtaxParser::CLOSEPAREN);
       break;
     }
 
     case 2: {
       enterOuterAlt(_localctx, 2);
-      setState(174);
-      identifier();
       setState(175);
-      match(SynthtaxParser::OPENPAREN);
+      match(SynthtaxParser::ID);
       setState(176);
-      expression();
+      match(SynthtaxParser::OPENPAREN);
       setState(177);
+      expression();
+      setState(178);
       match(SynthtaxParser::CLOSEPAREN);
       break;
     }
 
     case 3: {
       enterOuterAlt(_localctx, 3);
-      setState(179);
-      identifier();
+      setState(180);
+      match(SynthtaxParser::ID);
       break;
     }
 
     case 4: {
       enterOuterAlt(_localctx, 4);
-      setState(180);
+      setState(181);
       literal();
       break;
     }
@@ -1787,77 +1800,16 @@ SynthtaxParser::LiteralContext* SynthtaxParser::literal() {
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(183);
+    setState(184);
     _la = _input->LA(1);
     if (!((((_la & ~ 0x3fULL) == 0) &&
-      ((1ULL << _la) & 16252928) != 0))) {
+      ((1ULL << _la) & 32505856) != 0))) {
     _errHandler->recoverInline(this);
     }
     else {
       _errHandler->reportMatch(this);
       consume();
     }
-   
-  }
-  catch (RecognitionException &e) {
-    _errHandler->reportError(this, e);
-    _localctx->exception = std::current_exception();
-    _errHandler->recover(this, _localctx->exception);
-  }
-
-  return _localctx;
-}
-
-//----------------- IdentifierContext ------------------------------------------------------------------
-
-SynthtaxParser::IdentifierContext::IdentifierContext(ParserRuleContext *parent, size_t invokingState)
-  : ParserRuleContext(parent, invokingState) {
-}
-
-tree::TerminalNode* SynthtaxParser::IdentifierContext::ID() {
-  return getToken(SynthtaxParser::ID, 0);
-}
-
-
-size_t SynthtaxParser::IdentifierContext::getRuleIndex() const {
-  return SynthtaxParser::RuleIdentifier;
-}
-
-void SynthtaxParser::IdentifierContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterIdentifier(this);
-}
-
-void SynthtaxParser::IdentifierContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitIdentifier(this);
-}
-
-
-std::any SynthtaxParser::IdentifierContext::accept(tree::ParseTreeVisitor *visitor) {
-  if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
-    return parserVisitor->visitIdentifier(this);
-  else
-    return visitor->visitChildren(this);
-}
-
-SynthtaxParser::IdentifierContext* SynthtaxParser::identifier() {
-  IdentifierContext *_localctx = _tracker.createInstance<IdentifierContext>(_ctx, getState());
-  enterRule(_localctx, 36, SynthtaxParser::RuleIdentifier);
-
-#if __cplusplus > 201703L
-  auto onExit = finally([=, this] {
-#else
-  auto onExit = finally([=] {
-#endif
-    exitRule();
-  });
-  try {
-    enterOuterAlt(_localctx, 1);
-    setState(185);
-    match(SynthtaxParser::ID);
    
   }
   catch (RecognitionException &e) {

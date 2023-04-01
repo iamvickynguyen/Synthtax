@@ -56,8 +56,6 @@ public:
 
     virtual std::any visitLiteral(SynthtaxParser::LiteralContext *context) = 0;
 
-    virtual std::any visitIdentifier(SynthtaxParser::IdentifierContext *context) = 0;
-
 
 };
 

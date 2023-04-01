@@ -4,9 +4,9 @@ prog : function+ EOF;
 
 function : funcDeclaration funcBody;
 
-funcDeclaration : DEF identifier OPENPAREN formalParameters? CLOSEPAREN;
+funcDeclaration : DEF ID OPENPAREN formalParameters? CLOSEPAREN;
 
-formalParameters : identifier(COMMA identifier)*;
+formalParameters : ID(COMMA ID)*;
 
 funcBody : OPENBRACKET statement* CLOSEBRACKET;
 
@@ -22,7 +22,7 @@ whileStatement : WHILE OPENPAREN expression CLOSEPAREN block;
 
 returnStatement : RETURN expression;
 
-assignmentStatement : identifier ASSIGN expression;
+assignmentStatement : ID ASSIGN expression;
 
 block : OPENPAREN statement* CLOSEPAREN;
 
@@ -36,8 +36,6 @@ addSubExpression : mulDivExpression(ADD mulDivExpression)* |
 mulDivExpression : atom(MUL atom)* | atom(DIV atom)*;
 
 atom : OPENPAREN expression CLOSEPAREN |
-       identifier OPENPAREN expression CLOSEPAREN | identifier | literal;
+       ID OPENPAREN expression CLOSEPAREN | ID | literal;
 
 literal : STRING | INT | FLOAT | CHAR | BOOL;
-
-identifier : ID;

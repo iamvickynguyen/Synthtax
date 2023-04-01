@@ -70,9 +70,6 @@ public:
   virtual void enterLiteral(SynthtaxParser::LiteralContext *ctx) = 0;
   virtual void exitLiteral(SynthtaxParser::LiteralContext *ctx) = 0;
 
-  virtual void enterIdentifier(SynthtaxParser::IdentifierContext *ctx) = 0;
-  virtual void exitIdentifier(SynthtaxParser::IdentifierContext *ctx) = 0;
-
 
 };
 

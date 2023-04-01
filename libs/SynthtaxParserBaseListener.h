@@ -72,9 +72,6 @@ public:
   virtual void enterLiteral(SynthtaxParser::LiteralContext * /*ctx*/) override { }
   virtual void exitLiteral(SynthtaxParser::LiteralContext * /*ctx*/) override { }
 
-  virtual void enterIdentifier(SynthtaxParser::IdentifierContext * /*ctx*/) override { }
-  virtual void exitIdentifier(SynthtaxParser::IdentifierContext * /*ctx*/) override { }
-
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
   virtual void exitEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

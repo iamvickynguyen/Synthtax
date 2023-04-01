@@ -13,10 +13,10 @@ namespace synthtax_antlr {
 class  SynthtaxParser : public antlr4::Parser {
 public:
   enum {
-    DEF = 1, OPENPAREN = 2, CLOSEPAREN = 3, COMMA = 4, OPENBRACKET = 5, 
-    CLOSEBRACKET = 6, SEMICOLON = 7, IF = 8, ELSE = 9, WHILE = 10, RETURN = 11, 
-    ASSIGN = 12, EQUALITY = 13, LESS = 14, ADD = 15, SUB = 16, MUL = 17, 
-    DIV = 18, STRING = 19, INT = 20, FLOAT = 21, CHAR = 22, BOOL = 23, ID = 24
+    DEF = 1, ID = 2, OPENPAREN = 3, CLOSEPAREN = 4, COMMA = 5, OPENBRACKET = 6, 
+    CLOSEBRACKET = 7, SEMICOLON = 8, IF = 9, ELSE = 10, WHILE = 11, RETURN = 12, 
+    ASSIGN = 13, EQUALITY = 14, LESS = 15, ADD = 16, SUB = 17, MUL = 18, 
+    DIV = 19, STRING = 20, INT = 21, FLOAT = 22, CHAR = 23, BOOL = 24
   };
 
   enum {
@@ -24,7 +24,7 @@ public:
     RuleFuncBody = 4, RuleStatement = 5, RuleExpressionStatement = 6, RuleIfStatement = 7, 
     RuleWhileStatement = 8, RuleReturnStatement = 9, RuleAssignmentStatement = 10, 
     RuleBlock = 11, RuleExpression = 12, RuleLessExpression = 13, RuleAddSubExpression = 14, 
-    RuleMulDivExpression = 15, RuleAtom = 16, RuleLiteral = 17, RuleIdentifier = 18
+    RuleMulDivExpression = 15, RuleAtom = 16, RuleLiteral = 17
   };
 
   explicit SynthtaxParser(antlr4::TokenStream *input);
@@ -61,8 +61,7 @@ public:
   class AddSubExpressionContext;
   class MulDivExpressionContext;
   class AtomContext;
-  class LiteralContext;
-  class IdentifierContext; 
+  class LiteralContext; 
 
   class  ProgContext : public antlr4::ParserRuleContext {
   public:
@@ -102,9 +101,10 @@ public:
     FuncDeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *DEF();
-    IdentifierContext *identifier();
+    antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *OPENPAREN();
     antlr4::tree::TerminalNode *CLOSEPAREN();
+    FormalParametersContext *formalParameters();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -119,8 +119,8 @@ public:
   public:
     FormalParametersContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    std::vector<IdentifierContext *> identifier();
-    IdentifierContext* identifier(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> ID();
+    antlr4::tree::TerminalNode* ID(size_t i);
     std::vector<antlr4::tree::TerminalNode *> COMMA();
     antlr4::tree::TerminalNode* COMMA(size_t i);
 
@@ -246,7 +246,7 @@ public:
   public:
     AssignmentStatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    IdentifierContext *identifier();
+    antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *ASSIGN();
     ExpressionContext *expression();
 
@@ -360,7 +360,7 @@ public:
     antlr4::tree::TerminalNode *OPENPAREN();
     ExpressionContext *expression();
     antlr4::tree::TerminalNode *CLOSEPAREN();
-    IdentifierContext *identifier();
+    antlr4::tree::TerminalNode *ID();
     LiteralContext *literal();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -390,21 +390,6 @@ public:
   };
 
   LiteralContext* literal();
-
-  class  IdentifierContext : public antlr4::ParserRuleContext {
-  public:
-    IdentifierContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *ID();
-
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-
-    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  IdentifierContext* identifier();
 
 
   // By default the static state used to implement the parser is lazily initialized during the first
