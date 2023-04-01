@@ -13,10 +13,10 @@ namespace synthtax_antlr {
 class  SynthtaxParser : public antlr4::Parser {
 public:
   enum {
-    OPENPAREN = 1, CLOSEPAREN = 2, COMMA = 3, OPENBRACKET = 4, CLOSEBRACKET = 5, 
-    SEMICOLON = 6, IF = 7, ELSE = 8, WHILE = 9, RETURN = 10, ASSIGN = 11, 
-    EQUALITY = 12, LESS = 13, ADD = 14, SUB = 15, MUL = 16, DIV = 17, STRING = 18, 
-    INT = 19, FLOAT = 20, CHAR = 21, BOOL = 22, ID = 23
+    DEF = 1, OPENPAREN = 2, CLOSEPAREN = 3, COMMA = 4, OPENBRACKET = 5, 
+    CLOSEBRACKET = 6, SEMICOLON = 7, IF = 8, ELSE = 9, WHILE = 10, RETURN = 11, 
+    ASSIGN = 12, EQUALITY = 13, LESS = 14, ADD = 15, SUB = 16, MUL = 17, 
+    DIV = 18, STRING = 19, INT = 20, FLOAT = 21, CHAR = 22, BOOL = 23, ID = 24
   };
 
   enum {
@@ -101,10 +101,10 @@ public:
   public:
     FuncDeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *DEF();
     IdentifierContext *identifier();
     antlr4::tree::TerminalNode *OPENPAREN();
     antlr4::tree::TerminalNode *CLOSEPAREN();
-    FormalParametersContext *formalParameters();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;

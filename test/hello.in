@@ -1,4 +1,4 @@
-main() {
+fun main() {
   a = 2;
   b = 'b';
   /* block comment

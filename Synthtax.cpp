@@ -8,7 +8,7 @@ using namespace antlr4;
 
 int main(int argc, const char *argv[]) {
   std::ifstream stream;
-  stream.open("../test/hello.in");
+  stream.open("../test/mini.in");
 
   ANTLRInputStream input(stream);
   synthtax_antlr::SynthtaxLexer lexer(&input);

@@ -4,7 +4,7 @@ prog : function+ EOF;
 
 function : funcDeclaration funcBody;
 
-funcDeclaration : identifier OPENPAREN formalParameters? CLOSEPAREN;
+funcDeclaration : DEF identifier OPENPAREN formalParameters? CLOSEPAREN;
 
 formalParameters : identifier(COMMA identifier)*;
 
