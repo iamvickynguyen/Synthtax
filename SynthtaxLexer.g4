@@ -2,8 +2,6 @@ lexer grammar SynthtaxLexer;
 
 DEF : 'fun';
 
-ID : [a-zA-Z_][a-zA-Z_0-9]+ ;
-
 IF : 'if';
 
 ELSE : 'else';
@@ -11,14 +9,6 @@ ELSE : 'else';
 WHILE : 'while';
 
 RETURN : 'return';
-
-STRING : '"' [a-zA-Z_0-9 ]* '"'; // no new line
-
-INT : [0-9]+; // can have leading 0s
-
-FLOAT : [0-9]+ '.' [0-9]+;
-
-CHAR : '\'' [a-zA-Z_ ] '\'';
 
 BOOL : 'true' | 'false';
 
@@ -47,6 +37,16 @@ SUB : '-';
 MUL : '*';
 
 DIV : '/';
+
+STRING : '"' [a-zA-Z_0-9]* '"'; // no new line
+
+INT : [0-9]+; // can have leading 0s
+
+FLOAT : [0-9]+ '.' [0-9]+;
+
+CHAR : '\'' [a-zA-Z_] '\'';
+
+ID : [a-zA-Z_]+ ;
 
 NEWLINE: ('\r' '\n'? | '\n') -> skip;
 

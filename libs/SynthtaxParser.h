@@ -13,11 +13,11 @@ namespace synthtax_antlr {
 class  SynthtaxParser : public antlr4::Parser {
 public:
   enum {
-    DEF = 1, ID = 2, IF = 3, ELSE = 4, WHILE = 5, RETURN = 6, STRING = 7, 
-    INT = 8, FLOAT = 9, CHAR = 10, BOOL = 11, COMMA = 12, SEMICOLON = 13, 
-    OPENPAREN = 14, CLOSEPAREN = 15, OPENBRACKET = 16, CLOSEBRACKET = 17, 
-    ASSIGN = 18, EQUALITY = 19, LESS = 20, ADD = 21, SUB = 22, MUL = 23, 
-    DIV = 24, NEWLINE = 25, WS = 26, BLOCKCOMMENT = 27, LINECOMMENT = 28
+    DEF = 1, IF = 2, ELSE = 3, WHILE = 4, RETURN = 5, BOOL = 6, COMMA = 7, 
+    SEMICOLON = 8, OPENPAREN = 9, CLOSEPAREN = 10, OPENBRACKET = 11, CLOSEBRACKET = 12, 
+    ASSIGN = 13, EQUALITY = 14, LESS = 15, ADD = 16, SUB = 17, MUL = 18, 
+    DIV = 19, STRING = 20, INT = 21, FLOAT = 22, CHAR = 23, ID = 24, NEWLINE = 25, 
+    WS = 26, BLOCKCOMMENT = 27, LINECOMMENT = 28
   };
 
   enum {

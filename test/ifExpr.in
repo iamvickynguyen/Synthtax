@@ -1,9 +1,11 @@
-main() {
-  out = NULL;
-  if (4 % 2 == 0) {
+fun main() {
+	a = 4;
+	b = 0;
+  if (a < b) {
     out = Osc("sine", 440, 1);
+  	play(out, 1000);
   } else {
     out = Osc("triangle", 200, 1);
+  	play(out, 1000);
   }
-  play(out, 1000);
 }

@@ -1,4 +1,4 @@
-main() {
+fun main() {
   s = Osc("sine", 400.5, 1.0);
   play(s, 1000); // 1000ms
 

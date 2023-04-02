@@ -1,3 +1,2 @@
 fun myfunction () {
-	Sine("sine", 2);
 }

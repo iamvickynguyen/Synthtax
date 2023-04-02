@@ -7,8 +7,13 @@
 using namespace antlr4;
 
 int main(int argc, const char *argv[]) {
+	if (argc != 2) {
+		std::cout << "Invalid argument(s)\n";
+		return 0;
+	}
+
   std::ifstream stream;
-  stream.open("../test/mini.in");
+  stream.open(argv[1]);
 
   ANTLRInputStream input(stream);
   synthtax_antlr::SynthtaxLexer lexer(&input);
