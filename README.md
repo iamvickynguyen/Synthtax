@@ -21,7 +21,8 @@ See [Synthtax examples](test/)
 
 1. `./generate.sh` : generate lexer, parser, visitor classes
 2. `cmake -S ./ -B build` : create build
-3. `cd build; make`
+3. `cd build; make` : compile and link
+4. `./synthtax <filename>` : run the file
 
 ## Reference
 
@@ -29,7 +30,7 @@ See [Synthtax examples](test/)
 
 ## TODO
 
-1. Grammmar file (fix bug empty string)
-2. See what ANTLR4 generates for the AST
-3. Write semantic checks
-4. IR or generate a C++ file? because I need `RTAudio` library to play sound
+1. Debug IF
+2. Implement AST. Print C++ syntax
+3. Write functions to generate Osicalltors and play sound with `RTAudio`
+4. Documentation
