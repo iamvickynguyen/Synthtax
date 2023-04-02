@@ -67,6 +67,9 @@ public:
   virtual void enterAtom(SynthtaxParser::AtomContext *ctx) = 0;
   virtual void exitAtom(SynthtaxParser::AtomContext *ctx) = 0;
 
+  virtual void enterExpressionList(SynthtaxParser::ExpressionListContext *ctx) = 0;
+  virtual void exitExpressionList(SynthtaxParser::ExpressionListContext *ctx) = 0;
+
   virtual void enterLiteral(SynthtaxParser::LiteralContext *ctx) = 0;
   virtual void exitLiteral(SynthtaxParser::LiteralContext *ctx) = 0;
 

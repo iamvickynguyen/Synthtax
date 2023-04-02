@@ -69,6 +69,9 @@ public:
   virtual void enterAtom(SynthtaxParser::AtomContext * /*ctx*/) override { }
   virtual void exitAtom(SynthtaxParser::AtomContext * /*ctx*/) override { }
 
+  virtual void enterExpressionList(SynthtaxParser::ExpressionListContext * /*ctx*/) override { }
+  virtual void exitExpressionList(SynthtaxParser::ExpressionListContext * /*ctx*/) override { }
+
   virtual void enterLiteral(SynthtaxParser::LiteralContext * /*ctx*/) override { }
   virtual void exitLiteral(SynthtaxParser::LiteralContext * /*ctx*/) override { }
 

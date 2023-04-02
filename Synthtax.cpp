@@ -6,12 +6,14 @@
 
 using namespace antlr4;
 
+/*
 class MyErrorStrategy : public DefaultErrorStrategy {
 public:
   virtual void reportInputMismatch(Parser *recognizer, const InputMismatchException &e) {
     // Do nothing to ignore input mismatch errors
   }
 };
+*/
 
 int main(int argc, const char *argv[]) {
   std::ifstream stream;
@@ -25,11 +27,15 @@ int main(int argc, const char *argv[]) {
    for (auto token : tokens.getTokens()) {
      std::cout << token->toString() << '\n';
    }
+		
+	lexer.reset();
 
   synthtax_antlr::SynthtaxParser parser(&tokens);
 
+	/*
 	// Use the custom error strategy to ignore input mismatch errors
   parser.setErrorHandler(std::make_shared<MyErrorStrategy>());
+	*/
 
   tree::ParseTree *tree = parser.prog();
   std::cout << tree->toStringTree(&parser) << '\n';

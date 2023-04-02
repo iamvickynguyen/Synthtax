@@ -1,5 +1,7 @@
 parser grammar SynthtaxParser;
 
+options { tokenVocab=SynthtaxLexer; }
+
 prog : function+ EOF;
 
 function : funcDeclaration funcBody;
@@ -35,7 +37,12 @@ addSubExpression : mulDivExpression(ADD mulDivExpression)* |
 
 mulDivExpression : atom(MUL atom)* | atom(DIV atom)*;
 
-atom : OPENPAREN expression CLOSEPAREN |
-       ID OPENPAREN expression CLOSEPAREN | ID | literal;
+atom
+	: OPENPAREN expression CLOSEPAREN
+	| ID OPENPAREN expressionList? CLOSEPAREN // function call
+	| ID
+	| literal;
+
+expressionList : expression (COMMA expression)* ;
 
 literal : STRING | INT | FLOAT | CHAR | BOOL;

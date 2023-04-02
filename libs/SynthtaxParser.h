@@ -13,10 +13,11 @@ namespace synthtax_antlr {
 class  SynthtaxParser : public antlr4::Parser {
 public:
   enum {
-    DEF = 1, ID = 2, OPENPAREN = 3, CLOSEPAREN = 4, COMMA = 5, OPENBRACKET = 6, 
-    CLOSEBRACKET = 7, SEMICOLON = 8, IF = 9, ELSE = 10, WHILE = 11, RETURN = 12, 
-    ASSIGN = 13, EQUALITY = 14, LESS = 15, ADD = 16, SUB = 17, MUL = 18, 
-    DIV = 19, STRING = 20, INT = 21, FLOAT = 22, CHAR = 23, BOOL = 24
+    DEF = 1, ID = 2, IF = 3, ELSE = 4, WHILE = 5, RETURN = 6, STRING = 7, 
+    INT = 8, FLOAT = 9, CHAR = 10, BOOL = 11, COMMA = 12, SEMICOLON = 13, 
+    OPENPAREN = 14, CLOSEPAREN = 15, OPENBRACKET = 16, CLOSEBRACKET = 17, 
+    ASSIGN = 18, EQUALITY = 19, LESS = 20, ADD = 21, SUB = 22, MUL = 23, 
+    DIV = 24, NEWLINE = 25, WS = 26, BLOCKCOMMENT = 27, LINECOMMENT = 28
   };
 
   enum {
@@ -24,7 +25,7 @@ public:
     RuleFuncBody = 4, RuleStatement = 5, RuleExpressionStatement = 6, RuleIfStatement = 7, 
     RuleWhileStatement = 8, RuleReturnStatement = 9, RuleAssignmentStatement = 10, 
     RuleBlock = 11, RuleExpression = 12, RuleLessExpression = 13, RuleAddSubExpression = 14, 
-    RuleMulDivExpression = 15, RuleAtom = 16, RuleLiteral = 17
+    RuleMulDivExpression = 15, RuleAtom = 16, RuleExpressionList = 17, RuleLiteral = 18
   };
 
   explicit SynthtaxParser(antlr4::TokenStream *input);
@@ -61,6 +62,7 @@ public:
   class AddSubExpressionContext;
   class MulDivExpressionContext;
   class AtomContext;
+  class ExpressionListContext;
   class LiteralContext; 
 
   class  ProgContext : public antlr4::ParserRuleContext {
@@ -361,6 +363,7 @@ public:
     ExpressionContext *expression();
     antlr4::tree::TerminalNode *CLOSEPAREN();
     antlr4::tree::TerminalNode *ID();
+    ExpressionListContext *expressionList();
     LiteralContext *literal();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -371,6 +374,24 @@ public:
   };
 
   AtomContext* atom();
+
+  class  ExpressionListContext : public antlr4::ParserRuleContext {
+  public:
+    ExpressionListContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ExpressionContext *> expression();
+    ExpressionContext* expression(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> COMMA();
+    antlr4::tree::TerminalNode* COMMA(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExpressionListContext* expressionList();
 
   class  LiteralContext : public antlr4::ParserRuleContext {
   public:

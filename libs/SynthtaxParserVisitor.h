@@ -54,6 +54,8 @@ public:
 
     virtual std::any visitAtom(SynthtaxParser::AtomContext *context) = 0;
 
+    virtual std::any visitExpressionList(SynthtaxParser::ExpressionListContext *context) = 0;
+
     virtual std::any visitLiteral(SynthtaxParser::LiteralContext *context) = 0;
 
 

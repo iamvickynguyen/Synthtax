@@ -85,6 +85,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) override {
     return visitChildren(ctx);
   }
