@@ -14,7 +14,7 @@ RETURN : 'return';
 
 STRING : '"' [a-zA-Z_0-9 ]* '"'; // no new line
 
-INT : [0-9]+; // can have leading 0s, [BUG]: cannot have 1 digit
+INT : [0-9]+; // can have leading 0s
 
 FLOAT : [0-9]+ '.' [0-9]+;
 
