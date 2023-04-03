@@ -2,7 +2,6 @@
 // Generated from SynthtaxParser.g4 by ANTLR 4.12.0
 
 
-#include "SynthtaxParserListener.h"
 #include "SynthtaxParserVisitor.h"
 
 #include "SynthtaxParser.h"
@@ -197,18 +196,6 @@ size_t SynthtaxParser::ProgContext::getRuleIndex() const {
   return SynthtaxParser::RuleProg;
 }
 
-void SynthtaxParser::ProgContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterProg(this);
-}
-
-void SynthtaxParser::ProgContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitProg(this);
-}
-
 
 std::any SynthtaxParser::ProgContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
@@ -271,18 +258,6 @@ SynthtaxParser::FuncBodyContext* SynthtaxParser::FunctionContext::funcBody() {
 
 size_t SynthtaxParser::FunctionContext::getRuleIndex() const {
   return SynthtaxParser::RuleFunction;
-}
-
-void SynthtaxParser::FunctionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterFunction(this);
-}
-
-void SynthtaxParser::FunctionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitFunction(this);
 }
 
 
@@ -350,18 +325,6 @@ SynthtaxParser::FormalParametersContext* SynthtaxParser::FuncDeclarationContext:
 
 size_t SynthtaxParser::FuncDeclarationContext::getRuleIndex() const {
   return SynthtaxParser::RuleFuncDeclaration;
-}
-
-void SynthtaxParser::FuncDeclarationContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterFuncDeclaration(this);
-}
-
-void SynthtaxParser::FuncDeclarationContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitFuncDeclaration(this);
 }
 
 
@@ -440,18 +403,6 @@ size_t SynthtaxParser::FormalParametersContext::getRuleIndex() const {
   return SynthtaxParser::RuleFormalParameters;
 }
 
-void SynthtaxParser::FormalParametersContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterFormalParameters(this);
-}
-
-void SynthtaxParser::FormalParametersContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitFormalParameters(this);
-}
-
 
 std::any SynthtaxParser::FormalParametersContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
@@ -524,18 +475,6 @@ SynthtaxParser::StatementContext* SynthtaxParser::FuncBodyContext::statement(siz
 
 size_t SynthtaxParser::FuncBodyContext::getRuleIndex() const {
   return SynthtaxParser::RuleFuncBody;
-}
-
-void SynthtaxParser::FuncBodyContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterFuncBody(this);
-}
-
-void SynthtaxParser::FuncBodyContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitFuncBody(this);
 }
 
 
@@ -619,18 +558,6 @@ tree::TerminalNode* SynthtaxParser::StatementContext::SEMICOLON() {
 
 size_t SynthtaxParser::StatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleStatement;
-}
-
-void SynthtaxParser::StatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterStatement(this);
-}
-
-void SynthtaxParser::StatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitStatement(this);
 }
 
 
@@ -727,18 +654,6 @@ size_t SynthtaxParser::ExpressionStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleExpressionStatement;
 }
 
-void SynthtaxParser::ExpressionStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterExpressionStatement(this);
-}
-
-void SynthtaxParser::ExpressionStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitExpressionStatement(this);
-}
-
 
 std::any SynthtaxParser::ExpressionStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
@@ -810,18 +725,6 @@ tree::TerminalNode* SynthtaxParser::IfStatementContext::ELSE() {
 
 size_t SynthtaxParser::IfStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleIfStatement;
-}
-
-void SynthtaxParser::IfStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterIfStatement(this);
-}
-
-void SynthtaxParser::IfStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitIfStatement(this);
 }
 
 
@@ -926,18 +829,6 @@ size_t SynthtaxParser::WhileStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleWhileStatement;
 }
 
-void SynthtaxParser::WhileStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterWhileStatement(this);
-}
-
-void SynthtaxParser::WhileStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitWhileStatement(this);
-}
-
 
 std::any SynthtaxParser::WhileStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
@@ -999,18 +890,6 @@ size_t SynthtaxParser::ReturnStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleReturnStatement;
 }
 
-void SynthtaxParser::ReturnStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterReturnStatement(this);
-}
-
-void SynthtaxParser::ReturnStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitReturnStatement(this);
-}
-
 
 std::any SynthtaxParser::ReturnStatementContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
@@ -1068,18 +947,6 @@ SynthtaxParser::ExpressionContext* SynthtaxParser::AssignmentStatementContext::e
 
 size_t SynthtaxParser::AssignmentStatementContext::getRuleIndex() const {
   return SynthtaxParser::RuleAssignmentStatement;
-}
-
-void SynthtaxParser::AssignmentStatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterAssignmentStatement(this);
-}
-
-void SynthtaxParser::AssignmentStatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitAssignmentStatement(this);
 }
 
 
@@ -1145,18 +1012,6 @@ SynthtaxParser::StatementContext* SynthtaxParser::BlockContext::statement(size_t
 
 size_t SynthtaxParser::BlockContext::getRuleIndex() const {
   return SynthtaxParser::RuleBlock;
-}
-
-void SynthtaxParser::BlockContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterBlock(this);
-}
-
-void SynthtaxParser::BlockContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitBlock(this);
 }
 
 
@@ -1234,18 +1089,6 @@ size_t SynthtaxParser::ExpressionContext::getRuleIndex() const {
   return SynthtaxParser::RuleExpression;
 }
 
-void SynthtaxParser::ExpressionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterExpression(this);
-}
-
-void SynthtaxParser::ExpressionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitExpression(this);
-}
-
 
 std::any SynthtaxParser::ExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
@@ -1318,18 +1161,6 @@ tree::TerminalNode* SynthtaxParser::LessExpressionContext::LESS(size_t i) {
 
 size_t SynthtaxParser::LessExpressionContext::getRuleIndex() const {
   return SynthtaxParser::RuleLessExpression;
-}
-
-void SynthtaxParser::LessExpressionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLessExpression(this);
-}
-
-void SynthtaxParser::LessExpressionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLessExpression(this);
 }
 
 
@@ -1412,18 +1243,6 @@ tree::TerminalNode* SynthtaxParser::AddSubExpressionContext::SUB(size_t i) {
 
 size_t SynthtaxParser::AddSubExpressionContext::getRuleIndex() const {
   return SynthtaxParser::RuleAddSubExpression;
-}
-
-void SynthtaxParser::AddSubExpressionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterAddSubExpression(this);
-}
-
-void SynthtaxParser::AddSubExpressionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitAddSubExpression(this);
 }
 
 
@@ -1537,18 +1356,6 @@ size_t SynthtaxParser::MulDivExpressionContext::getRuleIndex() const {
   return SynthtaxParser::RuleMulDivExpression;
 }
 
-void SynthtaxParser::MulDivExpressionContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterMulDivExpression(this);
-}
-
-void SynthtaxParser::MulDivExpressionContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitMulDivExpression(this);
-}
-
 
 std::any SynthtaxParser::MulDivExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
@@ -1658,18 +1465,6 @@ SynthtaxParser::LiteralContext* SynthtaxParser::AtomContext::literal() {
 
 size_t SynthtaxParser::AtomContext::getRuleIndex() const {
   return SynthtaxParser::RuleAtom;
-}
-
-void SynthtaxParser::AtomContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterAtom(this);
-}
-
-void SynthtaxParser::AtomContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitAtom(this);
 }
 
 
@@ -1782,18 +1577,6 @@ size_t SynthtaxParser::ExpressionListContext::getRuleIndex() const {
   return SynthtaxParser::RuleExpressionList;
 }
 
-void SynthtaxParser::ExpressionListContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterExpressionList(this);
-}
-
-void SynthtaxParser::ExpressionListContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitExpressionList(this);
-}
-
 
 std::any SynthtaxParser::ExpressionListContext::accept(tree::ParseTreeVisitor *visitor) {
   if (auto parserVisitor = dynamic_cast<SynthtaxParserVisitor*>(visitor))
@@ -1870,18 +1653,6 @@ tree::TerminalNode* SynthtaxParser::LiteralContext::BOOL() {
 
 size_t SynthtaxParser::LiteralContext::getRuleIndex() const {
   return SynthtaxParser::RuleLiteral;
-}
-
-void SynthtaxParser::LiteralContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterLiteral(this);
-}
-
-void SynthtaxParser::LiteralContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<SynthtaxParserListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitLiteral(this);
 }
 
 
