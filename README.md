@@ -30,7 +30,7 @@ See [Synthtax examples](test/)
 
 ## TODO
 
-1. Debug IF
+~~1. Debug IF~~
 2. Implement AST. Print C++ syntax
 3. Write functions to generate Osicalltors and play sound with `RTAudio`
 4. Documentation
