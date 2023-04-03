@@ -101,9 +101,9 @@ void synthtaxparserParserInitialize() {
   	97,83,1,0,0,0,97,91,1,0,0,0,98,15,1,0,0,0,99,100,5,4,0,0,100,101,5,9,
   	0,0,101,102,3,24,12,0,102,103,5,10,0,0,103,104,3,22,11,0,104,17,1,0,0,
   	0,105,106,5,5,0,0,106,107,3,24,12,0,107,19,1,0,0,0,108,109,5,24,0,0,109,
-  	110,5,13,0,0,110,111,3,24,12,0,111,21,1,0,0,0,112,116,5,9,0,0,113,115,
+  	110,5,13,0,0,110,111,3,24,12,0,111,21,1,0,0,0,112,116,5,11,0,0,113,115,
   	3,10,5,0,114,113,1,0,0,0,115,118,1,0,0,0,116,114,1,0,0,0,116,117,1,0,
-  	0,0,117,119,1,0,0,0,118,116,1,0,0,0,119,120,5,10,0,0,120,23,1,0,0,0,121,
+  	0,0,117,119,1,0,0,0,118,116,1,0,0,0,119,120,5,12,0,0,120,23,1,0,0,0,121,
   	126,3,26,13,0,122,123,5,14,0,0,123,125,3,26,13,0,124,122,1,0,0,0,125,
   	128,1,0,0,0,126,124,1,0,0,0,126,127,1,0,0,0,127,25,1,0,0,0,128,126,1,
   	0,0,0,129,134,3,28,14,0,130,131,5,15,0,0,131,133,3,28,14,0,132,130,1,
@@ -1126,12 +1126,12 @@ SynthtaxParser::BlockContext::BlockContext(ParserRuleContext *parent, size_t inv
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* SynthtaxParser::BlockContext::OPENPAREN() {
-  return getToken(SynthtaxParser::OPENPAREN, 0);
+tree::TerminalNode* SynthtaxParser::BlockContext::OPENBRACKET() {
+  return getToken(SynthtaxParser::OPENBRACKET, 0);
 }
 
-tree::TerminalNode* SynthtaxParser::BlockContext::CLOSEPAREN() {
-  return getToken(SynthtaxParser::CLOSEPAREN, 0);
+tree::TerminalNode* SynthtaxParser::BlockContext::CLOSEBRACKET() {
+  return getToken(SynthtaxParser::CLOSEBRACKET, 0);
 }
 
 std::vector<SynthtaxParser::StatementContext *> SynthtaxParser::BlockContext::statement() {
@@ -1182,7 +1182,7 @@ SynthtaxParser::BlockContext* SynthtaxParser::block() {
   try {
     enterOuterAlt(_localctx, 1);
     setState(112);
-    match(SynthtaxParser::OPENPAREN);
+    match(SynthtaxParser::OPENBRACKET);
     setState(116);
     _errHandler->sync(this);
     _la = _input->LA(1);
@@ -1195,7 +1195,7 @@ SynthtaxParser::BlockContext* SynthtaxParser::block() {
       _la = _input->LA(1);
     }
     setState(119);
-    match(SynthtaxParser::CLOSEPAREN);
+    match(SynthtaxParser::CLOSEBRACKET);
    
   }
   catch (RecognitionException &e) {

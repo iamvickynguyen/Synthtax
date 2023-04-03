@@ -34,7 +34,7 @@ returnStatement : RETURN expression ;
 
 assignmentStatement : ID ASSIGN expression ;
 
-block : OPENPAREN statement* CLOSEPAREN ;
+block : OPENBRACKET statement* CLOSEBRACKET ;
 
 expression : lessExpression(EQUALITY lessExpression)* ;
 

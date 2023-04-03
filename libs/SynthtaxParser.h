@@ -265,8 +265,8 @@ public:
   public:
     BlockContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *OPENPAREN();
-    antlr4::tree::TerminalNode *CLOSEPAREN();
+    antlr4::tree::TerminalNode *OPENBRACKET();
+    antlr4::tree::TerminalNode *CLOSEBRACKET();
     std::vector<StatementContext *> statement();
     StatementContext* statement(size_t i);
 
