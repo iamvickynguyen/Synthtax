@@ -11,5 +11,5 @@ fun main() {
   a = get_int();
   b = get_string();
   c = sum(200, 300, "hello");
-  s = Osc("sine", c, 1);
+  s = Osc(100, "sine", c, 1);
 }

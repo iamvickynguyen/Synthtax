@@ -39,4 +39,4 @@ See [Synthtax examples](test/)
 | Members | Roles |
 | --- | --- |
 | Vicky | - Set up github repo </br>- Designed the language </br>- Researched tool for creating a programming language (ANTLR) and how to generate C++ code (C++ runtime) </br>- Wrote and debugged ANTLR grammar :tired_face: </br>- Integrated C++ runtime </br>- Wrote project report </br>- Output to C++ code with the Visitor (in progress) |
-| Skylar | - |
+| Skylar | - Wrote project report </br>- Designed and created the functions </br>- Researched audio output through different waves (sine, triangle, sawtooth, square) for C++ </br>-Output those waves to the speakers of user for C++ </br>-Researched PortAudio</br>-Figured out how ADSR envelopes and applying them can be done more optimally in C++</br>-More Defining of the language's syntax and grammar (in progress) </br>-More Developing a library of musical functions and algorithms (in progress)|

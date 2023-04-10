@@ -6,7 +6,7 @@ fun main() {
 	release: 0.8 to 0 for 100ms
   */
   a = ADSR(0, 1.0, 200, 0.8, 100, 0.8, 1000, 0, 100);
-  sinewave = Osc("sine", 420.5, 1);
+  sinewave = Osc(1400, "sine", 420.5, 1);
   output = apply(ADSR, sinewave);
-  play(output, 1400);
+  play(output);
 }
