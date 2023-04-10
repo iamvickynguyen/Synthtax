@@ -30,7 +30,13 @@ See [Synthtax examples](test/)
 
 ## TODO
 
-~~1. Debug IF~~
-2. Implement AST. Print C++ syntax
-3. Write functions to generate Osicalltors and play sound with `RTAudio`
-4. Documentation
+1. Implement AST. Print C++ syntax
+2. Write functions to generate Osicalltors and play sound with `RTAudio`
+3. Documentation
+
+## Roles
+
+| Members | Roles |
+| --- | --- |
+| Vicky | - Set up github repo </br>- Designed the language </br>- Researched tool for creating a programming language (ANTLR) and how to generate C++ code (C++ runtime) </br>- Wrote and debugged ANTLR grammar :tired_face: </br>- Integrated C++ runtime </br>- Wrote project report </br>- Output to C++ code with the Visitor (in progress) |
+| Skylar | - |
