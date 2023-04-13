@@ -1,102 +1,107 @@
 #pragma once
 
-#include <antlr4-runtime/antlr4-runtime.h>
-#include <libs/SynthtaxParserBaseVisitor.h>
-#include <libs/SynthtaxParserVisitor.h>
+#include "antlr4-runtime.h"
+#include "libs/SynthtaxParserBaseVisitor.h"
+#include "libs/SynthtaxParserVisitor.h"
+#include <sstream>
 
 namespace synthtax_antlr {
 class Visitor : public SynthtaxParserBaseVisitor {
 public:
+	std::stringstream outfile;
+
   Visitor() {}
 
-  virtual std::any visitProg(SynthtaxParser::ProgContext *ctx) override {
+  std::any visitProg(SynthtaxParser::ProgContext *ctx) {
+		outfile << "#include <builtin.h>";
+
+		return visitChildren(ctx);
+  }
+
+  std::any
+  visitFunction(SynthtaxParser::FunctionContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitFunction(SynthtaxParser::FunctionContext *ctx) override {
+  std::any
+  visitFuncDeclaration(SynthtaxParser::FuncDeclarationContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitFuncDeclaration(SynthtaxParser::FuncDeclarationContext *ctx) override {
+  std::any
+  visitFormalParameters(SynthtaxParser::FormalParametersContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitFormalParameters(SynthtaxParser::FormalParametersContext *ctx) override {
+  std::any
+  visitFuncBody(SynthtaxParser::FuncBodyContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitFuncBody(SynthtaxParser::FuncBodyContext *ctx) override {
+  std::any
+  visitStatement(SynthtaxParser::StatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitStatement(SynthtaxParser::StatementContext *ctx) override {
+  std::any visitExpressionStatement(
+      SynthtaxParser::ExpressionStatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitExpressionStatement(
-      SynthtaxParser::ExpressionStatementContext *ctx) override {
+  std::any
+  visitIfStatement(SynthtaxParser::IfStatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitIfStatement(SynthtaxParser::IfStatementContext *ctx) override {
+  std::any
+  visitWhileStatement(SynthtaxParser::WhileStatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitWhileStatement(SynthtaxParser::WhileStatementContext *ctx) override {
+  std::any
+  visitReturnStatement(SynthtaxParser::ReturnStatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitReturnStatement(SynthtaxParser::ReturnStatementContext *ctx) override {
+  std::any visitAssignmentStatement(
+      SynthtaxParser::AssignmentStatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAssignmentStatement(
-      SynthtaxParser::AssignmentStatementContext *ctx) override {
+  std::any visitBlock(SynthtaxParser::BlockContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitBlock(SynthtaxParser::BlockContext *ctx) override {
+  std::any
+  visitExpression(SynthtaxParser::ExpressionContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitExpression(SynthtaxParser::ExpressionContext *ctx) override {
+  std::any
+  visitLessExpression(SynthtaxParser::LessExpressionContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitLessExpression(SynthtaxParser::LessExpressionContext *ctx) override {
+  std::any
+  visitAddSubExpression(SynthtaxParser::AddSubExpressionContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitAddSubExpression(SynthtaxParser::AddSubExpressionContext *ctx) override {
+  std::any
+  visitMulDivExpression(SynthtaxParser::MulDivExpressionContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitMulDivExpression(SynthtaxParser::MulDivExpressionContext *ctx) override {
+  std::any visitAtom(SynthtaxParser::AtomContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any visitAtom(SynthtaxParser::AtomContext *ctx) override {
+  std::any
+  visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) {
     return visitChildren(ctx);
   }
 
-  virtual std::any
-  visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
-  virtual std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) override {
+  std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
     return visitChildren(ctx);
   }
 };
