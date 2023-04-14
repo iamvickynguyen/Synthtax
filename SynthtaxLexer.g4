@@ -1,6 +1,6 @@
 lexer grammar SynthtaxLexer;
 
-DEF : 'fun';
+HEADER : '@header' .*? '@end_header';
 
 IF : 'if';
 
@@ -13,6 +13,8 @@ RETURN : 'return';
 BOOL : 'true' | 'false';
 
 COMMA : ',';
+
+COLON : ':';
 
 SEMICOLON : ';';
 
@@ -37,6 +39,10 @@ SUB : '-';
 MUL : '*';
 
 DIV : '/';
+
+TYPE : 'int' | 'float' | 'char' | 'string' | 'void';
+
+//HEADERCONTENT : '{' .*? '}' ;
 
 STRING : '"' [a-zA-Z_0-9]* '"'; // no new line
 

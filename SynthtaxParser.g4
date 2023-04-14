@@ -2,24 +2,29 @@ parser grammar SynthtaxParser;
 
 options { tokenVocab=SynthtaxLexer; }
 
-prog : function+ EOF ;
+prog : cppHeader? function+ EOF ;
+
+cppHeader : HEADER ;
 
 function : funcDeclaration funcBody ;
 
-funcDeclaration : DEF ID OPENPAREN formalParameters? CLOSEPAREN ;
+funcDeclaration : TYPE ID OPENPAREN formalParameters? CLOSEPAREN ;
 
-formalParameters : ID (COMMA ID)* ;
+formalParameters : (ID COLON TYPE ) (COMMA ID COLON TYPE)* ;
 
 funcBody : OPENBRACKET statement* CLOSEBRACKET ;
 
 statement
-	: expressionStatement
+	: varDeclaration
+	| expressionStatement
 	| ifStatement
 	| whileStatement
 	| returnStatement
 	| assignmentStatement
 	| SEMICOLON
 	;
+
+varDeclaration : TYPE (assignmentStatement | ID);
 
 expressionStatement : expression ;
 
