@@ -21,6 +21,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitCppHeader(SynthtaxParser::CppHeaderContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitFunction(SynthtaxParser::FunctionContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -38,6 +42,10 @@ public:
   }
 
   virtual std::any visitStatement(SynthtaxParser::StatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitVarDeclaration(SynthtaxParser::VarDeclarationContext *ctx) override {
     return visitChildren(ctx);
   }
 

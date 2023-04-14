@@ -22,6 +22,8 @@ public:
    */
     virtual std::any visitProg(SynthtaxParser::ProgContext *context) = 0;
 
+    virtual std::any visitCppHeader(SynthtaxParser::CppHeaderContext *context) = 0;
+
     virtual std::any visitFunction(SynthtaxParser::FunctionContext *context) = 0;
 
     virtual std::any visitFuncDeclaration(SynthtaxParser::FuncDeclarationContext *context) = 0;
@@ -31,6 +33,8 @@ public:
     virtual std::any visitFuncBody(SynthtaxParser::FuncBodyContext *context) = 0;
 
     virtual std::any visitStatement(SynthtaxParser::StatementContext *context) = 0;
+
+    virtual std::any visitVarDeclaration(SynthtaxParser::VarDeclarationContext *context) = 0;
 
     virtual std::any visitExpressionStatement(SynthtaxParser::ExpressionStatementContext *context) = 0;
 

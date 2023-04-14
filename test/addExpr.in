@@ -1,5 +1,5 @@
-fun main() {
-  a = 2 + 3;
-  b = (10 + 2) + 3.2;
-  c = 2.5 + 4.0
+void main() {
+  int a = 2 + 3;
+  float b = (10 + 2) + 3.2;
+  float c = 2.5 + 4.0
 }

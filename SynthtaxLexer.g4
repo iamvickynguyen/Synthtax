@@ -40,11 +40,10 @@ MUL : '*';
 
 DIV : '/';
 
-TYPE : 'int' | 'float' | 'char' | 'string' | 'void';
+// env: envelop
+TYPE : 'int' | 'float' | 'char' | 'string' | 'void' | 'osc' | 'env';
 
-//HEADERCONTENT : '{' .*? '}' ;
-
-STRING : '"' [a-zA-Z_0-9]* '"'; // no new line
+STRING : '"' [a-zA-Z_0-9]* '"'; // no space
 
 INT : [0-9]+; // can have leading 0s
 

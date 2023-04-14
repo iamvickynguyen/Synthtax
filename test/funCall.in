@@ -1,15 +1,15 @@
-fun get_int() { return 2; }
+int get_int() { return 2; }
 
-fun get_string() { return "hi"; }
+string get_string() { return "hi"; }
 
-fun sum(a, b, s) {
-  c = s;
+int sum(a: int, b: int, s: string) {
+  string c = s;
   return a + b;
 }
 
-fun main() {
-  a = get_int();
-  b = get_string();
-  c = sum(200, 300, "hello");
-  s = Osc(100, "sine", c, 1);
+void main() {
+  int a = get_int();
+  string b = get_string();
+  int c = sum(200, 300, "hello");
+  osc s = Osc(100, "sine", c, 1);
 }

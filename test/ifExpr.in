@@ -1,11 +1,11 @@
-fun main() {
-	a = 4;
-	b = 0;
+void main() {
+	int a = 4;
+	int b = 0;
   if (a < b) {
-    out = Osc(1000, "sine", 440, 1);
+    osc out = Osc(1000, "sine", 440, 1);
   	play(out);
   } else {
-    out = Osc(1000, "triangle", 200, 1);
+    osc out = Osc(1000, "triangle", 200, 1);
   	play(out);
   }
 }

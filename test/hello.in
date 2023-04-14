@@ -1,9 +1,9 @@
-fun main() {
-  a = 2;
-  b = 'b';
+void main() {
+  int a = 2;
+  char b = 'b';
   /* block comment
    something here... */
 
-  d = "helloworld";
-	c = 2.0 + 3 * 4.000032;
+  string d = "helloworld";
+	float c = 2.0 + 3 * 4.000032;
 }

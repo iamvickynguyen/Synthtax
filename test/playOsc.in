@@ -1,7 +1,7 @@
-fun main() {
-  s = Osc(1000, "sine", 400.5, 1.0);
+void main() {
+  osc s = Osc(1000, "sine", 400.5, 1.0);
   play(s); // 1000ms
 
-  a = Osc(500, "triangle", 123.5, 0.5);
+  osc a = Osc(500, "triangle", 123.5, 0.5);
   play(a);
 }

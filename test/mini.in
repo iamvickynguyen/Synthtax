@@ -1,2 +1,2 @@
-fun myfunction () {
+void myfunction () {
 }

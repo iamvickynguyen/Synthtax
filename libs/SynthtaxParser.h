@@ -13,19 +13,20 @@ namespace synthtax_antlr {
 class  SynthtaxParser : public antlr4::Parser {
 public:
   enum {
-    DEF = 1, IF = 2, ELSE = 3, WHILE = 4, RETURN = 5, BOOL = 6, COMMA = 7, 
-    SEMICOLON = 8, OPENPAREN = 9, CLOSEPAREN = 10, OPENBRACKET = 11, CLOSEBRACKET = 12, 
-    ASSIGN = 13, EQUALITY = 14, LESS = 15, ADD = 16, SUB = 17, MUL = 18, 
-    DIV = 19, STRING = 20, INT = 21, FLOAT = 22, CHAR = 23, ID = 24, NEWLINE = 25, 
-    WS = 26, BLOCKCOMMENT = 27, LINECOMMENT = 28
+    HEADER = 1, IF = 2, ELSE = 3, WHILE = 4, RETURN = 5, BOOL = 6, COMMA = 7, 
+    COLON = 8, SEMICOLON = 9, OPENPAREN = 10, CLOSEPAREN = 11, OPENBRACKET = 12, 
+    CLOSEBRACKET = 13, ASSIGN = 14, EQUALITY = 15, LESS = 16, ADD = 17, 
+    SUB = 18, MUL = 19, DIV = 20, TYPE = 21, STRING = 22, INT = 23, FLOAT = 24, 
+    CHAR = 25, ID = 26, NEWLINE = 27, WS = 28, BLOCKCOMMENT = 29, LINECOMMENT = 30
   };
 
   enum {
-    RuleProg = 0, RuleFunction = 1, RuleFuncDeclaration = 2, RuleFormalParameters = 3, 
-    RuleFuncBody = 4, RuleStatement = 5, RuleExpressionStatement = 6, RuleIfStatement = 7, 
-    RuleWhileStatement = 8, RuleReturnStatement = 9, RuleAssignmentStatement = 10, 
-    RuleBlock = 11, RuleExpression = 12, RuleLessExpression = 13, RuleAddSubExpression = 14, 
-    RuleMulDivExpression = 15, RuleAtom = 16, RuleExpressionList = 17, RuleLiteral = 18
+    RuleProg = 0, RuleCppHeader = 1, RuleFunction = 2, RuleFuncDeclaration = 3, 
+    RuleFormalParameters = 4, RuleFuncBody = 5, RuleStatement = 6, RuleVarDeclaration = 7, 
+    RuleExpressionStatement = 8, RuleIfStatement = 9, RuleWhileStatement = 10, 
+    RuleReturnStatement = 11, RuleAssignmentStatement = 12, RuleBlock = 13, 
+    RuleExpression = 14, RuleLessExpression = 15, RuleAddSubExpression = 16, 
+    RuleMulDivExpression = 17, RuleAtom = 18, RuleExpressionList = 19, RuleLiteral = 20
   };
 
   explicit SynthtaxParser(antlr4::TokenStream *input);
@@ -46,11 +47,13 @@ public:
 
 
   class ProgContext;
+  class CppHeaderContext;
   class FunctionContext;
   class FuncDeclarationContext;
   class FormalParametersContext;
   class FuncBodyContext;
   class StatementContext;
+  class VarDeclarationContext;
   class ExpressionStatementContext;
   class IfStatementContext;
   class WhileStatementContext;
@@ -70,6 +73,7 @@ public:
     ProgContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *EOF();
+    CppHeaderContext *cppHeader();
     std::vector<FunctionContext *> function();
     FunctionContext* function(size_t i);
 
@@ -79,6 +83,19 @@ public:
   };
 
   ProgContext* prog();
+
+  class  CppHeaderContext : public antlr4::ParserRuleContext {
+  public:
+    CppHeaderContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *HEADER();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  CppHeaderContext* cppHeader();
 
   class  FunctionContext : public antlr4::ParserRuleContext {
   public:
@@ -98,7 +115,7 @@ public:
   public:
     FuncDeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *DEF();
+    antlr4::tree::TerminalNode *TYPE();
     antlr4::tree::TerminalNode *ID();
     antlr4::tree::TerminalNode *OPENPAREN();
     antlr4::tree::TerminalNode *CLOSEPAREN();
@@ -117,6 +134,10 @@ public:
     virtual size_t getRuleIndex() const override;
     std::vector<antlr4::tree::TerminalNode *> ID();
     antlr4::tree::TerminalNode* ID(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> COLON();
+    antlr4::tree::TerminalNode* COLON(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> TYPE();
+    antlr4::tree::TerminalNode* TYPE(size_t i);
     std::vector<antlr4::tree::TerminalNode *> COMMA();
     antlr4::tree::TerminalNode* COMMA(size_t i);
 
@@ -147,6 +168,7 @@ public:
   public:
     StatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    VarDeclarationContext *varDeclaration();
     ExpressionStatementContext *expressionStatement();
     IfStatementContext *ifStatement();
     WhileStatementContext *whileStatement();
@@ -160,6 +182,21 @@ public:
   };
 
   StatementContext* statement();
+
+  class  VarDeclarationContext : public antlr4::ParserRuleContext {
+  public:
+    VarDeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *TYPE();
+    AssignmentStatementContext *assignmentStatement();
+    antlr4::tree::TerminalNode *ID();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  VarDeclarationContext* varDeclaration();
 
   class  ExpressionStatementContext : public antlr4::ParserRuleContext {
   public:

@@ -1,0 +1,7 @@
+@header
+#include <vector>
+#include <iostream>
+#include "somelib.h"
+@end_header
+
+void main() {}
