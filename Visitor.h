@@ -14,12 +14,13 @@ public:
   Visitor() {}
 
   std::any visitProg(SynthtaxParser::ProgContext *ctx) {
-		outfile << "#include <builtin.h>";
-		visitCppHeader(ctx->cppHeader());
-
-//		for (auto f: ctx->function()) {
-//			visitFunction(f);
-//		}
+		outfile << "#include <builtin.h>\n";
+		if (ctx->cppHeader() != nullptr)
+			visitCppHeader(ctx->cppHeader());
+		
+		for (auto &f: ctx->function()) {
+			visitFunction(f);
+		}
 
 		return NULL;
   }
@@ -35,15 +36,19 @@ public:
   std::any
   visitFunction(SynthtaxParser::FunctionContext *ctx) {
     visitFuncDeclaration(ctx->funcDeclaration());
-		visitFuncBody(ctx->funcBody());
+//		visitFuncBody(ctx->funcBody());
 		return NULL;
   }
 
   std::any
   visitFuncDeclaration(SynthtaxParser::FuncDeclarationContext *ctx) {
-    outfile << "sometype " << ctx->ID()->getText() << "(";
-		visitFormalParameters(ctx->formalParameters());
+		std::string type = ctx->TYPE()->getText();
+		if (type == "string") outfile << "std::string";
+		else outfile << type;
+    outfile << " " << ctx->ID()->getText() << "(";
+//		visitFormalParameters(ctx->formalParameters());
 		outfile << ")";
+		outfile << '\n'; // TEMP
 		return visitChildren(ctx);
   }
 
@@ -61,35 +66,32 @@ public:
 		std::cout << "visit FuncBodyContext\n";
     return visitChildren(ctx);
   }
-
-  std::any
-  visitStatement(SynthtaxParser::StatementContext *ctx) {
-		std::cout << "visit StatementContext\n";
+  
+  std::any visitStatement(SynthtaxParser::StatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  std::any visitExpressionStatement(
-      SynthtaxParser::ExpressionStatementContext *ctx) {
+  std::any visitVarDeclaration(SynthtaxParser::VarDeclarationContext *ctx) {
     return visitChildren(ctx);
   }
 
-  std::any
-  visitIfStatement(SynthtaxParser::IfStatementContext *ctx) {
+  std::any visitExpressionStatement(SynthtaxParser::ExpressionStatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  std::any
-  visitWhileStatement(SynthtaxParser::WhileStatementContext *ctx) {
+  std::any visitIfStatement(SynthtaxParser::IfStatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  std::any
-  visitReturnStatement(SynthtaxParser::ReturnStatementContext *ctx) {
+  std::any visitWhileStatement(SynthtaxParser::WhileStatementContext *ctx) {
     return visitChildren(ctx);
   }
 
-  std::any visitAssignmentStatement(
-      SynthtaxParser::AssignmentStatementContext *ctx) {
+  std::any visitReturnStatement(SynthtaxParser::ReturnStatementContext *ctx) {
+    return visitChildren(ctx);
+  }
+
+  std::any visitAssignmentStatement(SynthtaxParser::AssignmentStatementContext *ctx) {
     return visitChildren(ctx);
   }
 
@@ -97,23 +99,19 @@ public:
     return visitChildren(ctx);
   }
 
-  std::any
-  visitExpression(SynthtaxParser::ExpressionContext *ctx) {
+  std::any visitExpression(SynthtaxParser::ExpressionContext *ctx) {
     return visitChildren(ctx);
   }
 
-  std::any
-  visitLessExpression(SynthtaxParser::LessExpressionContext *ctx) {
+  std::any visitLessExpression(SynthtaxParser::LessExpressionContext *ctx) {
     return visitChildren(ctx);
   }
 
-  std::any
-  visitAddSubExpression(SynthtaxParser::AddSubExpressionContext *ctx) {
+  std::any visitAddSubExpression(SynthtaxParser::AddSubExpressionContext *ctx) {
     return visitChildren(ctx);
   }
 
-  std::any
-  visitMulDivExpression(SynthtaxParser::MulDivExpressionContext *ctx) {
+  std::any visitMulDivExpression(SynthtaxParser::MulDivExpressionContext *ctx) {
     return visitChildren(ctx);
   }
 
@@ -121,24 +119,12 @@ public:
     return visitChildren(ctx);
   }
 
-  std::any
-  visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) {
+  std::any visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) {
     return visitChildren(ctx);
   }
 
   std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
-		std::cout << "visit LiteralContext\n";
-//		if (dynamic_cast<antlr4::tree::TerminalNode *>(ctx->STRING())) {
-//			outfile << ctx->getText();
-//		} else if (dynamic_cast<antlr4::tree::TerminalNode *>(ctx->STRING())) {
-//
-//		} else if (dynamic_cast<antlr4::tree::TerminalNode *>(ctx->INT())) {
-//
-//		} else if (dynamic_cast<antlr4::tree::TerminalNode *>(ctx->FLOAT())) {
-//
-//	}
-		outfile << ctx->getText();
-		return visitChildren(ctx);
+    return visitChildren(ctx);
   }
 };
 } // namespace synthtax_antlr
