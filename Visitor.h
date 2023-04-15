@@ -42,11 +42,12 @@ public:
 
   std::any
   visitFuncDeclaration(SynthtaxParser::FuncDeclarationContext *ctx) {
-		std::string type = ctx->TYPE()->getText();
-		if (type == "string") outfile << "std::string";
-		else outfile << type;
+		print_type(ctx->TYPE()->getText());
     outfile << " " << ctx->ID()->getText() << "(";
-//		visitFormalParameters(ctx->formalParameters());
+	
+		if (ctx->formalParameters() != nullptr)
+			visitFormalParameters(ctx->formalParameters());
+	
 		outfile << ")";
 		outfile << '\n'; // TEMP
 		return visitChildren(ctx);
@@ -54,9 +55,15 @@ public:
 
   std::any
   visitFormalParameters(SynthtaxParser::FormalParametersContext *ctx) {
-   	outfile << ctx->getText();
-		for (auto id: ctx->ID()) {
-			outfile << " ," << id->getText();
+		if (ctx->ID().size() > 0) {
+			print_type(ctx->TYPE()[0]->getText());
+			outfile << " " << ctx->ID()[0]->getText();
+		}
+
+		for (int i = 1; i < ctx->ID().size(); ++i) {
+			outfile << ", ";
+			print_type(ctx->TYPE()[i]->getText());
+			outfile << " " << ctx->ID()[i]->getText();
 		}
 		return NULL;
   }
@@ -126,5 +133,11 @@ public:
   std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
     return visitChildren(ctx);
   }
+
+private:
+	void print_type(const std::string &type) {
+		if (type == "string") outfile << "std::string";
+		else outfile << type;
+	}
 };
 } // namespace synthtax_antlr
