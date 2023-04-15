@@ -4,6 +4,7 @@
 #include "libs/SynthtaxParserBaseVisitor.h"
 #include "libs/SynthtaxParserVisitor.h"
 #include <sstream>
+#include <string>
 
 namespace synthtax_antlr {
 class Visitor : public SynthtaxParserBaseVisitor {
@@ -14,32 +15,56 @@ public:
 
   std::any visitProg(SynthtaxParser::ProgContext *ctx) {
 		outfile << "#include <builtin.h>";
+		visitCppHeader(ctx->cppHeader());
 
-		return visitChildren(ctx);
+//		for (auto f: ctx->function()) {
+//			visitFunction(f);
+//		}
+
+		return NULL;
+  }
+  
+	std::any visitCppHeader(SynthtaxParser::CppHeaderContext *ctx) {
+		std::string header = ctx->getText();
+		std::string start = "@header";
+		std::string end = "@end_header";
+		outfile << header.substr(start.length(), header.length() - start.length() - end.length()) << '\n';
+    return visitChildren(ctx);
   }
 
   std::any
   visitFunction(SynthtaxParser::FunctionContext *ctx) {
-    return visitChildren(ctx);
+    visitFuncDeclaration(ctx->funcDeclaration());
+		visitFuncBody(ctx->funcBody());
+		return NULL;
   }
 
   std::any
   visitFuncDeclaration(SynthtaxParser::FuncDeclarationContext *ctx) {
-    return visitChildren(ctx);
+    outfile << "sometype " << ctx->ID()->getText() << "(";
+		visitFormalParameters(ctx->formalParameters());
+		outfile << ")";
+		return visitChildren(ctx);
   }
 
   std::any
   visitFormalParameters(SynthtaxParser::FormalParametersContext *ctx) {
-    return visitChildren(ctx);
+   	outfile << ctx->getText();
+		for (auto id: ctx->ID()) {
+			outfile << " ," << id->getText();
+		}
+		return NULL;
   }
 
   std::any
   visitFuncBody(SynthtaxParser::FuncBodyContext *ctx) {
+		std::cout << "visit FuncBodyContext\n";
     return visitChildren(ctx);
   }
 
   std::any
   visitStatement(SynthtaxParser::StatementContext *ctx) {
+		std::cout << "visit StatementContext\n";
     return visitChildren(ctx);
   }
 
@@ -102,7 +127,18 @@ public:
   }
 
   std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
-    return visitChildren(ctx);
+		std::cout << "visit LiteralContext\n";
+//		if (dynamic_cast<antlr4::tree::TerminalNode *>(ctx->STRING())) {
+//			outfile << ctx->getText();
+//		} else if (dynamic_cast<antlr4::tree::TerminalNode *>(ctx->STRING())) {
+//
+//		} else if (dynamic_cast<antlr4::tree::TerminalNode *>(ctx->INT())) {
+//
+//		} else if (dynamic_cast<antlr4::tree::TerminalNode *>(ctx->FLOAT())) {
+//
+//	}
+		outfile << ctx->getText();
+		return visitChildren(ctx);
   }
 };
 } // namespace synthtax_antlr

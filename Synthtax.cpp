@@ -1,7 +1,7 @@
 #include "antlr4-runtime.h"
 #include "libs/SynthtaxLexer.h"
 #include "libs/SynthtaxParser.h"
-//#include "Visitor.h"
+#include "Visitor.h"
 #include <fstream>
 #include <iostream>
 
@@ -28,20 +28,20 @@ int main(int argc, const char *argv[]) {
 //  lexer.reset();
 
   synthtax_antlr::SynthtaxParser parser(&tokens);
-
- tree::ParseTree *tree = parser.prog();
- std::cout << tree->toStringTree(&parser) << '\n';
-
-//	synthtax_antlr::SynthtaxParser::ProgContext *prog = parser.prog();
 //
-//  synthtax_antlr::Visitor visitor;
-//  visitor.visitProg(prog);
-//
-//	std::ofstream out;
-//	out.open("output.cpp");
-//	out << visitor.outfile.str();
+// tree::ParseTree *tree = parser.prog();
+// std::cout << tree->toStringTree(&parser) << '\n';
 
-//	out.close();
+	synthtax_antlr::SynthtaxParser::ProgContext *prog = parser.prog();
+
+  synthtax_antlr::Visitor visitor;
+  visitor.visitProg(prog);
+
+	std::ofstream out;
+	out.open("output.cpp");
+	out << visitor.outfile.str();
+
+	out.close();
   stream.close();
   return 0;
 }
