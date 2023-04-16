@@ -2,9 +2,9 @@
 
 #include <cmath>
 #include <iostream>
+#include <sndfile.h>
 #include <string>
 #include <vector>
-#include <sndfile.h>
 
 namespace synths {
 class Oscillator {
@@ -18,7 +18,7 @@ public:
   Oscillator(const std::string type, const double freq, const double amp)
       : type(type), frequency(freq), amplitude(amp) {}
 
-  virtual void write_to_file(const char* filename, double duration=1.0) {
+  virtual void write_to_file(const char *filename, double duration = 1.0) {
     std::vector<double> samples = generate(duration);
 
     SF_INFO info;
@@ -76,10 +76,10 @@ public:
       : Oscillator(type, freq, amp), duration(duration) {
     sound = generate(duration);
   }
-  
-	AdditiveOscillator(const std::string type, const double freq,
+
+  AdditiveOscillator(const std::string type, const double freq,
                      const double amp, const double duration,
-										 const std::vector<double> &snd)
+                     const std::vector<double> &snd)
       : Oscillator(type, freq, amp), duration(duration) {
     sound = std::move(snd);
   }
@@ -109,7 +109,8 @@ public:
       ++N;
     }
 
-    return AdditiveOscillator(new_type, new_frequency, new_amplitude, new_duration, result);
+    return AdditiveOscillator(new_type, new_frequency, new_amplitude,
+                              new_duration, result);
   }
 
   AdditiveOscillator &operator+=(const AdditiveOscillator &other) {
@@ -117,7 +118,7 @@ public:
     return *this;
   }
 
-  void write_to_file(const char* filename) {
+  void write_to_file(const char *filename) {
     SF_INFO info;
     info.channels = 1;
     info.samplerate = 44100;
