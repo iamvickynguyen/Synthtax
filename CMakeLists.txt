@@ -44,8 +44,11 @@ antlr_target(SynthtaxLexer SynthtaxLexer.g4 LEXER
 include_directories(${ANTLR_SynthtaxLexer_OUTPUT_DIR})
 include_directories(${ANTLR_SynthtaxParser_OUTPUT_DIR})
 
+include_directories(${PROJECT_SOURCE_DIR}/include)
+
 # add generated grammar to synthtax binary target
 add_executable(synthtax Synthtax.cpp
                ${ANTLR_SynthtaxLexer_CXX_OUTPUTS}
                ${ANTLR_SynthtaxParser_CXX_OUTPUTS})
-target_link_libraries(synthtax antlr4_static)
+
+target_link_libraries(synthtax antlr4_static sndfile)
