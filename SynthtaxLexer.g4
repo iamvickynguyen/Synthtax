@@ -43,13 +43,13 @@ DIV : '/';
 // env: envelop
 TYPE : 'int' | 'float' | 'char' | 'string' | 'void' | 'osc' | 'env';
 
-STRING : '"' [a-zA-Z_0-9]* '"'; // no space
+STRING : '"' [a-zA-Z_0-9.]* '"'; // no space
 
 INT : [0-9]+; // can have leading 0s
 
 FLOAT : [0-9]+ '.' [0-9]+;
 
-CHAR : '\'' [a-zA-Z_] '\'';
+CHAR : '\'' [a-zA-Z_.] '\'';
 
 ID : [a-zA-Z_]+ ;
 

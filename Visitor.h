@@ -14,7 +14,7 @@ public:
   Visitor(): indentLevel(1) {}
 
   std::any visitProg(SynthtaxParser::ProgContext *ctx) {
-		outfile << "#include <builtin.h>\n";
+		outfile << "#include <synths/builtin.hpp>\n";
 		if (ctx->cppHeader() != nullptr)
 			visitCppHeader(ctx->cppHeader());
 		
@@ -92,7 +92,7 @@ public:
 		else if (ctx->whileStatement() != nullptr) visitWhileStatement(ctx->whileStatement());
 		else if (ctx->returnStatement() != nullptr) visitReturnStatement(ctx->returnStatement());
 		else if (ctx->assignmentStatement() != nullptr) visitAssignmentStatement(ctx->assignmentStatement());
-		else outfile << ";\n";
+//		else outfile << ";\n";
 		return NULL;
 	}
 
@@ -184,15 +184,52 @@ public:
   }
 
   std::any visitExpression(SynthtaxParser::ExpressionContext *ctx) {
-    return visitChildren(ctx);
+		if (ctx->lessExpression().size() > 0) {
+			visitLessExpression(ctx->lessExpression()[0]);
+		}
+
+		for (int i = 1; i < ctx->lessExpression().size(); ++i) {
+			outfile << " == ";
+			visitLessExpression(ctx->lessExpression()[i]);
+		}
+		
+		return NULL;
   }
 
   std::any visitLessExpression(SynthtaxParser::LessExpressionContext *ctx) {
-    return visitChildren(ctx);
+		if (ctx->addSubExpression().size() > 0) {
+			visitAddSubExpression(ctx->addSubExpression()[0]);
+		}
+
+		for (int i = 1; i < ctx->addSubExpression().size(); ++i) {
+			outfile << " < ";
+			visitAddSubExpression(ctx->addSubExpression()[i]);
+		}
+
+    return NULL;
   }
 
+	// not sure how to get the '+' and '-' in order from the vector in SynthtaxParser.h
   std::any visitAddSubExpression(SynthtaxParser::AddSubExpressionContext *ctx) {
-    return visitChildren(ctx);
+		if (ctx->mulDivExpression().size() > 0) {
+			visitMulDivExpression(ctx->mulDivExpression()[0]);
+		}
+
+		if (ctx->mulDivExpression().size() > 1) {
+			std::string context = ctx->getText();
+			std::vector<char> signs;
+
+			for (auto &c: context) {
+				if (c == '+' || c == '-') signs.push_back(c);
+			}
+
+			for (int i = 1; i < ctx->mulDivExpression().size(); ++i) {
+				outfile << " " << signs[i-1] << " ";
+				visitMulDivExpression(ctx->mulDivExpression()[i]);
+			}
+		}
+
+    return NULL;
   }
 
   std::any visitMulDivExpression(SynthtaxParser::MulDivExpressionContext *ctx) {

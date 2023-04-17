@@ -1,6 +1,7 @@
 void main() {
-  osc a = Osc(500, "sine", 400.5, 1.0);
-  osc b = Osc(500, "sine", 300.2, 0.5);
+	// Osc(type, frequency, amplitude, duration)
+  osc a = Osc("sine", 440.0, 1.0, 1.0);
+  osc b = Osc("sine", 220.0, 0.8, 1.5);
   osc c = a + b;
-  play(c);
+  write(c, "add.wav");
 }

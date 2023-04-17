@@ -2,10 +2,10 @@ void main() {
 	int a = 4;
 	int b = 0;
   if (a < b) {
-    osc out = Osc(1000, "sine", 440, 1);
-  	play(out);
+		osc s = Osc("sine", 440.0, 1.0);
+		write(s, "sine440.wav", 2.0);
   } else {
-    osc out = Osc(1000, "triangle", 200, 1);
-  	play(out);
+		osc s = Osc("triangle", 440.0, 1.0);
+		write(s, "triangle440.wav", 2.0);
   }
 }

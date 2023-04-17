@@ -1,7 +1,13 @@
 void main() {
-  osc s = Osc(1000, "sine", 400.5, 1.0);
-  play(s); // 1000ms
+	// without duration
+  osc s = Osc("sine", 440.0, 1.0);
+	write(s, "sine440.wav", 2.0);
 
-  osc a = Osc(500, "triangle", 123.5, 0.5);
-  play(a);
+	// with duration = 1s
+  osc s2 = Osc("sine", 220.0, 0.5, 1.0);
+	write(s, "sine220.wav");
+  
+	// triangle wave
+	osc s = Osc("triangle", 440.0, 1.0);
+	write(s, "triangle440.wav", 2.0);
 }
