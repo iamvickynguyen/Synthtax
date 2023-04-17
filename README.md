@@ -32,8 +32,8 @@ See [Synthtax examples](test/)
 
 ## TODO
 
-1. Implement AST. Print C++ syntax
-2. Write functions to generate Osicalltors and play sound with `RTAudio`
+1. Change `include` and `void main()` in `Visitor.h`
+2. Implement ADSR class
 3. Documentation
 
 ## Roles
