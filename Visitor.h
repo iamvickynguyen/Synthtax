@@ -14,7 +14,10 @@ public:
   Visitor(): indentLevel(1) {}
 
   std::any visitProg(SynthtaxParser::ProgContext *ctx) {
+		outfile << "#include <memory>\n";
 		outfile << "#include <synths/builtin.hpp>\n";
+		outfile << "using namespace synths;\n\n";
+
 		if (ctx->cppHeader() != nullptr)
 			visitCppHeader(ctx->cppHeader());
 		
@@ -233,19 +236,106 @@ public:
   }
 
   std::any visitMulDivExpression(SynthtaxParser::MulDivExpressionContext *ctx) {
-    return visitChildren(ctx);
+		if (ctx->atom().size() > 0) {
+			visitAtom(ctx->atom()[0]);
+		}
+
+		if (ctx->atom().size() > 1) {
+			std::string context = ctx->getText();
+			std::vector<char> signs;
+
+			for (auto &c: context) {
+				if (c == '*' || c == '/') signs.push_back(c);
+			}
+
+			for (int i = 1; i < ctx->atom().size(); ++i) {
+				outfile << " " << signs[i-1] << " ";
+				visitAtom(ctx->atom()[i]);
+			}
+		}
+
+    return NULL;
   }
 
   std::any visitAtom(SynthtaxParser::AtomContext *ctx) {
-    return visitChildren(ctx);
+		// if function call with parameter(s)
+		if (ctx->expressionList() != nullptr) {
+			std::string id = ctx->ID()->getText();
+			
+			// if Osc()
+			if (id == "Osc") {
+				const int num_params = ctx->expressionList()->expression().size();
+				
+				if (num_params == 3) {
+					outfile << "std::make_shared<Oscillator>("; 
+				} else {
+					outfile << "std::make_shared<AdditiveOscillator>(";
+				}
+				
+				outfile << ctx->expressionList()->getText() << ");\n";
+			}
+
+			// if write()
+			else if (id == "write") {
+				std::string args = ctx->expressionList()->getText();
+				
+				int i = 0;
+				std::string osc_id;
+				while (i < args.length() && args[i] != ',') {
+					if (args[i] != ' ') {
+						osc_id.push_back(args[i]);
+					}
+					++i;
+				}
+
+				outfile << osc_id << "->write_to_file(" << args.substr(i + 1)
+					<< ");\n";
+			}
+
+			// others
+			else {
+				outfile << id << "(";
+				visitExpressionList(ctx->expressionList());
+				outfile << ");\n";
+			}
+		}
+
+		// function call or an assignment
+		else if (ctx->ID() != nullptr) {
+			outfile << ctx->ID()->getText();
+			if (ctx->OPENPAREN() != nullptr) outfile << "()";
+			outfile << ";\n";
+		}
+
+		// expression
+		else if (ctx->expression() != nullptr) {
+			outfile << "(";
+			visitExpression(ctx->expression());
+			outfile << ")";
+		}
+
+		// literal
+		else {
+			visitLiteral(ctx->literal());
+		}
+
+    return NULL;
   }
 
-  std::any visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) {
-    return visitChildren(ctx);
-  }
+	std::any visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) {
+		if (ctx->expression().size() > 0) visitExpression(ctx->expression()[0]);
+
+		for (int i = 1; i < ctx->expression().size(); ++i) {
+			outfile << ", ";
+			visitExpression(ctx->expression()[i]);
+		}
+
+		return NULL;
+	}
 
   std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
-    return visitChildren(ctx);
+    outfile << ctx->getText();
+		return NULL;
   }
 
 private:
@@ -253,6 +343,8 @@ private:
 
 	void print_type(const std::string &type) {
 		if (type == "string") outfile << "std::string";
+		else if (type == "osc") outfile << "std::shared_ptr<Oscillator>";
+		else if (type == "env") outfile << "std::shared_ptr<ADSR>";
 		else outfile << type;
 	}
 

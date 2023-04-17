@@ -4,10 +4,10 @@ void main() {
 	write(s, "sine440.wav", 2.0);
 
 	// with duration = 1s
-  osc s2 = Osc("sine", 220.0, 0.5, 1.0);
-	write(s, "sine220.wav");
+  osc sb = Osc("sine", 220.0, 0.5, 1.0);
+	write(sb, "sine220.wav");
   
 	// triangle wave
-	osc s = Osc("triangle", 440.0, 1.0);
-	write(s, "triangle440.wav", 2.0);
+	osc sc = Osc("triangle", 440.0, 1.0);
+	write(sc, "triangle440.wav", 2.0);
 }
