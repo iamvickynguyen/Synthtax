@@ -1,12 +1,29 @@
-void main() {
-  /*
-	attack: 0 to 1.0 for 200ms
-	decay: 1.0 to 0.8 for 100ms
-	sustain: 0.8 to 0.8 for 1000ms
-	release: 0.8 to 0 for 100ms
-  */
-  env a = ADSR(0, 1.0, 200, 0.8, 100, 0.8, 1000, 0, 100);
-  osc sinewave = Osc(1400, "sine", 420.5, 1);
-  osc output = apply(ADSR, sinewave);
-  play(output);
+int main() {
+  osc a = Osc("sine", 440.0, 1.0, 7.5);
+	
+	env envDefault = ADSR();
+	osc oscDefault = apply(envDefault, a);
+  write(oscDefault, "default.wav");
+	
+	/*
+	attack starts at 0s
+	decay starts at 1.0s
+	sustain starts at 2.5s at default amplitude
+	release starts at 5.0s
+	*/
+	env envParams = ADSR(1.0, 2.5, 5.0);
+	osc oscParams = apply(envParams, a);
+  write(oscParams, "params.wav");
+
+	/*
+	attack starts at 0s
+	decay starts at 3.0s
+	sustain starts at 5.5s at 0.7 amplitude
+	release starts at 6.0s
+	*/
+	env envLevel = ADSR(3.0, 5.5, 6.0, 0.7);
+	osc oscLevel = apply(envLevel, a);
+  write(oscLevel, "level.wav");
+
+	return 0;
 }

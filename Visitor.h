@@ -270,22 +270,21 @@ public:
   }
 
   std::any visitAtom(SynthtaxParser::AtomContext *ctx) {
-    // if function call with parameter(s)
-    if (ctx->expressionList() != nullptr) {
+    // if function call
+    if (ctx->ID() != nullptr && ctx->OPENPAREN() != nullptr) {
       std::string id = ctx->ID()->getText();
 
       // if Osc()
       if (id == "Osc") {
-        const int num_params = ctx->expressionList()->expression().size();
-
-        if (num_params == 3) {
-          outfile << "std::make_shared<Oscillator>(";
-        } else {
-          outfile << "std::make_shared<Oscillator>(";
-        }
-
-        outfile << ctx->expressionList()->getText() << ")";
+        outfile << "std::make_shared<Oscillator>(" << ctx->expressionList()->getText() << ")";
       }
+			
+			// if ADSR()
+			else if (id == "ADSR") {
+        outfile << "std::make_shared<ADSR>(";
+				if (ctx->expressionList() != nullptr)	outfile << ctx->expressionList()->getText();
+				outfile << ")";
+			}
 
       // if write()
       else if (id == "write") {
@@ -303,19 +302,35 @@ public:
         outfile << osc_id << "->write_to_file(" << args.substr(i + 1) << ")";
       }
 
+			// if apply()
+			else if (id == "apply") {
+        std::string args = ctx->expressionList()->getText();
+
+        int i = 0;
+        std::string env_id;
+        while (i < args.length() && args[i] != ',') {
+          if (args[i] != ' ') {
+            env_id.push_back(args[i]);
+          }
+          ++i;
+        }
+
+        outfile << env_id << "->apply_with_ptr(" << args.substr(i + 1) << ")";
+			}
+
+
       // others
       else {
         outfile << id << "(";
-        visitExpressionList(ctx->expressionList());
+        if (ctx->expressionList() != nullptr)
+					visitExpressionList(ctx->expressionList());
         outfile << ")";
       }
     }
 
-    // function call or an assignment
+    // assignment
     else if (ctx->ID() != nullptr) {
       outfile << ctx->ID()->getText();
-      if (ctx->OPENPAREN() != nullptr)
-        outfile << "()";
     }
 
     // expression
