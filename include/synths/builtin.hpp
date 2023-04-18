@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <memory>
 #include <sndfile.h>
 #include <string>
 #include <vector>
@@ -13,13 +14,68 @@ public:
   static constexpr int SAMPLE_RATE = 44100;
   double frequency;
   double amplitude;
+  double duration;
   std::string type;
+  std::vector<double> sound;
 
   Oscillator(const std::string type, const double freq, const double amp)
-      : type(type), frequency(freq), amplitude(amp) {}
+      : type(type), frequency(freq), amplitude(amp), duration(0) {}
 
-  virtual void write_to_file(const char *filename, double duration = 1.0) {
-    std::vector<double> samples = generate(duration);
+  Oscillator(const std::string type, const double freq, const double amp,
+             const double duration)
+      : type(type), frequency(freq), amplitude(amp), duration(duration) {
+    sound = generate(duration);
+  }
+
+  Oscillator(const std::string type, const double freq, const double amp,
+             const double duration, const std::vector<double> &snd)
+      : type(type), frequency(freq), amplitude(amp), duration(duration) {
+    sound = std::move(snd);
+  }
+
+  ~Oscillator() = default;
+
+  Oscillator operator+(const Oscillator &other) const {
+    double new_duration = std::max(duration, other.duration);
+    double new_frequency = frequency + other.frequency;
+    double new_amplitude = std::max(amplitude, other.amplitude);
+    std::string new_type = type;
+
+    std::vector<double> result;
+    result.reserve(new_duration * SAMPLE_RATE);
+
+    int N = std::min(sound.size(), other.sound.size());
+
+    for (int i = 0; i < N; i++) {
+      result.push_back(sound[i] + other.sound[i]);
+    }
+
+    while (N < sound.size()) {
+      result.push_back(sound[N]);
+      ++N;
+    }
+
+    while (N < other.sound.size()) {
+      result.push_back(other.sound[N]);
+      ++N;
+    }
+
+    return Oscillator(new_type, new_frequency, new_amplitude, new_duration,
+                      result);
+  }
+
+  Oscillator &operator+=(const Oscillator &other) {
+    *this = *this + other;
+    return *this;
+  }
+
+  void write_to_file(const char *filename, const double dur = 1.0) {
+    std::vector<double> samples;
+
+    if (sound.size() == 0)
+      samples = generate(dur);
+    else
+      samples = sound;
 
     SF_INFO info;
     info.channels = 1;
@@ -66,69 +122,9 @@ public:
   }
 };
 
-class AdditiveOscillator : public Oscillator {
-public:
-  double duration;
-  std::vector<double> sound;
-
-  AdditiveOscillator(const std::string type, const double freq,
-                     const double amp, const double duration)
-      : Oscillator(type, freq, amp), duration(duration) {
-    sound = generate(duration);
-  }
-
-  AdditiveOscillator(const std::string type, const double freq,
-                     const double amp, const double duration,
-                     const std::vector<double> &snd)
-      : Oscillator(type, freq, amp), duration(duration) {
-    sound = std::move(snd);
-  }
-
-  AdditiveOscillator operator+(const AdditiveOscillator &other) const {
-    double new_duration = std::max(duration, other.duration);
-    double new_frequency = frequency + other.frequency;
-    double new_amplitude = std::max(amplitude, other.amplitude);
-    std::string new_type = type;
-
-    std::vector<double> result;
-    result.reserve(new_duration * SAMPLE_RATE);
-
-    int N = std::min(sound.size(), other.sound.size());
-
-    for (int i = 0; i < N; i++) {
-      result.push_back(sound[i] + other.sound[i]);
-    }
-
-    while (N < sound.size()) {
-      result.push_back(sound[N]);
-      ++N;
-    }
-
-    while (N < other.sound.size()) {
-      result.push_back(other.sound[N]);
-      ++N;
-    }
-
-    return AdditiveOscillator(new_type, new_frequency, new_amplitude,
-                              new_duration, result);
-  }
-
-  AdditiveOscillator &operator+=(const AdditiveOscillator &other) {
-    *this = *this + other;
-    return *this;
-  }
-
-  void write_to_file(const char *filename) {
-    SF_INFO info;
-    info.channels = 1;
-    info.samplerate = 44100;
-    info.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
-
-    SNDFILE *file = sf_open(filename, SFM_WRITE, &info);
-    sf_write_double(file, &sound[0], sound.size());
-    sf_close(file);
-
-    std::cout << "Wrote " << sound.size() << " samples to " << filename << '\n';
-  }
-};
+std::shared_ptr<Oscillator> operator+(const std::shared_ptr<Oscillator> &left,
+                                      std::shared_ptr<Oscillator> &right) {
+  Oscillator newOsc = (*left) + (*right);
+  return std::make_shared<Oscillator>(newOsc);
+}
 } // namespace synths
