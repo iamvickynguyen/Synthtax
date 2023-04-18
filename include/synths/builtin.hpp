@@ -35,6 +35,9 @@ public:
 
   ~Oscillator() = default;
 
+
+/* Can use binary operator only if the Oscillator has duration */
+
   Oscillator operator+(const Oscillator &other) const {
     double new_duration = std::max(duration, other.duration);
     double new_frequency = frequency + other.frequency;
@@ -67,6 +70,35 @@ public:
   Oscillator &operator+=(const Oscillator &other) {
     *this = *this + other;
     return *this;
+  }
+  
+	Oscillator operator*(const Oscillator &other) const {
+    double new_duration = std::max(duration, other.duration);
+    double new_frequency = frequency;
+    double new_amplitude = std::max(amplitude, other.amplitude);
+    std::string new_type = type;
+
+    std::vector<double> result;
+    result.reserve(new_duration * SAMPLE_RATE);
+
+    int N = std::min(sound.size(), other.sound.size());
+
+    for (int i = 0; i < N; i++) {
+      result.push_back(sound[i] * other.sound[i]);
+    }
+
+    while (N < sound.size()) {
+      result.push_back(sound[N]);
+      ++N;
+    }
+
+    while (N < other.sound.size()) {
+      result.push_back(other.sound[N]);
+      ++N;
+    }
+
+    return Oscillator(new_type, new_frequency, new_amplitude, new_duration,
+                      result);
   }
 
   void write_to_file(const char *filename, const double dur = 1.0) {
@@ -125,6 +157,11 @@ public:
 std::shared_ptr<Oscillator> operator+(const std::shared_ptr<Oscillator> &left,
                                       std::shared_ptr<Oscillator> &right) {
   Oscillator newOsc = (*left) + (*right);
+  return std::make_shared<Oscillator>(newOsc);
+}
+
+std::shared_ptr<Oscillator> operator*(const std::shared_ptr<Oscillator> &left, std::shared_ptr<Oscillator> &right) {
+  Oscillator newOsc = (*left) * (*right);
   return std::make_shared<Oscillator>(newOsc);
 }
 } // namespace synths
