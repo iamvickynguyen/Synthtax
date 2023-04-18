@@ -10,25 +10,25 @@
 namespace synths {
 class Oscillator {
 public:
-  static constexpr double PI = 3.14159265358979323846;
+  static constexpr float PI = 3.14159265358979323846;
   static constexpr int SAMPLE_RATE = 44100;
-  double frequency;
-  double amplitude;
-  double duration;
+  float frequency;
+  float amplitude;
+  float duration;
   std::string type;
-  std::vector<double> sound;
+  std::vector<float> sound;
 
-  Oscillator(const std::string type, const double freq, const double amp)
+  Oscillator(const std::string type, const float freq, const float amp)
       : type(type), frequency(freq), amplitude(amp), duration(0) {}
 
-  Oscillator(const std::string type, const double freq, const double amp,
-             const double duration)
+  Oscillator(const std::string type, const float freq, const float amp,
+             const float duration)
       : type(type), frequency(freq), amplitude(amp), duration(duration) {
     sound = generate(duration);
   }
 
-  Oscillator(const std::string type, const double freq, const double amp,
-             const double duration, const std::vector<double> &snd)
+  Oscillator(const std::string type, const float freq, const float amp,
+             const float duration, const std::vector<float> &snd)
       : type(type), frequency(freq), amplitude(amp), duration(duration) {
     sound = std::move(snd);
   }
@@ -39,12 +39,12 @@ public:
 /* Can use binary operator only if the Oscillator has duration */
 
   Oscillator operator+(const Oscillator &other) const {
-    double new_duration = std::max(duration, other.duration);
-    double new_frequency = frequency + other.frequency;
-    double new_amplitude = std::max(amplitude, other.amplitude);
+    float new_duration = std::max(duration, other.duration);
+    float new_frequency = frequency + other.frequency;
+    float new_amplitude = std::max(amplitude, other.amplitude);
     std::string new_type = type;
 
-    std::vector<double> result;
+    std::vector<float> result;
     result.reserve(new_duration * SAMPLE_RATE);
 
     int N = std::min(sound.size(), other.sound.size());
@@ -73,12 +73,12 @@ public:
   }
   
 	Oscillator operator*(const Oscillator &other) const {
-    double new_duration = std::max(duration, other.duration);
-    double new_frequency = frequency;
-    double new_amplitude = std::max(amplitude, other.amplitude);
+    float new_duration = std::max(duration, other.duration);
+    float new_frequency = frequency;
+    float new_amplitude = std::max(amplitude, other.amplitude);
     std::string new_type = type;
 
-    std::vector<double> result;
+    std::vector<float> result;
     result.reserve(new_duration * SAMPLE_RATE);
 
     int N = std::min(sound.size(), other.sound.size());
@@ -101,8 +101,8 @@ public:
                       result);
   }
 
-  void write_to_file(const char *filename, const double dur = 1.0) {
-    std::vector<double> samples;
+  void write_to_file(const char *filename, const float dur = 1.0) {
+    std::vector<float> samples;
 
     if (sound.size() == 0)
       samples = generate(dur);
@@ -112,10 +112,10 @@ public:
     SF_INFO info;
     info.channels = 1;
     info.samplerate = 44100;
-    info.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
+    info.format = SF_FORMAT_WAV | SF_FORMAT_FLOAT;
 
     SNDFILE *file = sf_open(filename, SFM_WRITE, &info);
-    sf_write_double(file, &samples[0], samples.size());
+    sf_write_float(file, &samples[0], samples.size());
     sf_close(file);
 
     std::cout << "Wrote " << samples.size() << " samples to " << filename
@@ -123,16 +123,16 @@ public:
   }
 
   // duration in seconds
-  std::vector<double> generate(const double duration) {
+  std::vector<float> generate(const float duration) {
     int num_samples = SAMPLE_RATE * duration;
-    std::vector<double> samples;
+    std::vector<float> samples;
     samples.reserve(num_samples);
 
-    double period = 1.0 / frequency;
+    float period = 1.0 / frequency;
 
     for (int i = 0; i < num_samples; ++i) {
-      double t = (i + 0.0) / SAMPLE_RATE;
-      double x = 0.0;
+      float t = (i + 0.0) / SAMPLE_RATE;
+      float x = 0.0;
 
       if (type == "sine") {
         x = amplitude * std::sin(2.0 * PI * frequency * t);
