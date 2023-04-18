@@ -1,7 +1,9 @@
-void main() {
+int main() {
 	// Osc(type, frequency, amplitude, duration)
   osc a = Osc("sine", 440.0, 1.0, 1.0);
   osc b = Osc("sine", 220.0, 0.8, 1.5);
   osc c = a + b;
   write(c, "add.wav");
+
+	return 0;
 }

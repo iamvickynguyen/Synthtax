@@ -7,8 +7,9 @@ int sum(a: int, b: int, s: string) {
   return a + b;
 }
 
-void main() {
+int main() {
   int a = get_int();
   string b = get_string();
   int c = sum(200, 300, "hello");
+	return 0;
 }

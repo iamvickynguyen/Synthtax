@@ -1,5 +1,6 @@
-void main() {
+int main() {
   int a = 2 + 3;
   float b = (10 + 2) + 3.2;
   float c = 2.5 + 4.0
+	return 0;
 }

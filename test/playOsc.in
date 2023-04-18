@@ -1,4 +1,4 @@
-void main() {
+int main() {
 	// without duration
   osc s = Osc("sine", 440.0, 1.0);
 	write(s, "sine440.wav", 2.0);
@@ -10,4 +10,6 @@ void main() {
 	// triangle wave
 	osc sc = Osc("triangle", 440.0, 1.0);
 	write(sc, "triangle440.wav", 2.0);
+	
+	return 0;
 }

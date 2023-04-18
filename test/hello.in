@@ -1,4 +1,4 @@
-void main() {
+int main() {
   int a = 2;
   char b = 'b';
   /* block comment
@@ -6,4 +6,5 @@ void main() {
 
   string d = "helloworld";
 	float c = 2.0 + 3 * 4.000032;
+	return 0;
 }

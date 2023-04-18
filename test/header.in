@@ -4,4 +4,4 @@
 #include "somelib.h"
 @end_header
 
-void main() {}
+int main() {}
