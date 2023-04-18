@@ -1,6 +1,6 @@
 # Synthtax ( :construction: under construction :construction: )
 
-Synthtax is a dynamically typed, imperative music programming language designed for creating and manipulating sound. This minimal language is able to supports some programming constructs such as loops, conditionals, and function calls. Synthtax provides a mechanism to generate and modify sound, specifically, oscillators and ADSR. The language is implemented as a C++ transpiler using the C++ programming language and ANTLR.
+Synthtax is a typed, imperative music programming language designed for creating and manipulating sound. This minimal language is able to supports some programming constructs such as loops, conditionals, and function calls. Synthtax provides a mechanism to generate and modify sound, specifically, oscillators and ADSR. The language is implemented as a C++ transpiler using the C++ programming language and ANTLR.
 
 See [Synthtax examples](test/)
 
@@ -11,6 +11,16 @@ See [Synthtax examples](test/)
 2. `cmake -S ./ -B build` : create build
 3. `cd build; make` : compile and link
 4. `./synthtax <filename>` : run the file
+
+At this point, you will get an `output.cpp` file. Do `cd ..` to the project base directory to see the file.
+
+Compile `outfile.cpp` with your favourite C++ compiler. If you have `write_to_file()` function in `output.cpp` (i.e., if you want to write to a `.wav` file), you need to add `-lsndfile` flag to link with the `libsndfile` library. I will figure out how to link `libsndfile` in CMake in the future (probably include this [cmake folder](https://github.com/libsndfile/libsndfile/tree/master/cmake))
+
+Example:
+
+```
+g++ output.cpp -lsndfile
+```
 
 ## Goals
 
@@ -32,8 +42,8 @@ See [Synthtax examples](test/)
 
 ## TODO
 
-1. Change `include` and `void main()` in `Visitor.h`
-2. Implement ADSR class
+1. Implement ADSR class
+2. Test with loop
 3. Documentation
 
 ## Roles
