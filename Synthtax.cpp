@@ -38,7 +38,7 @@ int main(int argc, const char *argv[]) {
   visitor.visitProg(prog);
 
 	std::ofstream out;
-	out.open("output.cpp");
+	out.open("../output.cpp");
 	out << visitor.outfile.str();
 
 	out.close();
