@@ -167,9 +167,11 @@ public:
     outfile << ") {";
 
     if (ctx->block()) {
+			++indentLevel;
       outfile << "\n";
       visitBlock(ctx->block());
       outfile << "\n";
+			--indentLevel;
 
       indent();
     }
