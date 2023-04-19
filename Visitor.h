@@ -101,10 +101,10 @@ public:
       visitReturnStatement(ctx->returnStatement());
     else if (ctx->assignmentStatement() != nullptr)
       visitAssignmentStatement(ctx->assignmentStatement());
-		else if (ctx->printStatement() != nullptr)
-			visitPrintStatement(ctx->printStatement());
-		else if (ctx->printLnStatement() != nullptr)
-			visitPrintLnStatement(ctx->printLnStatement());
+    else if (ctx->printStatement() != nullptr)
+      visitPrintStatement(ctx->printStatement());
+    else if (ctx->printLnStatement() != nullptr)
+      visitPrintLnStatement(ctx->printLnStatement());
     else
       outfile << ";\n";
     return NULL;
@@ -190,17 +190,19 @@ public:
     visitExpression(ctx->expression());
     return NULL;
   }
-  
-	std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) {
-		outfile << "std::cout << ";
-		if (ctx->expression() != nullptr) visitExpression(ctx->expression());
+
+  std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) {
+    outfile << "std::cout << ";
+    if (ctx->expression() != nullptr)
+      visitExpression(ctx->expression());
     return NULL;
   }
-  
-	std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx) {
-		outfile << "std::cout << ";
-		if (ctx->expression() != nullptr) visitExpression(ctx->expression());
-		outfile << " << '\\n'";
+
+  std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx) {
+    outfile << "std::cout << ";
+    if (ctx->expression() != nullptr)
+      visitExpression(ctx->expression());
+    outfile << " << '\\n'";
     return NULL;
   }
 
@@ -293,15 +295,17 @@ public:
 
       // if Osc()
       if (id == "Osc") {
-        outfile << "std::make_shared<Oscillator>(" << ctx->expressionList()->getText() << ")";
+        outfile << "std::make_shared<Oscillator>("
+                << ctx->expressionList()->getText() << ")";
       }
-			
-			// if ADSR()
-			else if (id == "ADSR") {
+
+      // if ADSR()
+      else if (id == "ADSR") {
         outfile << "std::make_shared<ADSR>(";
-				if (ctx->expressionList() != nullptr)	outfile << ctx->expressionList()->getText();
-				outfile << ")";
-			}
+        if (ctx->expressionList() != nullptr)
+          outfile << ctx->expressionList()->getText();
+        outfile << ")";
+      }
 
       // if write()
       else if (id == "write") {
@@ -319,8 +323,8 @@ public:
         outfile << osc_id << "->write_to_file(" << args.substr(i + 1) << ")";
       }
 
-			// if apply()
-			else if (id == "apply") {
+      // if apply()
+      else if (id == "apply") {
         std::string args = ctx->expressionList()->getText();
 
         int i = 0;
@@ -333,14 +337,13 @@ public:
         }
 
         outfile << env_id << "->apply_with_ptr(" << args.substr(i + 1) << ")";
-			}
-
+      }
 
       // others
       else {
         outfile << id << "(";
         if (ctx->expressionList() != nullptr)
-					visitExpressionList(ctx->expressionList());
+          visitExpressionList(ctx->expressionList());
         outfile << ")";
       }
     }
