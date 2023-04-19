@@ -1,8 +1,12 @@
-# Synthtax ( :construction: under construction :construction: )
+# Synthtax - a small music programming language
 
-Synthtax is a typed, imperative music programming language designed for creating and manipulating sound. This minimal language is able to supports some programming constructs such as loops, conditionals, and function calls. Synthtax provides a mechanism to generate and modify sound, specifically, oscillators and ADSR. The language is implemented as a C++ transpiler using the C++ programming language and ANTLR.
+Synthtax is a small, typed, imperative music programming language designed for creating and manipulating sound. This minimal language is able to supports some programming constructs such as loops, conditionals, and function calls. Synthtax provides a mechanism to generate and modify sound, specifically, oscillators and ADSR. The language is implemented as a C++ transpiler using the C++ programming language and ANTLR.
 
-See [Synthtax examples](test/)
+## Grammar and Syntax
+
+Synthtax has a relatively simple grammar and syntax. Here are some of the key features of the language:
+
+...TODO...
 
 ## How to run
 
@@ -45,10 +49,3 @@ g++ output.cpp -lsndfile
 1. Implement ADSR class
 2. Test with loop
 3. Documentation
-
-## Roles
-
-| Members | Roles |
-| --- | --- |
-| Vicky | - Set up github repo </br>- Designed the language </br>- Researched tool for creating a programming language (ANTLR) and how to generate C++ code (C++ runtime) </br>- Wrote and debugged ANTLR grammar :tired_face: </br>- Integrated C++ runtime </br>- Wrote project report </br>- Output to C++ code with the Visitor (in progress) |
-| Skylar | - Wrote project report </br>- Designed and created the functions </br>- Researched audio output through different waves (sine, triangle, sawtooth, square) for C++ </br>-Output those waves to the speakers of user for C++ </br>-Researched PortAudio</br>-Figured out how ADSR envelopes and applying them can be done more optimally in C++</br>-More Defining of the language's syntax and grammar (in progress) </br>-More Developing a library of musical functions and algorithms (in progress)|
