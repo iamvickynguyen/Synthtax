@@ -46,6 +46,10 @@ public:
 
     virtual std::any visitAssignmentStatement(SynthtaxParser::AssignmentStatementContext *context) = 0;
 
+    virtual std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *context) = 0;
+
+    virtual std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *context) = 0;
+
     virtual std::any visitBlock(SynthtaxParser::BlockContext *context) = 0;
 
     virtual std::any visitExpression(SynthtaxParser::ExpressionContext *context) = 0;

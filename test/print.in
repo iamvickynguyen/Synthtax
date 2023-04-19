@@ -1,0 +1,11 @@
+int main() {
+	print "hello_world";
+	println "";
+	print 123;
+	println '_';
+	print 4.5;
+	print 'A';
+	println 5 + 6;
+	println (7 * 8 - (9 + 10));
+	return 0;
+}

@@ -101,6 +101,10 @@ public:
       visitReturnStatement(ctx->returnStatement());
     else if (ctx->assignmentStatement() != nullptr)
       visitAssignmentStatement(ctx->assignmentStatement());
+		else if (ctx->printStatement() != nullptr)
+			visitPrintStatement(ctx->printStatement());
+		else if (ctx->printLnStatement() != nullptr)
+			visitPrintLnStatement(ctx->printLnStatement());
     else
       outfile << ";\n";
     return NULL;
@@ -184,6 +188,19 @@ public:
   visitAssignmentStatement(SynthtaxParser::AssignmentStatementContext *ctx) {
     outfile << ctx->ID()->getText() << " = ";
     visitExpression(ctx->expression());
+    return NULL;
+  }
+  
+	std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) {
+		outfile << "std::cout << ";
+		if (ctx->expression() != nullptr) visitExpression(ctx->expression());
+    return NULL;
+  }
+  
+	std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx) {
+		outfile << "std::cout << ";
+		if (ctx->expression() != nullptr) visitExpression(ctx->expression());
+		outfile << " << '\\n'";
     return NULL;
   }
 

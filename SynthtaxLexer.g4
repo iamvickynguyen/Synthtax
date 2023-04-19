@@ -8,6 +8,10 @@ ELSE : 'else';
 
 WHILE : 'while';
 
+PRINT : 'print';
+
+PRINTLN : 'println';
+
 RETURN : 'return';
 
 BOOL : 'true' | 'false';

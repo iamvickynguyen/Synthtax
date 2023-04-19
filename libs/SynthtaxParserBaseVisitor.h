@@ -69,6 +69,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual std::any visitBlock(SynthtaxParser::BlockContext *ctx) override {
     return visitChildren(ctx);
   }

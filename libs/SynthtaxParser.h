@@ -13,20 +13,22 @@ namespace synthtax_antlr {
 class  SynthtaxParser : public antlr4::Parser {
 public:
   enum {
-    HEADER = 1, IF = 2, ELSE = 3, WHILE = 4, RETURN = 5, BOOL = 6, COMMA = 7, 
-    COLON = 8, SEMICOLON = 9, OPENPAREN = 10, CLOSEPAREN = 11, OPENBRACKET = 12, 
-    CLOSEBRACKET = 13, ASSIGN = 14, EQUALITY = 15, LESS = 16, ADD = 17, 
-    SUB = 18, MUL = 19, DIV = 20, TYPE = 21, STRING = 22, INT = 23, FLOAT = 24, 
-    CHAR = 25, ID = 26, NEWLINE = 27, WS = 28, BLOCKCOMMENT = 29, LINECOMMENT = 30
+    HEADER = 1, IF = 2, ELSE = 3, WHILE = 4, PRINT = 5, PRINTLN = 6, RETURN = 7, 
+    BOOL = 8, COMMA = 9, COLON = 10, SEMICOLON = 11, OPENPAREN = 12, CLOSEPAREN = 13, 
+    OPENBRACKET = 14, CLOSEBRACKET = 15, ASSIGN = 16, EQUALITY = 17, LESS = 18, 
+    ADD = 19, SUB = 20, MUL = 21, DIV = 22, TYPE = 23, STRING = 24, INT = 25, 
+    FLOAT = 26, CHAR = 27, ID = 28, NEWLINE = 29, WS = 30, BLOCKCOMMENT = 31, 
+    LINECOMMENT = 32
   };
 
   enum {
     RuleProg = 0, RuleCppHeader = 1, RuleFunction = 2, RuleFuncDeclaration = 3, 
     RuleFormalParameters = 4, RuleFuncBody = 5, RuleStatement = 6, RuleVarDeclaration = 7, 
     RuleExpressionStatement = 8, RuleIfStatement = 9, RuleWhileStatement = 10, 
-    RuleReturnStatement = 11, RuleAssignmentStatement = 12, RuleBlock = 13, 
-    RuleExpression = 14, RuleLessExpression = 15, RuleAddSubExpression = 16, 
-    RuleMulDivExpression = 17, RuleAtom = 18, RuleExpressionList = 19, RuleLiteral = 20
+    RuleReturnStatement = 11, RuleAssignmentStatement = 12, RulePrintStatement = 13, 
+    RulePrintLnStatement = 14, RuleBlock = 15, RuleExpression = 16, RuleLessExpression = 17, 
+    RuleAddSubExpression = 18, RuleMulDivExpression = 19, RuleAtom = 20, 
+    RuleExpressionList = 21, RuleLiteral = 22
   };
 
   explicit SynthtaxParser(antlr4::TokenStream *input);
@@ -59,6 +61,8 @@ public:
   class WhileStatementContext;
   class ReturnStatementContext;
   class AssignmentStatementContext;
+  class PrintStatementContext;
+  class PrintLnStatementContext;
   class BlockContext;
   class ExpressionContext;
   class LessExpressionContext;
@@ -174,6 +178,8 @@ public:
     WhileStatementContext *whileStatement();
     ReturnStatementContext *returnStatement();
     AssignmentStatementContext *assignmentStatement();
+    PrintStatementContext *printStatement();
+    PrintLnStatementContext *printLnStatement();
     antlr4::tree::TerminalNode *SEMICOLON();
 
 
@@ -275,6 +281,34 @@ public:
   };
 
   AssignmentStatementContext* assignmentStatement();
+
+  class  PrintStatementContext : public antlr4::ParserRuleContext {
+  public:
+    PrintStatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *PRINT();
+    ExpressionContext *expression();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  PrintStatementContext* printStatement();
+
+  class  PrintLnStatementContext : public antlr4::ParserRuleContext {
+  public:
+    PrintLnStatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *PRINTLN();
+    ExpressionContext *expression();
+
+
+    virtual std::any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  PrintLnStatementContext* printLnStatement();
 
   class  BlockContext : public antlr4::ParserRuleContext {
   public:

@@ -21,6 +21,8 @@ statement
 	| whileStatement
 	| returnStatement
 	| assignmentStatement
+	| printStatement
+	| printLnStatement
 	| SEMICOLON
 	;
 
@@ -38,6 +40,10 @@ whileStatement : WHILE OPENPAREN expression CLOSEPAREN block ;
 returnStatement : RETURN expression ;
 
 assignmentStatement : ID ASSIGN expression ;
+
+printStatement : PRINT expression;
+
+printLnStatement : PRINTLN expression;
 
 block : OPENBRACKET statement* CLOSEBRACKET ;
 
