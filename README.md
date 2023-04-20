@@ -127,7 +127,7 @@ write(s, "sine440.wav", 2.0);
 
 #### Operators
 
-Add or multiply 2 oscillators. Return a new oscillator with a duration that equals to the longer one.
+Add, subtract, and multiply 2 oscillators. Return a new oscillator with a duration that equals to the longer one.
 
 Example:
 
@@ -135,7 +135,8 @@ Example:
 osc a = Osc("sine", 440.0, 1.0, 1.0);
 osc b = Osc("sine", 220.0, 0.8, 1.5);
 osc c = a + b;
-osc d = a * b;
+osc d = a - b;
+osc e = a * b;
 ```
 
 ### ADSR
