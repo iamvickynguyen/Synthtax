@@ -2,6 +2,34 @@
 
 Synthtax is a small, typed, imperative music programming language designed for creating and manipulating sound. This minimal language is able to supports some programming constructs such as loops, conditionals, and function calls. Synthtax provides a mechanism to generate and modify sound, specifically, oscillators and ADSR. The language is implemented as a C++ transpiler using the C++ programming language and ANTLR.
 
+<!-- vim-markdown-toc GFM -->
+
+* [Grammar and Syntax](#grammar-and-syntax)
+    * [Types](#types)
+    * [Variables](#variables)
+    * [Print](#print)
+    * [Functions](#functions)
+    * [Conditionals](#conditionals)
+    * [Loops](#loops)
+    * [Oscillators](#oscillators)
+        * [Create an oscillator](#create-an-oscillator)
+        * [Write an oscillator to a `.wav` file](#write-an-oscillator-to-a-wav-file)
+        * [Operators](#operators)
+    * [ADSR](#adsr)
+        * [Create an ADSR](#create-an-adsr)
+        * [Apply an ADSR to an oscillator](#apply-an-adsr-to-an-oscillator)
+    * [Headers](#headers)
+* [Installation](#installation)
+* [How to run](#how-to-run)
+* [How Synthtax works](#how-synthtax-works)
+* [Future Development](#future-development)
+* [Goals](#goals)
+* [Reference](#reference)
+* [Resources](#resources)
+* [Roles](#roles)
+
+<!-- vim-markdown-toc -->
+
 ## Grammar and Syntax
 
 Synthtax has a relatively simple grammar and syntax. Here are some of the key features of the language:
