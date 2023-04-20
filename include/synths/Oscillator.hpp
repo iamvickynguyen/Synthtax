@@ -72,6 +72,35 @@ public:
     return *this;
   }
   
+	Oscillator operator-(const Oscillator &other) const {
+    float new_duration = std::max(duration, other.duration);
+    float new_frequency = frequency;
+    float new_amplitude = std::max(amplitude, other.amplitude);
+    std::string new_type = type;
+
+    std::vector<float> result;
+    result.reserve(new_duration * SAMPLE_RATE);
+
+    int N = std::min(sound.size(), other.sound.size());
+
+    for (int i = 0; i < N; i++) {
+      result.push_back(sound[i] - other.sound[i]);
+    }
+
+    while (N < sound.size()) {
+      result.push_back(sound[N]);
+      ++N;
+    }
+
+    while (N < other.sound.size()) {
+      result.push_back(other.sound[N]);
+      ++N;
+    }
+
+    return Oscillator(new_type, new_frequency, new_amplitude, new_duration,
+                      result);
+  }
+
 	Oscillator operator*(const Oscillator &other) const {
     float new_duration = std::max(duration, other.duration);
     float new_frequency = frequency;
@@ -100,8 +129,8 @@ public:
     return Oscillator(new_type, new_frequency, new_amplitude, new_duration,
                       result);
   }
-
-  void write_to_file(const char *filename, const float dur = 1.0) {
+  
+	void write_to_file(const char *filename, const float dur = 1.0) {
     std::vector<float> samples;
 
     if (sound.size() == 0)
@@ -157,6 +186,11 @@ public:
 std::shared_ptr<Oscillator> operator+(const std::shared_ptr<Oscillator> &left,
                                       std::shared_ptr<Oscillator> &right) {
   Oscillator newOsc = (*left) + (*right);
+  return std::make_shared<Oscillator>(newOsc);
+}
+
+std::shared_ptr<Oscillator> operator-(const std::shared_ptr<Oscillator> &left, std::shared_ptr<Oscillator> &right) {
+  Oscillator newOsc = (*left) - (*right);
   return std::make_shared<Oscillator>(newOsc);
 }
 
