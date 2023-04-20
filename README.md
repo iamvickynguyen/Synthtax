@@ -26,11 +26,23 @@ Declaring a variable is similar to C++
 
 Example:
 
-```
+```c
 int a = 2;
 float b = 3.5;
 string c = "hello";
 osc d = Osc("sine", 440.0, 1.0, 1.0);
+```
+
+### Print
+
+Print an expression with `print` and `println`
+
+Example:
+
+```c
+print "hello";
+print (2 + 3);
+println 'a';
 ```
 
 ### Functions
@@ -39,9 +51,163 @@ Functions are defined with return type, followed by the function name, and param
 
 Example:
 
-```
+```c
 int add(a: int, b: int) {
   return a + b;
+}
+```
+
+### Conditionals
+
+There are `if` and `else` only.
+
+Example:
+
+```c
+if (2 < 3) {
+  print "yes";
+} else {
+  print "no";
+}
+```
+
+### Loops
+
+Loop with `while`
+
+Example:
+
+```c
+int i = 0;
+while (i < 5) {
+  i = i + 1;
+}
+println i;
+```
+
+### Oscillators
+
+#### Create an oscillator
+
+Create an oscillator with type `osc` and the `Osc()` function.
+
+Constructors:
+
+```c
+osc Osc(type: string, frequency: float, amplitude: float)
+osc Osc(type: string, frequency: float, amplitude: float, duration: float)
+osc Osc(type: string, frequency: float, amplitude: float, duration: float, sound: std::vector<float>)
+```
+
+An `Osc()` function accepts one of the 3 types: `sine`, `triangle`, `sawtooth`
+
+Example:
+
+```c
+ osc a = Osc("sine", 440.0, 1.0, 1.0);
+```
+
+#### Write an oscillator to a `.wav` file
+
+Use `write()` function to write an oscillator to a `.wav` file.
+
+Signatures:
+
+```c
+write(oscillator: osc, outfile: string, duration: float); // write an oscillator with a duration
+write(oscillator: osc, outfile: string); // write an oscillator without a duration, default 1s
+```
+
+Example:
+
+```c
+osc s = Osc("sine", 440.0, 1.0);
+write(s, "sine440.wav", 2.0);
+```
+
+#### Operators
+
+Add or multiply 2 oscillators. Return a new oscillator with a duration that equals to the longer one.
+
+Example:
+
+```c
+osc a = Osc("sine", 440.0, 1.0, 1.0);
+osc b = Osc("sine", 220.0, 0.8, 1.5);
+osc c = a + b;
+osc d = a * b;
+```
+
+### ADSR
+
+#### Create an ADSR
+
+Create an ADSR with type `env` and the `ADSR()` function.
+
+Constructors:
+
+```c
+env ADSR(); // default
+env ADSR(decay_time: float, sustain_time: float, release_time: float, sustain_level=0.8: float); // attack always starts at 0s
+```
+
+Example:
+
+```c
+env envDefault = ADSR();
+
+/*
+attack starts at 0s
+decay starts at 1.0s
+sustain starts at 2.5s at default amplitude
+release starts at 5.0s
+*/
+env envParams = ADSR(1.0, 2.5, 5.0);
+
+/*
+attack starts at 0s
+decay starts at 3.0s
+sustain starts at 5.5s at 0.7 amplitude
+release starts at 6.0s
+*/
+env envLevel = ADSR(3.0, 5.5, 6.0, 0.7);
+```
+
+#### Apply an ADSR to an oscillator
+
+Apply an ADSR to an oscillator with the `apply()` function. Return a new oscillator.
+
+Signature:
+
+```c
+osc apply(envelop: env, oscillator: osc)
+```
+
+Example:
+
+```c
+osc a = Osc("sine", 440.0, 1.0, 7.5);
+env envDefault = ADSR();
+osc oscDefault = apply(envDefault, a);
+```
+
+### Headers
+
+Write the block between the 2 keywords `@header` and `@end_header` verbatim at the beginning of the transpilled file. his allows the user to use some functions in their header files, define some data types or macros.
+
+Example:
+
+```c
+@header
+#include <math.h>
+#include "myadd.h"
+using namespace std;
+@end_header
+
+int main() {
+  int a = myadd_func(2, 3); // from myadd.h
+  int b = max(a, 6); // from std library
+  println b;
 }
 ```
 
