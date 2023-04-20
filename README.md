@@ -274,3 +274,10 @@ Synthtax is a small language and it does not support many programming constructs
 3. [Getting Started with ANTLR in C++](https://tomassetti.me/getting-started-antlr-cpp/)
 4. [Demo application for the ANTLR4 C++ target](https://github.com/antlr/antlr4/tree/master/runtime/Cpp/demo)
 5. [ANTLR Based Transpiler](https://github.com/ram-nad/ANTLR-Based-Transpiler)
+
+## Roles
+
+| Members | Roles |
+| --- | --- |
+| Vicky | - Set up github repo </br>- Designed the language </br>- Researched tool for creating a programming language (ANTLR) and how to generate C++ code (C++ runtime) </br>- Wrote and debugged ANTLR grammar :tired_face: </br>- Integrated C++ runtime </br>- Wrote project report </br>- Implemented the Visitor class to generate C++ code</br>- Implemented Oscillator and ADSR classes</br>- Included `libsndfile` library</br>- Added some features such as header, additive synth, multiply synth, etc.</br>- Wrote Github documentation</br>- Prepared for the presentation |
+| Skylar | - Wrote project report </br>- Designed and created the functions </br>- Researched audio output through different waves (sine, triangle, sawtooth, square) for C++ </br>- Researched PortAudio</br>- Figured out how ADSR envelopes and applying them can be done more optimally in C++</br>- More Defining of the language's syntax and grammar (in progress) </br>- More Developing a library of musical functions and algorithms (in progress)|
