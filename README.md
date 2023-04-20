@@ -284,9 +284,21 @@ To use ANTLR, I need to input my grammar for the Synthtax language (i.e., `Synth
 
 For now, an audio is written to a `.wav` file using `libsndfile` library. Implementation for Synthtax built-in functions such as Oscillator and ADSR can be found in the [include folder](https://github.com/iamvickynguyen/Synthtax/tree/antlr/include/synths). These objects are transpilled as a smart pointer object because it can automatically deallocate the objects' memory, and I don't have to keep track of which objects are created and add some delete statements.
 
+## What was learned
+
+- How to design a programming language
+- How hard it is to write a lexer and parser from scratch
+- How to write a proper ANTLR grammar
+- How to intergrate the C++ runtime
+- How to generate C++ code with the parse tree
+- How to properly link libraries and header files in CMake
+- How static typed and dynamic typed language can be transpiled
+- A bit of RTAudio and libsndfile
+- Project structure, documentation, a better software engineer
+
 ## Future Development
 
-Synthtax is a small language and it does not support many programming constructs. In the future, I will expand its capabilities such as adding arrays and user defined objects, and some digital processing concepts such as frequency modulation, filters, and getting MIDI input.
+Synthtax is a small language and it does not support many programming constructs. In the future, I will expand its capabilities such as adding arrays, and some digital processing concepts such as frequency modulation, filters, and getting MIDI input.
 
 ## Goals
 
