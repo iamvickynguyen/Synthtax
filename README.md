@@ -6,7 +6,44 @@ Synthtax is a small, typed, imperative music programming language designed for c
 
 Synthtax has a relatively simple grammar and syntax. Here are some of the key features of the language:
 
-...TODO...
+### Types
+
+| Type | Description |
+|---|---|
+| `void` | C++ equivalent: `void` |
+| `int` | C++ equivalent: `int` |
+| `float` | C++ equivalent: `float` |
+| `char` | C++ equivalent: `char`</br>Rule: `'\'' [a-zA-Z_.] '\''` |
+| `string` | C++ equivalent: `std::string`</br>Rule: `'"' [a-zA-Z_0-9.]* '"'` |
+| `osc` | Oscillator object |
+| `env` | ADSR object |
+
+### Variables
+
+Declaring a variable is similar to C++
+
+**Identifier** rule: `[a-zA-Z_]+`
+
+Example:
+
+```
+int a = 2;
+float b = 3.5;
+string c = "hello";
+osc d = Osc("sine", 440.0, 1.0, 1.0);
+```
+
+### Functions
+
+Functions are defined with return type, followed by the function name, and parameters if any.
+
+Example:
+
+```
+int add(a: int, b: int) {
+  return a + b;
+}
+```
 
 ## How to run
 
