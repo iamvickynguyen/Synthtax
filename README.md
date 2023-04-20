@@ -2,6 +2,8 @@
 
 Synthtax is a small, typed, imperative music programming language designed for creating and manipulating sound. This minimal language is able to supports some programming constructs such as loops, conditionals, and function calls. Synthtax provides a mechanism to generate and modify sound, specifically, oscillators and ADSR. The language is implemented as a C++ transpiler using the C++ programming language and ANTLR.
 
+## Table of Contents
+
 <!-- vim-markdown-toc GFM -->
 
 * [Grammar and Syntax](#grammar-and-syntax)
