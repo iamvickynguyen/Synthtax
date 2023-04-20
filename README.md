@@ -211,9 +211,19 @@ int main() {
 }
 ```
 
+## Installation
+
+Clone or download this project
+
+**Requirements**:
+
+- Java
+- C++ compiler
+- CMake
+- `libsndfile` to write a `.wav` file (see [github.com/libsndfile](https://github.com/libsndfile/libsndfile))
+ 
 ## How to run
 
-0. Require `libsndfile` to write a `.wav` file (see [github.com/libsndfile](https://github.com/libsndfile/libsndfile))
 1. `./generate.sh` : generate lexer, parser, visitor classes
 2. `cmake -S ./ -B build` : create build
 3. `cd build; make` : compile and link
