@@ -163,9 +163,9 @@ Example:
 ```c
 osc a = Osc("sine", 440.0, 1.0, 1.0);
 osc b = Osc("sine", 220.0, 0.8, 1.5);
-osc c = a + b;
-osc d = a - b;
-osc e = a * b;
+osc c = a + b; // additive synth
+osc d = a - b; // subtractive synth
+osc e = a * b; // multiplicative synth
 ```
 
 ### ADSR
@@ -223,7 +223,7 @@ osc oscDefault = apply(envDefault, a);
 
 ### Headers
 
-Write the block between the 2 keywords `@header` and `@end_header` verbatim at the beginning of the transpilled file. his allows the user to use some functions in their header files, define some data types or macros.
+Write the block between the 2 keywords `@header` and `@end_header` verbatim at the beginning of the transpilled file. This allows the user to use some functions in their header files, define some data types or macros.
 
 Example:
 
