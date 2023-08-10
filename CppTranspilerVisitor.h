@@ -7,11 +7,11 @@
 #include <string>
 
 namespace synthtax_antlr {
-class Visitor : public SynthtaxParserBaseVisitor {
+class CppTranspilerVisitor : public SynthtaxParserBaseVisitor {
 public:
   std::stringstream outfile;
 
-  Visitor() : indentLevel(1) {}
+  CppTranspilerVisitor() : indentLevel(1) {}
 
   std::any visitProg(SynthtaxParser::ProgContext *ctx) {
     outfile << "#include \"include/synths/builtin.hpp\"\n";

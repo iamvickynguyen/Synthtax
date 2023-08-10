@@ -248,9 +248,12 @@ Clone or download this project
 **Requirements**:
 
 - Java
-- C++ compiler
+- C++ compiler (Clang)
 - CMake
 - `libsndfile` to write a `.wav` file (see [github.com/libsndfile](https://github.com/libsndfile/libsndfile))
+- LLVM (see [LLVM Download Page](https://releases.llvm.org/))
+
+> **_NOTE:_**: If you want to compile LLVM from source, then follow this documentation [llvm.org/docs/checkout-llvm-from-git](https://llvm.org/docs/GettingStarted.html#checkout-llvm-from-git)
  
 ## How to run
 
