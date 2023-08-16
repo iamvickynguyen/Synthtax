@@ -14,6 +14,7 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
+#include <llvm/IR/Verifier.h>
 
 #include <iostream> // DEBUG
 
@@ -55,9 +56,32 @@ public:
   }
 
   std::any visitFunction(SynthtaxParser::FunctionContext *ctx) {
-    visitFuncDeclaration(ctx->funcDeclaration());
-    // visitFuncBody(ctx->funcBody());
-    return nullptr;
+    llvm::Function *func = std::any_cast<llvm::Function *>(visitFuncDeclaration(ctx->funcDeclaration()));
+
+    llvm::BasicBlock *BB = llvm::BasicBlock::Create(context_, "entry", func);
+    builder_.SetInsertPoint(BB);
+
+    std::unordered_map<std::string, llvm::Value *> tmp_table = name_value_;
+
+    name_value_.clear();
+    for (auto &arg : func->args())
+      name_value_[std::string(arg.getName())] = &arg;
+
+    try {
+      llvm::Value *return_type = std::any_cast<llvm::Value *>(visitFuncBody(ctx->funcBody()));
+
+      // restore symbol table
+      name_value_ = tmp_table;
+
+      if (return_type == nullptr)
+          builder_.CreateRetVoid();
+
+    } catch (const std::bad_any_cast& e) {
+      builder_.CreateRetVoid(); // nullptr
+    }
+
+    llvm::verifyFunction(*func);
+    return func;
   }
 
   std::any visitFuncDeclaration(SynthtaxParser::FuncDeclarationContext *ctx) {
@@ -88,58 +112,47 @@ public:
     return arguments;
   }
 
-  /*
   std::any visitFuncBody(SynthtaxParser::FuncBodyContext *ctx) {
-    outfile << " {";
-
-    if (ctx->statement().size() > 0)
-      outfile << "\n";
-
-    for (auto &s : ctx->statement()) {
-      indent();
+    for (auto &s : ctx->statement())
       visitStatement(s);
-    }
-
-    if (ctx->statement().size() > 0)
-      outfile << "\n";
-
-    outfile << "}\n";
     return NULL;
   }
 
   std::any visitStatement(SynthtaxParser::StatementContext *ctx) {
     if (ctx->varDeclaration() != nullptr)
       visitVarDeclaration(ctx->varDeclaration());
-    else if (ctx->expressionStatement() != nullptr)
-      visitExpressionStatement(ctx->expressionStatement());
-    else if (ctx->ifStatement() != nullptr)
-      visitIfStatement(ctx->ifStatement());
-    else if (ctx->whileStatement() != nullptr)
-      visitWhileStatement(ctx->whileStatement());
-    else if (ctx->returnStatement() != nullptr)
-      visitReturnStatement(ctx->returnStatement());
-    else if (ctx->assignmentStatement() != nullptr)
-      visitAssignmentStatement(ctx->assignmentStatement());
-    else if (ctx->printStatement() != nullptr)
-      visitPrintStatement(ctx->printStatement());
-    else if (ctx->printLnStatement() != nullptr)
-      visitPrintLnStatement(ctx->printLnStatement());
-    else
-      outfile << ";\n";
+    // else if (ctx->expressionStatement() != nullptr)
+    //   visitExpressionStatement(ctx->expressionStatement());
+    // else if (ctx->ifStatement() != nullptr)
+    //   visitIfStatement(ctx->ifStatement());
+    // else if (ctx->whileStatement() != nullptr)
+    //   visitWhileStatement(ctx->whileStatement());
+    // else if (ctx->returnStatement() != nullptr)
+    //   visitReturnStatement(ctx->returnStatement());
+    // else if (ctx->assignmentStatement() != nullptr)
+    //   visitAssignmentStatement(ctx->assignmentStatement());
+    // else if (ctx->printStatement() != nullptr)
+    //   visitPrintStatement(ctx->printStatement());
+    // else if (ctx->printLnStatement() != nullptr)
+    //   visitPrintLnStatement(ctx->printLnStatement());
+    // else
+    //   outfile << ";\n";
     return NULL;
   }
 
-  std::any visitVarDeclaration(SynthtaxParser::VarDeclarationContext *ctx) {
-    print_type(ctx->TYPE()->getText());
-    outfile << " ";
 
-    if (ctx->assignmentStatement() != nullptr)
-      visitAssignmentStatement(ctx->assignmentStatement());
-    else
-      outfile << ctx->ID()->getText();
-    return visitChildren(ctx);
+  std::any visitVarDeclaration(SynthtaxParser::VarDeclarationContext *ctx) {
+    // TODO: deal with array later
+    llvm::AllocaInst *alloca_instruction = builder_.CreateAlloca(getType(ctx->TYPE()->getText()), 0, ctx->ID()->getText());
+    name_value_[ctx->ID()->getText()] = alloca_instruction;
+
+    // if (ctx->assignmentStatement() != nullptr)
+    //   visitAssignmentStatement(ctx->assignmentStatement());
+
+    return alloca_instruction;
   }
 
+/*
   std::any
   visitExpressionStatement(SynthtaxParser::ExpressionStatementContext *ctx) {
     return visitExpression(ctx->expression());
