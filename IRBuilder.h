@@ -1,17 +1,19 @@
 #pragma once
 
+#include <string>
+#include <unordered_map>
+
 #include "antlr4-runtime.h"
 #include "libs/SynthtaxParserBaseVisitor.h"
 #include "libs/SynthtaxParserVisitor.h"
-#include <string>
 
-#include "llvm/IR/IRBuilder.h"
-#include "llvm/IR/LLVMContext.h"
-#include "llvm/IR/Module.h"
-#include "llvm/IR/Type.h"
-#include "llvm/IR/Value.h"
-#include "llvm/IR/Function.h"
-#include "llvm/Support/raw_ostream.h"
+#include <llvm/IR/IRBuilder.h>
+#include <llvm/IR/LLVMContext.h>
+#include <llvm/IR/Module.h>
+#include <llvm/IR/Type.h>
+#include <llvm/IR/Value.h>
+#include <llvm/IR/Function.h>
+#include <llvm/Support/raw_ostream.h>
 
 #include <iostream> // DEBUG
 
@@ -69,12 +71,12 @@ public:
     llvm::FunctionType *func_type = llvm::FunctionType::get(ty, arguments, false);
     llvm::Function *func = llvm::Function::Create(func_type, llvm::Function::ExternalLinkage, id, module_);
 
-    // unsigned i = 0;
-    // for(auto &arg : func->args()) {
-    //     arg.setName(arg[i++]->id->name);
-    // }
+    // Set names for all arguments.
+    unsigned i = 0;
+    for(auto &arg : func->args())
+        arg.setName(ctx->formalParameters()->ID()[i++]->getText());
 
-    return nullptr;
+    return func;
   }
 
   std::any visitFormalParameters(SynthtaxParser::FormalParametersContext *ctx) {
@@ -409,6 +411,7 @@ private:
   llvm::LLVMContext &context_;
   llvm::Module &module_;
   llvm::IRBuilder<> &builder_;
+  std::unordered_map<std::string, llvm::Value *> name_value_;
 
   llvm::Type *getType(const std::string &type) {
     if (type == "int") return llvm::Type::getInt32Ty(context_);
