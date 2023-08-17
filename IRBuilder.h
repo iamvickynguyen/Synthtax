@@ -146,8 +146,8 @@ public:
     llvm::AllocaInst *alloca_instruction = builder_.CreateAlloca(getType(ctx->TYPE()->getText()), 0, ctx->ID()->getText());
     name_value_[ctx->ID()->getText()] = alloca_instruction;
 
-    // if (ctx->assignmentStatement() != nullptr)
-    //   visitAssignmentStatement(ctx->assignmentStatement());
+    if (ctx->assignmentStatement() != nullptr)
+      visitAssignmentStatement(ctx->assignmentStatement());
 
     return alloca_instruction;
   }
@@ -217,14 +217,14 @@ public:
     visitExpression(ctx->expression());
     return NULL;
   }
+  */
 
   std::any
   visitAssignmentStatement(SynthtaxParser::AssignmentStatementContext *ctx) {
-    outfile << ctx->ID()->getText() << " = ";
-    visitExpression(ctx->expression());
-    return NULL;
+    return visitExpression(ctx->expression());
   }
 
+/*
   std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) {
     outfile << "std::cout << ";
     if (ctx->expression() != nullptr)
@@ -247,20 +247,37 @@ public:
     }
     return NULL;
   }
+*/
 
   std::any visitExpression(SynthtaxParser::ExpressionContext *ctx) {
+    llvm::Value* a;
+    llvm::Value* b;
+
     if (ctx->lessExpression().size() > 0) {
-      visitLessExpression(ctx->lessExpression()[0]);
+      try {
+        a = std::any_cast<llvm::Value*>(visitLessExpression(ctx->lessExpression()[0]));
+      } catch (const std::bad_any_cast& e) {
+        std::cerr << e << '\n';
+        return NULL;
+      }
     }
 
-    for (int i = 1; i < ctx->lessExpression().size(); ++i) {
-      outfile << " == ";
-      visitLessExpression(ctx->lessExpression()[i]);
+    // Equality expression (==)
+    if (ctx->lessExpression().size() > 1) {
+      try {
+        b = std::any_cast<llvm::Value*>(visitLessExpression(ctx->lessExpression()[1]));
+        llvm::Value* result = builder.CreateICmpEQ(a, b);
+        return result;
+      } catch (const std::bad_any_cast& e) {
+        std::cerr << e << '\n';
+        return NULL;
+      }
     }
 
-    return NULL;
+    return a;
   }
 
+/*
   std::any visitLessExpression(SynthtaxParser::LessExpressionContext *ctx) {
     if (ctx->addSubExpression().size() > 0) {
       visitAddSubExpression(ctx->addSubExpression()[0]);
@@ -273,7 +290,9 @@ public:
 
     return NULL;
   }
+  */
 
+/*
   // not sure how to get the '+' and '-' in order from the vector in
   // SynthtaxParser.h
   std::any visitAddSubExpression(SynthtaxParser::AddSubExpressionContext *ctx) {
