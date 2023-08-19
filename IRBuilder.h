@@ -128,8 +128,8 @@ public:
   std::any visitStatement(SynthtaxParser::StatementContext *ctx) {
     if (ctx->varDeclaration() != nullptr)
       visitVarDeclaration(ctx->varDeclaration());
-    // else if (ctx->expressionStatement() != nullptr)
-    //   visitExpressionStatement(ctx->expressionStatement());
+    else if (ctx->expressionStatement() != nullptr)
+      visitExpressionStatement(ctx->expressionStatement());
     // else if (ctx->ifStatement() != nullptr)
     //   visitIfStatement(ctx->ifStatement());
     // else if (ctx->whileStatement() != nullptr)
@@ -174,12 +174,23 @@ public:
     return NULL;
   }
 
-  /*
     std::any
     visitExpressionStatement(SynthtaxParser::ExpressionStatementContext *ctx) {
-      return visitExpression(ctx->expression());
+      try {
+        llvm::Value *val = std::any_cast<llvm::Value *>(visitExpression(ctx->expression()));
+        llvm::Type *valueType = val->getType();
+
+        std::string varname = "expr" + std::to_string(name_value_.size());
+        llvm::AllocaInst *alloca_instruction = builder_.CreateAlloca(valueType, nullptr, varname);
+        name_value_[varname] = alloca_instruction;
+        builder_.CreateStore(val, alloca_instruction);
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitExpressionStatement()\n";
+      }
+      return NULL;
     }
 
+/*
     std::any visitIfStatement(SynthtaxParser::IfStatementContext *ctx) {
       outfile << "if (";
       visitExpression(ctx->expression());
