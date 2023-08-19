@@ -7,22 +7,24 @@
 #include "libs/SynthtaxParserBaseVisitor.h"
 #include "libs/SynthtaxParserVisitor.h"
 
+#include <llvm/IR/Constants.h>
+#include <llvm/IR/Function.h>
 #include <llvm/IR/IRBuilder.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Value.h>
-#include <llvm/IR/Function.h>
-#include <llvm/Support/raw_ostream.h>
 #include <llvm/IR/Verifier.h>
+#include <llvm/Support/raw_ostream.h>
 
 #include <iostream> // DEBUG
-
 
 namespace synthtax_antlr {
 class IRBuilder : public SynthtaxParserBaseVisitor {
 public:
-  IRBuilder(llvm::LLVMContext &context, llvm::Module &module, llvm::IRBuilder<> &builder): context_(context), module_(module), builder_(builder) {}
+  IRBuilder(llvm::LLVMContext &context, llvm::Module &module,
+            llvm::IRBuilder<> &builder)
+      : context_(context), module_(module), builder_(builder) {}
 
   std::any visitProg(SynthtaxParser::ProgContext *ctx) {
     // TODO
@@ -56,7 +58,8 @@ public:
   }
 
   std::any visitFunction(SynthtaxParser::FunctionContext *ctx) {
-    llvm::Function *func = std::any_cast<llvm::Function *>(visitFuncDeclaration(ctx->funcDeclaration()));
+    llvm::Function *func = std::any_cast<llvm::Function *>(
+        visitFuncDeclaration(ctx->funcDeclaration()));
 
     llvm::BasicBlock *BB = llvm::BasicBlock::Create(context_, "entry", func);
     builder_.SetInsertPoint(BB);
@@ -68,15 +71,16 @@ public:
       name_value_[std::string(arg.getName())] = &arg;
 
     try {
-      llvm::Value *return_type = std::any_cast<llvm::Value *>(visitFuncBody(ctx->funcBody()));
+      llvm::Value *return_type =
+          std::any_cast<llvm::Value *>(visitFuncBody(ctx->funcBody()));
 
       // restore symbol table
       name_value_ = tmp_table;
 
       if (return_type == nullptr)
-          builder_.CreateRetVoid();
+        builder_.CreateRetVoid();
 
-    } catch (const std::bad_any_cast& e) {
+    } catch (const std::bad_any_cast &e) {
       builder_.CreateRetVoid(); // nullptr
     }
 
@@ -88,25 +92,28 @@ public:
     std::string id = ctx->ID()->getText();
     llvm::Type *ty = getType(ctx->TYPE()->getText());
 
-    std::vector<llvm::Type*> arguments;
+    std::vector<llvm::Type *> arguments;
     if (ctx->formalParameters() != nullptr)
-      arguments = std::any_cast<std::vector<llvm::Type*>>(visitFormalParameters(ctx->formalParameters()));
+      arguments = std::any_cast<std::vector<llvm::Type *>>(
+          visitFormalParameters(ctx->formalParameters()));
 
-    llvm::FunctionType *func_type = llvm::FunctionType::get(ty, arguments, false);
-    llvm::Function *func = llvm::Function::Create(func_type, llvm::Function::ExternalLinkage, id, module_);
+    llvm::FunctionType *func_type =
+        llvm::FunctionType::get(ty, arguments, false);
+    llvm::Function *func = llvm::Function::Create(
+        func_type, llvm::Function::ExternalLinkage, id, module_);
 
     // Set names for all arguments.
     unsigned i = 0;
-    for(auto &arg : func->args())
-        arg.setName(ctx->formalParameters()->ID()[i++]->getText());
+    for (auto &arg : func->args())
+      arg.setName(ctx->formalParameters()->ID()[i++]->getText());
 
     return func;
   }
 
   std::any visitFormalParameters(SynthtaxParser::FormalParametersContext *ctx) {
-    std::vector<llvm::Type*> arguments;
+    std::vector<llvm::Type *> arguments;
     arguments.reserve(ctx->ID().size());
-    for(int i = 0; i < ctx->ID().size(); ++i) {
+    for (int i = 0; i < ctx->ID().size(); ++i) {
       arguments.push_back(getType(ctx->TYPE()[i]->getText()));
     }
     return arguments;
@@ -140,83 +147,98 @@ public:
     return NULL;
   }
 
-
   std::any visitVarDeclaration(SynthtaxParser::VarDeclarationContext *ctx) {
-    // TODO: deal with array later
-    llvm::AllocaInst *alloca_instruction = builder_.CreateAlloca(getType(ctx->TYPE()->getText()), 0, ctx->ID()->getText());
-    name_value_[ctx->ID()->getText()] = alloca_instruction;
+    if (ctx->assignmentStatement() != nullptr) {
+      try {
+        llvm::Value *val = std::any_cast<llvm::Value *>(
+            visitAssignmentStatement(ctx->assignmentStatement()));
+        llvm::AllocaInst *alloca_instruction =
+            builder_.CreateAlloca(getType(ctx->TYPE()->getText()), nullptr,
+                                  ctx->assignmentStatement()->ID()->getText());
+        name_value_[ctx->assignmentStatement()->ID()->getText()] =
+            alloca_instruction;
+        builder_.CreateStore(val, alloca_instruction);
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitVarDeclaration()\n";
+        return NULL;
+      }
 
-    if (ctx->assignmentStatement() != nullptr)
-      visitAssignmentStatement(ctx->assignmentStatement());
-
-    return alloca_instruction;
-  }
-
-/*
-  std::any
-  visitExpressionStatement(SynthtaxParser::ExpressionStatementContext *ctx) {
-    return visitExpression(ctx->expression());
-  }
-
-  std::any visitIfStatement(SynthtaxParser::IfStatementContext *ctx) {
-    outfile << "if (";
-    visitExpression(ctx->expression());
-    outfile << ") {";
-
-    if (ctx->block()[0] != nullptr) {
-      ++indentLevel;
-      outfile << "\n";
-      visitBlock(ctx->block()[0]);
-      outfile << "\n";
-      --indentLevel;
-
-      indent();
+    } else {
+      // TODO: something...
+      // TODO: deal with array later
+      llvm::AllocaInst *alloca_instruction = builder_.CreateAlloca(
+          getType(ctx->TYPE()->getText()), nullptr, ctx->ID()->getText());
+      name_value_[ctx->ID()->getText()] = alloca_instruction;
     }
 
-    outfile << "}";
+    return NULL;
+  }
 
-    if (ctx->block().size() > 1) {
-      outfile << " else {";
-      if (ctx->block()[1] != nullptr) {
+  /*
+    std::any
+    visitExpressionStatement(SynthtaxParser::ExpressionStatementContext *ctx) {
+      return visitExpression(ctx->expression());
+    }
+
+    std::any visitIfStatement(SynthtaxParser::IfStatementContext *ctx) {
+      outfile << "if (";
+      visitExpression(ctx->expression());
+      outfile << ") {";
+
+      if (ctx->block()[0] != nullptr) {
         ++indentLevel;
         outfile << "\n";
-        visitBlock(ctx->block()[1]);
+        visitBlock(ctx->block()[0]);
         outfile << "\n";
         --indentLevel;
 
         indent();
       }
+
       outfile << "}";
+
+      if (ctx->block().size() > 1) {
+        outfile << " else {";
+        if (ctx->block()[1] != nullptr) {
+          ++indentLevel;
+          outfile << "\n";
+          visitBlock(ctx->block()[1]);
+          outfile << "\n";
+          --indentLevel;
+
+          indent();
+        }
+        outfile << "}";
+      }
+
+      outfile << "\n";
+      return NULL;
     }
 
-    outfile << "\n";
-    return NULL;
-  }
+    std::any visitWhileStatement(SynthtaxParser::WhileStatementContext *ctx) {
+      outfile << "while (";
+      visitExpression(ctx->expression());
+      outfile << ") {";
 
-  std::any visitWhileStatement(SynthtaxParser::WhileStatementContext *ctx) {
-    outfile << "while (";
-    visitExpression(ctx->expression());
-    outfile << ") {";
+      if (ctx->block()) {
+                          ++indentLevel;
+        outfile << "\n";
+        visitBlock(ctx->block());
+        outfile << "\n";
+                          --indentLevel;
 
-    if (ctx->block()) {
-			++indentLevel;
-      outfile << "\n";
-      visitBlock(ctx->block());
-      outfile << "\n";
-			--indentLevel;
+        indent();
+      }
 
-      indent();
+      outfile << "}\n";
+      return NULL;
     }
 
-    outfile << "}\n";
-    return NULL;
-  }
-
-  std::any visitReturnStatement(SynthtaxParser::ReturnStatementContext *ctx) {
-    outfile << "return ";
-    visitExpression(ctx->expression());
-    return NULL;
-  }
+    std::any visitReturnStatement(SynthtaxParser::ReturnStatementContext *ctx) {
+      outfile << "return ";
+      visitExpression(ctx->expression());
+      return NULL;
+    }
   */
 
   std::any
@@ -224,40 +246,42 @@ public:
     return visitExpression(ctx->expression());
   }
 
-/*
-  std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) {
-    outfile << "std::cout << ";
-    if (ctx->expression() != nullptr)
-      visitExpression(ctx->expression());
-    return NULL;
-  }
-
-  std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx) {
-    outfile << "std::cout << ";
-    if (ctx->expression() != nullptr)
-      visitExpression(ctx->expression());
-    outfile << " << '\\n'";
-    return NULL;
-  }
-
-  std::any visitBlock(SynthtaxParser::BlockContext *ctx) {
-    for (auto &s : ctx->statement()) {
-      indent();
-      visitStatement(s);
+  /*
+    std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) {
+      outfile << "std::cout << ";
+      if (ctx->expression() != nullptr)
+        visitExpression(ctx->expression());
+      return NULL;
     }
-    return NULL;
-  }
-*/
+
+    std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx)
+    { outfile << "std::cout << "; if (ctx->expression() != nullptr)
+        visitExpression(ctx->expression());
+      outfile << " << '\\n'";
+      return NULL;
+    }
+
+    std::any visitBlock(SynthtaxParser::BlockContext *ctx) {
+      for (auto &s : ctx->statement()) {
+        indent();      } catch (const std::bad_any_cast& e) {
+          std::cerr << "Error: " << e.what() << ", in visitExpression()\n";
+          return NULL;
+        }
+        visitStatement(s);
+      }
+      return NULL;
+    }
+  */
 
   std::any visitExpression(SynthtaxParser::ExpressionContext *ctx) {
-    llvm::Value* a;
-    llvm::Value* b;
+    llvm::Value *a;
 
     if (ctx->lessExpression().size() > 0) {
       try {
-        a = std::any_cast<llvm::Value*>(visitLessExpression(ctx->lessExpression()[0]));
-      } catch (const std::bad_any_cast& e) {
-        std::cerr << e << '\n';
+        a = std::any_cast<llvm::Value *>(
+            visitLessExpression(ctx->lessExpression()[0]));
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitExpression()\n";
         return NULL;
       }
     }
@@ -265,11 +289,16 @@ public:
     // Equality expression (==)
     if (ctx->lessExpression().size() > 1) {
       try {
-        b = std::any_cast<llvm::Value*>(visitLessExpression(ctx->lessExpression()[1]));
-        llvm::Value* result = builder.CreateICmpEQ(a, b);
+        llvm::Value *b = std::any_cast<llvm::Value *>(
+            visitLessExpression(ctx->lessExpression()[1]));
+        llvm::Value *eq_result = builder_.CreateICmpEQ(a, b);
+
+        // Return 0 or 1 based on the comparison result
+        llvm::Value *result = builder_.CreateSelect(
+            eq_result, builder_.getInt32(1), builder_.getInt32(0));
         return result;
-      } catch (const std::bad_any_cast& e) {
-        std::cerr << e << '\n';
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitExpression()\n";
         return NULL;
       }
     }
@@ -277,29 +306,55 @@ public:
     return a;
   }
 
-/*
   std::any visitLessExpression(SynthtaxParser::LessExpressionContext *ctx) {
+    llvm::Value *a;
+
     if (ctx->addSubExpression().size() > 0) {
-      visitAddSubExpression(ctx->addSubExpression()[0]);
+      try {
+        a = std::any_cast<llvm::Value *>(
+            visitAddSubExpression(ctx->addSubExpression()[0]));
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitLessExpression()\n";
+        return NULL;
+      }
     }
 
-    for (int i = 1; i < ctx->addSubExpression().size(); ++i) {
-      outfile << " < ";
-      visitAddSubExpression(ctx->addSubExpression()[i]);
+    // Less than expression (<)
+    if (ctx->addSubExpression().size() > 1) {
+      try {
+        llvm::Value *b = std::any_cast<llvm::Value *>(
+            visitAddSubExpression(ctx->addSubExpression()[1]));
+        llvm::Value *lt_result = builder_.CreateICmpSLT(a, b);
+
+        // Return 0 or 1 based on the comparison result
+        llvm::Value *result = builder_.CreateSelect(
+            lt_result, builder_.getInt32(1), builder_.getInt32(0));
+        return result;
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitLessExpression()\n";
+        return NULL;
+      }
     }
 
-    return NULL;
+    return a;
   }
-  */
 
-/*
   // not sure how to get the '+' and '-' in order from the vector in
   // SynthtaxParser.h
   std::any visitAddSubExpression(SynthtaxParser::AddSubExpressionContext *ctx) {
+    llvm::Value *a;
+
     if (ctx->mulDivExpression().size() > 0) {
-      visitMulDivExpression(ctx->mulDivExpression()[0]);
+      try {
+        a = std::any_cast<llvm::Value *>(
+            visitMulDivExpression(ctx->mulDivExpression()[0]));
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitAddSubExpression()\n";
+        return NULL;
+      }
     }
 
+    // Addition or Subtraction
     if (ctx->mulDivExpression().size() > 1) {
       std::string context = ctx->getText();
       std::vector<char> signs;
@@ -310,19 +365,39 @@ public:
       }
 
       for (int i = 1; i < ctx->mulDivExpression().size(); ++i) {
-        outfile << " " << signs[i - 1] << " ";
-        visitMulDivExpression(ctx->mulDivExpression()[i]);
+        try {
+          llvm::Value *b = std::any_cast<llvm::Value *>(
+              visitMulDivExpression(ctx->mulDivExpression()[i]));
+          const char sign = signs[i - 1];
+          if (sign == '+') {
+            a = builder_.CreateAdd(a, b);
+          } else {
+            a = builder_.CreateSub(a, b);
+          }
+        } catch (const std::bad_any_cast &e) {
+          std::cerr << "Error: " << e.what()
+                    << ", in visitAddSubExpression()\n";
+          return NULL;
+        }
       }
     }
 
-    return NULL;
+    return a;
   }
 
   std::any visitMulDivExpression(SynthtaxParser::MulDivExpressionContext *ctx) {
+    llvm::Value *a;
+
     if (ctx->atom().size() > 0) {
-      visitAtom(ctx->atom()[0]);
+      try {
+        a = std::any_cast<llvm::Value *>(visitAtom(ctx->atom()[0]));
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitMulDivExpression()\n";
+        return NULL;
+      }
     }
 
+    // Addition or Subtraction
     if (ctx->atom().size() > 1) {
       std::string context = ctx->getText();
       std::vector<char> signs;
@@ -333,111 +408,140 @@ public:
       }
 
       for (int i = 1; i < ctx->atom().size(); ++i) {
-        outfile << " " << signs[i - 1] << " ";
-        visitAtom(ctx->atom()[i]);
+        try {
+          llvm::Value *b =
+              std::any_cast<llvm::Value *>(visitAtom(ctx->atom()[i]));
+          const char sign = signs[i - 1];
+          if (sign == '*') {
+            a = builder_.CreateMul(a, b);
+          } else {
+            a = builder_.CreateSDiv(a, b);
+          }
+        } catch (const std::bad_any_cast &e) {
+          std::cerr << "Error: " << e.what()
+                    << ", in visitMulDivExpression()\n";
+          return NULL;
+        }
       }
     }
 
-    return NULL;
+    return a;
   }
 
   std::any visitAtom(SynthtaxParser::AtomContext *ctx) {
+
     // if function call
     if (ctx->ID() != nullptr && ctx->OPENPAREN() != nullptr) {
       std::string id = ctx->ID()->getText();
 
-      // if Osc()
-      if (id == "Osc") {
-        outfile << "std::make_shared<Oscillator>("
-                << ctx->expressionList()->getText() << ")";
-      }
+      // // if Osc()
+      // if (id == "Osc") {
+      //   outfile << "std::make_shared<Oscillator>("
+      //           << ctx->expressionList()->getText() << ")";
+      // }
 
-      // if ADSR()
-      else if (id == "ADSR") {
-        outfile << "std::make_shared<ADSR>(";
-        if (ctx->expressionList() != nullptr)
-          outfile << ctx->expressionList()->getText();
-        outfile << ")";
-      }
+      // // if ADSR()
+      // else if (id == "ADSR") {
+      //   outfile << "std::make_shared<ADSR>(";
+      //   if (ctx->expressionList() != nullptr)
+      //     outfile << ctx->expressionList()->getText();
+      //   outfile << ")";
+      // }
 
-      // if write()
-      else if (id == "write") {
-        std::string args = ctx->expressionList()->getText();
+      // // if write()
+      // else if (id == "write") {
+      //   std::string args = ctx->expressionList()->getText();
 
-        int i = 0;
-        std::string osc_id;
-        while (i < args.length() && args[i] != ',') {
-          if (args[i] != ' ') {
-            osc_id.push_back(args[i]);
-          }
-          ++i;
-        }
+      //   int i = 0;
+      //   std::string osc_id;
+      //   while (i < args.length() && args[i] != ',') {
+      //     if (args[i] != ' ') {
+      //       osc_id.push_back(args[i]);
+      //     }
+      //     ++i;
+      //   }
 
-        outfile << osc_id << "->write_to_file(" << args.substr(i + 1) << ")";
-      }
+      //   outfile << osc_id << "->write_to_file(" << args.substr(i + 1) << ")";
+      // }
 
-      // if apply()
-      else if (id == "apply") {
-        std::string args = ctx->expressionList()->getText();
+      // // if apply()
+      // else if (id == "apply") {
+      //   std::string args = ctx->expressionList()->getText();
 
-        int i = 0;
-        std::string env_id;
-        while (i < args.length() && args[i] != ',') {
-          if (args[i] != ' ') {
-            env_id.push_back(args[i]);
-          }
-          ++i;
-        }
+      //   int i = 0;
+      //   std::string env_id;
+      //   while (i < args.length() && args[i] != ',') {
+      //     if (args[i] != ' ') {
+      //       env_id.push_back(args[i]);
+      //     }
+      //     ++i;
+      //   }
 
-        outfile << env_id << "->apply_with_ptr(" << args.substr(i + 1) << ")";
-      }
+      //   outfile << env_id << "->apply_with_ptr(" << args.substr(i + 1) <<
+      //   ")";
+      // }
 
       // others
-      else {
-        outfile << id << "(";
-        if (ctx->expressionList() != nullptr)
-          visitExpressionList(ctx->expressionList());
-        outfile << ")";
-      }
+      // else {
+      // outfile << id << "(";
+      // if (ctx->expressionList() != nullptr)
+      //   visitExpressionList(ctx->expressionList());
+      // outfile << ")";
+      // }
     }
 
     // assignment
     else if (ctx->ID() != nullptr) {
-      outfile << ctx->ID()->getText();
+      // outfile << ctx->ID()->getText();
     }
 
     // expression
     else if (ctx->expression() != nullptr) {
-      outfile << "(";
-      visitExpression(ctx->expression());
-      outfile << ")";
+      // outfile << "(";
+      // visitExpression(ctx->expression());
+      // outfile << ")";
     }
 
     // literal
     else {
-      visitLiteral(ctx->literal());
+      return visitLiteral(ctx->literal());
     }
 
     return NULL;
   }
 
-  std::any visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) {
-    if (ctx->expression().size() > 0)
-      visitExpression(ctx->expression()[0]);
+  /*
+    std::any visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) {
+      if (ctx->expression().size() > 0)
+        visitExpression(ctx->expression()[0]);
 
-    for (int i = 1; i < ctx->expression().size(); ++i) {
-      outfile << ", ";
-      visitExpression(ctx->expression()[i]);
-    }
+      for (int i = 1; i < ctx->expression().size(); ++i) {
+        outfile << ", ";
+        visitExpression(ctx->expression()[i]);
+      }
 
-    return NULL;
-  }
+      return NULL;
+    }  // else {
+
+  */
 
   std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
-    outfile << ctx->getText();
-    return NULL;
+    llvm::Value *result;
+
+    // if (ctx->STRING()) return llvm::Value *result =
+    // llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), 12); // DEBUG
+    if (ctx->INT())
+      result = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_),
+                                      stoi(ctx->getText()));
+    // if (ctx->FLOAT()) return llvm::Value *result =
+    // llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), 12); // DEBUG if
+    // (ctx->CHAR()) return llvm::Value *result =
+    // llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), 12); // DEBUG if
+    // (ctx->BOOL()) return llvm::Value *result =
+    // llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), 12); // DEBUG
+
+    return result;
   }
-  */
 
 private:
   llvm::LLVMContext &context_;
@@ -446,10 +550,14 @@ private:
   std::unordered_map<std::string, llvm::Value *> name_value_;
 
   llvm::Type *getType(const std::string &type) {
-    if (type == "int") return llvm::Type::getInt32Ty(context_);
-    else if (type == "float") return llvm::Type::getFloatTy(context_);
-    else if (type == "char") return llvm::Type::getInt8Ty(context_);
-    else if (type == "void") return llvm::Type::getVoidTy(context_);
+    if (type == "int")
+      return llvm::Type::getInt32Ty(context_);
+    else if (type == "float")
+      return llvm::Type::getFloatTy(context_);
+    else if (type == "char")
+      return llvm::Type::getInt8Ty(context_);
+    else if (type == "void")
+      return llvm::Type::getVoidTy(context_);
     /*
     else if (type == "string") return // TODO
     else if (type == "osc") return // TODO
