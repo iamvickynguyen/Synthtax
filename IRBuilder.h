@@ -528,17 +528,11 @@ public:
   std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
     llvm::Value *result;
 
-    // if (ctx->STRING()) return llvm::Value *result =
-    // llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), 12); // DEBUG
-    if (ctx->INT())
-      result = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_),
-                                      stoi(ctx->getText()));
-    // if (ctx->FLOAT()) return llvm::Value *result =
-    // llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), 12); // DEBUG if
-    // (ctx->CHAR()) return llvm::Value *result =
-    // llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), 12); // DEBUG if
-    // (ctx->BOOL()) return llvm::Value *result =
-    // llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), 12); // DEBUG
+    if (ctx->STRING()) result = llvm::ConstantDataArray::getString(context_, ctx->getText());
+    else if (ctx->INT()) result = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), stoi(ctx->getText()));
+    else if (ctx->FLOAT()) result = llvm::ConstantFP::get(llvm::Type::getFloatTy(context_), stof(ctx->getText()));
+    else if (ctx->CHAR()) result = llvm::ConstantInt::get(llvm::Type::getInt8Ty(context_), stoi(ctx->getText()));
+    else if (ctx->BOOL()) result = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), stoi(ctx->getText()));
 
     return result;
   }
