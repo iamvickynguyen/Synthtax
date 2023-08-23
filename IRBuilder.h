@@ -130,8 +130,8 @@ public:
       visitVarDeclaration(ctx->varDeclaration());
     else if (ctx->expressionStatement() != nullptr)
       visitExpressionStatement(ctx->expressionStatement());
-    // else if (ctx->ifStatement() != nullptr)
-    //   visitIfStatement(ctx->ifStatement());
+    else if (ctx->ifStatement() != nullptr)
+      visitIfStatement(ctx->ifStatement());
     // else if (ctx->whileStatement() != nullptr)
     //   visitWhileStatement(ctx->whileStatement());
     // else if (ctx->returnStatement() != nullptr)
@@ -176,56 +176,67 @@ public:
 
     std::any
     visitExpressionStatement(SynthtaxParser::ExpressionStatementContext *ctx) {
-      try {
-        llvm::Value *val = std::any_cast<llvm::Value *>(visitExpression(ctx->expression()));
-        llvm::Type *valueType = val->getType();
+      return visitExpression(ctx->expression());
+    }
 
-        std::string varname = "expr" + std::to_string(name_value_.size());
-        llvm::AllocaInst *alloca_instruction = builder_.CreateAlloca(valueType, nullptr, varname);
-        name_value_[varname] = alloca_instruction;
-        builder_.CreateStore(val, alloca_instruction);
+    std::any visitIfStatement(SynthtaxParser::IfStatementContext *ctx) {
+      try {
+        llvm::Value *cond = std::any_cast<llvm::Value *>(visitExpression(ctx->expression()));
+
+        llvm::Function *func = builder_.GetInsertBlock()->getParent();
+        llvm::BasicBlock* ifTrueBlock = llvm::BasicBlock::Create(context_, "if.true", func);
+        llvm::BasicBlock* ifFalseBlock = llvm::BasicBlock::Create(context_, "if.false", func);
+
+        llvm::Type* type = cond->getType();
+
+        if (type->isIntegerTy()) {
+          cond = builder_.CreateICmpNE(cond, llvm::ConstantInt::get(context_, llvm::APInt(32, 0)), "ifcond");
+        } else if (type->isFloatTy()) {
+          cond = builder_.CreateFCmpUNE(cond, llvm::ConstantFP::get(context_, llvm::APFloat(0.0)), "ifcond");
+        }
+        
+        builder_.CreateCondBr(cond, ifTrueBlock, ifFalseBlock);
+
       } catch (const std::bad_any_cast &e) {
-        std::cerr << "Error: " << e.what() << ", in visitExpressionStatement()\n";
+        std::cerr << "Error: " << e.what() << ", in visitVarDeclaration()\n";
+        return NULL;
       }
+
+      // outfile << "if (";
+      // visitExpression(ctx->expression());
+      // outfile << ") {";
+
+      // if (ctx->block()[0] != nullptr) {
+      //   ++indentLevel;
+      //   outfile << "\n";
+      //   visitBlock(ctx->block()[0]);
+      //   outfile << "\n";
+      //   --indentLevel;
+
+      //   indent();
+      // }
+
+      // outfile << "}";
+
+      // if (ctx->block().size() > 1) {
+      //   outfile << " else {";
+      //   if (ctx->block()[1] != nullptr) {
+      //     ++indentLevel;
+      //     outfile << "\n";
+      //     visitBlock(ctx->block()[1]);
+      //     outfile << "\n";
+      //     --indentLevel;
+
+      //     indent();
+      //   }
+      //   outfile << "}";
+      // }
+
+      // outfile << "\n";
       return NULL;
     }
 
 /*
-    std::any visitIfStatement(SynthtaxParser::IfStatementContext *ctx) {
-      outfile << "if (";
-      visitExpression(ctx->expression());
-      outfile << ") {";
-
-      if (ctx->block()[0] != nullptr) {
-        ++indentLevel;
-        outfile << "\n";
-        visitBlock(ctx->block()[0]);
-        outfile << "\n";
-        --indentLevel;
-
-        indent();
-      }
-
-      outfile << "}";
-
-      if (ctx->block().size() > 1) {
-        outfile << " else {";
-        if (ctx->block()[1] != nullptr) {
-          ++indentLevel;
-          outfile << "\n";
-          visitBlock(ctx->block()[1]);
-          outfile << "\n";
-          --indentLevel;
-
-          indent();
-        }
-        outfile << "}";
-      }
-
-      outfile << "\n";
-      return NULL;
-    }
-
     std::any visitWhileStatement(SynthtaxParser::WhileStatementContext *ctx) {
       outfile << "while (";
       visitExpression(ctx->expression());
@@ -440,7 +451,6 @@ public:
   }
 
   std::any visitAtom(SynthtaxParser::AtomContext *ctx) {
-
     // if function call
     if (ctx->ID() != nullptr && ctx->OPENPAREN() != nullptr) {
       std::string id = ctx->ID()->getText();
@@ -503,14 +513,12 @@ public:
 
     // assignment
     else if (ctx->ID() != nullptr) {
-      // outfile << ctx->ID()->getText();
+      return name_value_[ctx->ID()->getText()];
     }
 
     // expression
     else if (ctx->expression() != nullptr) {
-      // outfile << "(";
-      // visitExpression(ctx->expression());
-      // outfile << ")";
+      return visitExpression(ctx->expression());
     }
 
     // literal
