@@ -193,7 +193,7 @@ public:
           cond = builder_.CreateICmpNE(cond, llvm::ConstantInt::get(context_, llvm::APInt(32, 0)), "ifcond");
         } else if (type->isFloatTy()) {
           cond = builder_.CreateFCmpUNE(cond, llvm::ConstantFP::get(context_, llvm::APFloat(0.0)), "ifcond");
-        }
+        } // else: condition with other types is always true
         
         builder_.CreateCondBr(cond, ifTrueBlock, ifFalseBlock);
 
@@ -313,11 +313,24 @@ public:
       try {
         llvm::Value *b = std::any_cast<llvm::Value *>(
             visitLessExpression(ctx->lessExpression()[1]));
-        llvm::Value *eq_result = builder_.CreateICmpEQ(a, b);
+
+        llvm::Type *aty = a->getType();
+        llvm::Type *bty = b->getType();
+
+        llvm::Value *result;
 
         // Return 0 or 1 based on the comparison result
-        llvm::Value *result = builder_.CreateSelect(
-            eq_result, builder_.getInt32(1), builder_.getInt32(0));
+        if (aty != bty) return NULL;
+        else if (aty->isIntegerTy()) {
+          llvm::Value *eq_result = builder_.CreateICmpEQ(a, b);
+          result = builder_.CreateSelect(eq_result, builder_.getInt32(1), builder_.getInt32(0));
+        } else if (aty->isFloatTy()) {
+          llvm::Value *eq_result = builder_.CreateFCmpUEQ(a, b);
+          result = builder_.CreateSelect(eq_result, create_float(1.0), create_float(0.0));
+        } else { // NOTE: other types comparison is always true for now
+          result = builder_.getInt32(1);
+        }
+
         return result;
       } catch (const std::bad_any_cast &e) {
         std::cerr << "Error: " << e.what() << ", in visitExpression()\n";
@@ -346,11 +359,25 @@ public:
       try {
         llvm::Value *b = std::any_cast<llvm::Value *>(
             visitAddSubExpression(ctx->addSubExpression()[1]));
-        llvm::Value *lt_result = builder_.CreateICmpSLT(a, b);
+
+        llvm::Type *aty = a->getType();
+        llvm::Type *bty = b->getType();
+
+        llvm::Value *result;
 
         // Return 0 or 1 based on the comparison result
-        llvm::Value *result = builder_.CreateSelect(
-            lt_result, builder_.getInt32(1), builder_.getInt32(0));
+        if (aty != bty) return NULL;
+        else if (aty->isIntegerTy()) {
+          llvm::Value *lt_result = builder_.CreateICmpSLT(a, b);
+          result = builder_.CreateSelect(lt_result, builder_.getInt32(1), builder_.getInt32(0));
+        } else if (aty->isFloatTy()) {
+          llvm::Value *lt_result = builder_.CreateFCmpULT(a, b);
+          result = builder_.CreateSelect(lt_result, create_float(1.0), create_float(0.0));
+        } else { // NOTE: other types comparison is always true for now
+          result = builder_.getInt32(1);
+        }
+
+        // result = builder_.getInt32(1);
         return result;
       } catch (const std::bad_any_cast &e) {
         std::cerr << "Error: " << e.what() << ", in visitLessExpression()\n";
@@ -547,11 +574,11 @@ public:
   std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
     llvm::Value *result;
 
-    if (ctx->STRING()) result = llvm::ConstantDataArray::getString(context_, ctx->getText());
-    else if (ctx->INT()) result = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), stoi(ctx->getText()));
-    else if (ctx->FLOAT()) result = llvm::ConstantFP::get(llvm::Type::getFloatTy(context_), stof(ctx->getText()));
-    else if (ctx->CHAR()) result = llvm::ConstantInt::get(llvm::Type::getInt8Ty(context_), stoi(ctx->getText()));
-    else if (ctx->BOOL()) result = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), stoi(ctx->getText()));
+    if (ctx->STRING()) result = create_string(ctx->getText());
+    else if (ctx->INT()) result = create_int(stoi(ctx->getText()));
+    else if (ctx->FLOAT()) result = create_float(stof(ctx->getText()));
+    else if (ctx->CHAR()) result = create_char(stoi(ctx->getText()));
+    else if (ctx->BOOL()) result = create_int(stoi(ctx->getText()));
 
     return result;
   }
@@ -561,6 +588,11 @@ private:
   llvm::Module &module_;
   llvm::IRBuilder<> &builder_;
   std::unordered_map<std::string, llvm::Value *> name_value_;
+
+  inline llvm::Value* create_float(const float x) { return llvm::ConstantFP::get(llvm::Type::getFloatTy(context_), x); }
+  inline llvm::Value* create_int(const int x) { return llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), x); }
+  inline llvm::Value* create_char(const char c) { return llvm::ConstantInt::get(llvm::Type::getInt8Ty(context_), c); }
+  inline llvm::Value* create_string(const std::string &s) { return llvm::ConstantDataArray::getString(context_, s); }
 
   llvm::Type *getType(const std::string &type) {
     if (type == "int")
