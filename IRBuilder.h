@@ -184,8 +184,9 @@ public:
         llvm::Value *cond = std::any_cast<llvm::Value *>(visitExpression(ctx->expression()));
 
         llvm::Function *func = builder_.GetInsertBlock()->getParent();
-        llvm::BasicBlock* ifTrueBlock = llvm::BasicBlock::Create(context_, "if.true", func);
-        llvm::BasicBlock* ifFalseBlock = llvm::BasicBlock::Create(context_, "if.false", func);
+        llvm::BasicBlock *if_block = llvm::BasicBlock::Create(context_, "if.true", func);
+        llvm::BasicBlock *else_block = llvm::BasicBlock::Create(context_, "if.false", func);
+        llvm::BasicBlock *merge_block = llvm::BasicBlock::Create(context_, "mergeBB", func);
 
         llvm::Type* type = cond->getType();
 
@@ -195,7 +196,24 @@ public:
           cond = builder_.CreateFCmpUNE(cond, llvm::ConstantFP::get(context_, llvm::APFloat(0.0)), "ifcond");
         } // else: condition with other types is always true
         
-        builder_.CreateCondBr(cond, ifTrueBlock, ifFalseBlock);
+        builder_.CreateCondBr(cond, if_block, else_block);
+
+        builder_.SetInsertPoint(if_block);
+        if (ctx->block()[0] != nullptr) {
+          visitBlock(ctx->block()[0]);
+        }
+
+        builder_.CreateBr(merge_block);
+
+        if_block = builder_.GetInsertBlock();
+
+        // func->getBasicBlockList().push_back(else_block);
+
+        builder_.SetInsertPoint(else_block);
+
+        if (ctx->block().size() > 1) {
+          visitBlock(ctx->block()[1]);
+        }
 
       } catch (const std::bad_any_cast &e) {
         std::cerr << "Error: " << e.what() << ", in visitVarDeclaration()\n";
@@ -282,18 +300,15 @@ public:
       outfile << " << '\\n'";
       return NULL;
     }
+*/
 
     std::any visitBlock(SynthtaxParser::BlockContext *ctx) {
       for (auto &s : ctx->statement()) {
-        indent();      } catch (const std::bad_any_cast& e) {
-          std::cerr << "Error: " << e.what() << ", in visitExpression()\n";
-          return NULL;
-        }
         visitStatement(s);
       }
       return NULL;
     }
-  */
+
 
   std::any visitExpression(SynthtaxParser::ExpressionContext *ctx) {
     llvm::Value *a;
