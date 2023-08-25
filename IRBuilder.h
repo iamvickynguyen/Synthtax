@@ -134,12 +134,12 @@ public:
       visitIfStatement(ctx->ifStatement());
     // else if (ctx->whileStatement() != nullptr)
     //   visitWhileStatement(ctx->whileStatement());
-    // else if (ctx->returnStatement() != nullptr)
-    //   visitReturnStatement(ctx->returnStatement());
-    // else if (ctx->assignmentStatement() != nullptr)
-    //   visitAssignmentStatement(ctx->assignmentStatement());
-    // else if (ctx->printStatement() != nullptr)
-    //   visitPrintStatement(ctx->printStatement());
+    else if (ctx->returnStatement() != nullptr)
+      visitReturnStatement(ctx->returnStatement());
+    else if (ctx->assignmentStatement() != nullptr)
+      visitAssignmentStatement(ctx->assignmentStatement());
+    else if (ctx->printStatement() != nullptr)
+      visitPrintStatement(ctx->printStatement());
     // else if (ctx->printLnStatement() != nullptr)
     //   visitPrintLnStatement(ctx->printLnStatement());
     // else
@@ -186,7 +186,7 @@ public:
         llvm::Function *func = builder_.GetInsertBlock()->getParent();
         llvm::BasicBlock *if_block = llvm::BasicBlock::Create(context_, "if.true", func);
         llvm::BasicBlock *else_block = llvm::BasicBlock::Create(context_, "if.false", func);
-        llvm::BasicBlock *merge_block = llvm::BasicBlock::Create(context_, "mergeBB", func);
+        llvm::BasicBlock *merge_block = llvm::BasicBlock::Create(context_, "merge", func);
 
         llvm::Type* type = cond->getType();
 
@@ -198,6 +198,7 @@ public:
         
         builder_.CreateCondBr(cond, if_block, else_block);
 
+        // Emit code for the "if true" block
         builder_.SetInsertPoint(if_block);
         if (ctx->block()[0] != nullptr) {
           visitBlock(ctx->block()[0]);
@@ -205,52 +206,19 @@ public:
 
         builder_.CreateBr(merge_block);
 
-        if_block = builder_.GetInsertBlock();
-
-        // func->getBasicBlockList().push_back(else_block);
-
+        // Emit code for the "if false" block
         builder_.SetInsertPoint(else_block);
-
         if (ctx->block().size() > 1) {
           visitBlock(ctx->block()[1]);
         }
+
+        builder_.SetInsertPoint(merge_block);
 
       } catch (const std::bad_any_cast &e) {
         std::cerr << "Error: " << e.what() << ", in visitVarDeclaration()\n";
         return NULL;
       }
 
-      // outfile << "if (";
-      // visitExpression(ctx->expression());
-      // outfile << ") {";
-
-      // if (ctx->block()[0] != nullptr) {
-      //   ++indentLevel;
-      //   outfile << "\n";
-      //   visitBlock(ctx->block()[0]);
-      //   outfile << "\n";
-      //   --indentLevel;
-
-      //   indent();
-      // }
-
-      // outfile << "}";
-
-      // if (ctx->block().size() > 1) {
-      //   outfile << " else {";
-      //   if (ctx->block()[1] != nullptr) {
-      //     ++indentLevel;
-      //     outfile << "\n";
-      //     visitBlock(ctx->block()[1]);
-      //     outfile << "\n";
-      //     --indentLevel;
-
-      //     indent();
-      //   }
-      //   outfile << "}";
-      // }
-
-      // outfile << "\n";
       return NULL;
     }
 
@@ -273,27 +241,55 @@ public:
       outfile << "}\n";
       return NULL;
     }
+  */
 
     std::any visitReturnStatement(SynthtaxParser::ReturnStatementContext *ctx) {
-      outfile << "return ";
-      visitExpression(ctx->expression());
-      return NULL;
+      try {
+        llvm::Value *ret = std::any_cast<llvm::Value*>(visitExpression(ctx->expression()));
+        builder_.CreateRet(ret);
+        return ret;
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitVarDeclaration()\n";
+        return NULL;
+      }
     }
-  */
 
   std::any
   visitAssignmentStatement(SynthtaxParser::AssignmentStatementContext *ctx) {
     return visitExpression(ctx->expression());
   }
 
-  /*
+
     std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) {
-      outfile << "std::cout << ";
-      if (ctx->expression() != nullptr)
-        visitExpression(ctx->expression());
+      if (ctx->expression() != nullptr) {
+        try {
+          llvm::Value *val = std::any_cast<llvm::Value*>(visitExpression(ctx->expression()));
+
+          std::string type = getValType(val->getType());
+          auto M = builder_.GetInsertBlock()->getModule();
+          if (type == "int") {
+            llvm::FunctionCallee print_func = M->getOrInsertFunction("printint", builder_.getVoidTy(), builder_.getInt32Ty());
+            return builder_.CreateCall(print_func, val);
+          } else if (type == "float") {
+            llvm::FunctionCallee print_func = M->getOrInsertFunction("printfloat", builder_.getVoidTy(), builder_.getFloatTy());
+            return builder_.CreateCall(print_func, val);
+          } else if (type == "char") {
+            llvm::FunctionCallee print_func = M->getOrInsertFunction("printchar", builder_.getVoidTy(), builder_.getInt8Ty());
+            return builder_.CreateCall(print_func, val);
+          }
+
+          // TODO: print string
+          return NULL;
+        } catch (const std::bad_any_cast &e) {
+          std::cerr << "Error: " << e.what() << ", in visitVarDeclaration()\n";
+          return NULL;
+        }
+      } 
+
       return NULL;
     }
 
+/*
     std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx)
     { outfile << "std::cout << "; if (ctx->expression() != nullptr)
         visitExpression(ctx->expression());
@@ -329,17 +325,17 @@ public:
         llvm::Value *b = std::any_cast<llvm::Value *>(
             visitLessExpression(ctx->lessExpression()[1]));
 
-        llvm::Type *aty = a->getType();
-        llvm::Type *bty = b->getType();
+        std::string aty = getValType(a->getType());
+        std::string bty = getValType(b->getType());
 
         llvm::Value *result;
 
         // Return 0 or 1 based on the comparison result
         if (aty != bty) return NULL;
-        else if (aty->isIntegerTy()) {
+        else if (aty == "int") {
           llvm::Value *eq_result = builder_.CreateICmpEQ(a, b);
           result = builder_.CreateSelect(eq_result, builder_.getInt32(1), builder_.getInt32(0));
-        } else if (aty->isFloatTy()) {
+        } else if (aty == "float") {
           llvm::Value *eq_result = builder_.CreateFCmpUEQ(a, b);
           result = builder_.CreateSelect(eq_result, create_float(1.0), create_float(0.0));
         } else { // NOTE: other types comparison is always true for now
@@ -375,17 +371,17 @@ public:
         llvm::Value *b = std::any_cast<llvm::Value *>(
             visitAddSubExpression(ctx->addSubExpression()[1]));
 
-        llvm::Type *aty = a->getType();
-        llvm::Type *bty = b->getType();
+        std::string aty = getValType(a->getType());
+        std::string bty = getValType(b->getType());
 
         llvm::Value *result;
 
         // Return 0 or 1 based on the comparison result
         if (aty != bty) return NULL;
-        else if (aty->isIntegerTy()) {
+        else if (aty == "int") {
           llvm::Value *lt_result = builder_.CreateICmpSLT(a, b);
           result = builder_.CreateSelect(lt_result, builder_.getInt32(1), builder_.getInt32(0));
-        } else if (aty->isFloatTy()) {
+        } else if (aty == "float") {
           llvm::Value *lt_result = builder_.CreateFCmpULT(a, b);
           result = builder_.CreateSelect(lt_result, create_float(1.0), create_float(0.0));
         } else { // NOTE: other types comparison is always true for now
@@ -592,7 +588,7 @@ public:
     if (ctx->STRING()) result = create_string(ctx->getText());
     else if (ctx->INT()) result = create_int(stoi(ctx->getText()));
     else if (ctx->FLOAT()) result = create_float(stof(ctx->getText()));
-    else if (ctx->CHAR()) result = create_char(stoi(ctx->getText()));
+    else if (ctx->CHAR()) result = create_char(ctx->getText()[1]); // ignore single quotes outside
     else if (ctx->BOOL()) result = create_int(stoi(ctx->getText()));
 
     return result;
@@ -624,6 +620,15 @@ private:
     else if (type == "env") return // TODO
     */
     return llvm::Type::getVoidTy(context_);
+  }
+
+  std::string getValType(const llvm::Type* type) {
+    if (type == llvm::Type::getInt32Ty(context_)) return "int";
+    if (type == llvm::Type::getFloatTy(context_)) return "float";
+    if (type == llvm::Type::getInt8Ty(context_)) return "char";
+
+    // TODO: string, other types
+    return "unknown";
   }
 };
 } // namespace synthtax_antlr
