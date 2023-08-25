@@ -132,18 +132,17 @@ public:
       visitExpressionStatement(ctx->expressionStatement());
     else if (ctx->ifStatement() != nullptr)
       visitIfStatement(ctx->ifStatement());
-    // else if (ctx->whileStatement() != nullptr)
-    //   visitWhileStatement(ctx->whileStatement());
+    else if (ctx->whileStatement() != nullptr)
+      visitWhileStatement(ctx->whileStatement());
     else if (ctx->returnStatement() != nullptr)
       visitReturnStatement(ctx->returnStatement());
     else if (ctx->assignmentStatement() != nullptr)
       visitAssignmentStatement(ctx->assignmentStatement());
     else if (ctx->printStatement() != nullptr)
       visitPrintStatement(ctx->printStatement());
-    // else if (ctx->printLnStatement() != nullptr)
-    //   visitPrintLnStatement(ctx->printLnStatement());
-    // else
-    //   outfile << ";\n";
+    else if (ctx->printLnStatement() != nullptr)
+      visitPrintLnStatement(ctx->printLnStatement());
+
     return NULL;
   }
 
@@ -215,33 +214,46 @@ public:
         builder_.SetInsertPoint(merge_block);
 
       } catch (const std::bad_any_cast &e) {
-        std::cerr << "Error: " << e.what() << ", in visitVarDeclaration()\n";
+        std::cerr << "Error: " << e.what() << ", in visitIfStatement()\n";
         return NULL;
       }
 
       return NULL;
     }
 
-/*
     std::any visitWhileStatement(SynthtaxParser::WhileStatementContext *ctx) {
-      outfile << "while (";
-      visitExpression(ctx->expression());
-      outfile << ") {";
+      try {
+        llvm::Value *cond = std::any_cast<llvm::Value *>(visitExpression(ctx->expression()));
+        llvm::Function *func = builder_.GetInsertBlock()->getParent();
 
-      if (ctx->block()) {
-                          ++indentLevel;
-        outfile << "\n";
-        visitBlock(ctx->block());
-        outfile << "\n";
-                          --indentLevel;
+        // Loop condition basic block
+        llvm::BasicBlock *loop_cond_block = llvm::BasicBlock::Create(context_, "loop.cond", func);
+        builder_.CreateBr(loop_cond_block);
+        builder_.SetInsertPoint(loop_cond_block);
 
-        indent();
+        llvm::BasicBlock *loop_body_block = llvm::BasicBlock::Create(context_, "loop.body", func);
+        llvm::BasicBlock *loop_exit_block = llvm::BasicBlock::Create(context_, "loop.exit", func);
+
+        // Conditional branch instruction
+        builder_.CreateCondBr(cond, loop_body_block, loop_exit_block);
+
+        builder_.SetInsertPoint(loop_body_block);
+
+        builder_.CreateBr(loop_cond_block); // jump back to the condition
+
+        if (ctx->block()) {
+          visitBlock(ctx->block());
+        }
+
+        builder_.SetInsertPoint(loop_exit_block);
+
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitWhileStatement()\n";
+        return NULL;
       }
 
-      outfile << "}\n";
       return NULL;
     }
-  */
 
     std::any visitReturnStatement(SynthtaxParser::ReturnStatementContext *ctx) {
       try {
@@ -249,7 +261,7 @@ public:
         builder_.CreateRet(ret);
         return ret;
       } catch (const std::bad_any_cast &e) {
-        std::cerr << "Error: " << e.what() << ", in visitVarDeclaration()\n";
+        std::cerr << "Error: " << e.what() << ", in visitReturnStatement()\n";
         return NULL;
       }
     }
@@ -281,7 +293,7 @@ public:
           // TODO: print string
           return NULL;
         } catch (const std::bad_any_cast &e) {
-          std::cerr << "Error: " << e.what() << ", in visitVarDeclaration()\n";
+          std::cerr << "Error: " << e.what() << ", in visitPrintStatement()\n";
           return NULL;
         }
       } 
@@ -289,14 +301,34 @@ public:
       return NULL;
     }
 
-/*
-    std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx)
-    { outfile << "std::cout << "; if (ctx->expression() != nullptr)
-        visitExpression(ctx->expression());
-      outfile << " << '\\n'";
+    std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx) {
+      if (ctx->expression() != nullptr) {
+        try {
+          llvm::Value *val = std::any_cast<llvm::Value*>(visitExpression(ctx->expression()));
+
+          std::string type = getValType(val->getType());
+          auto M = builder_.GetInsertBlock()->getModule();
+          if (type == "int") {
+            llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnint", builder_.getVoidTy(), builder_.getInt32Ty());
+            return builder_.CreateCall(print_func, val);
+          } else if (type == "float") {
+            llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnfloat", builder_.getVoidTy(), builder_.getFloatTy());
+            return builder_.CreateCall(print_func, val);
+          } else if (type == "char") {
+            llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnchar", builder_.getVoidTy(), builder_.getInt8Ty());
+            return builder_.CreateCall(print_func, val);
+          }
+
+          // TODO: print string
+          return NULL;
+        } catch (const std::bad_any_cast &e) {
+          std::cerr << "Error: " << e.what() << ", in visitPrintLnStatement()\n";
+          return NULL;
+        }
+      } 
+
       return NULL;
     }
-*/
 
     std::any visitBlock(SynthtaxParser::BlockContext *ctx) {
       for (auto &s : ctx->statement()) {

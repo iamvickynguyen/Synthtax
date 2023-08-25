@@ -1,5 +1,4 @@
-int main() {
-	int i = 0;
+int somefunc(i: int) {
 	int total = 0;
 	while (i < 5) {
 		total = total + i;

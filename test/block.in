@@ -1,0 +1,10 @@
+int minfunc(a: int, b: int) {
+  int c = 5;
+  if (a < b) {
+    c = 1;
+    print 1.0;
+  } else {
+    c = 0;
+  }
+  return c;
+}
