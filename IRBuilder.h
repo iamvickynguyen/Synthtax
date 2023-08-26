@@ -70,20 +70,11 @@ public:
     for (auto &arg : func->args())
       name_value_[std::string(arg.getName())] = &arg;
 
-    try {
-      llvm::Value *return_type =
-          std::any_cast<llvm::Value *>(visitFuncBody(ctx->funcBody()));
+    visitFuncBody(ctx->funcBody());
 
-      // restore symbol table
-      name_value_ = tmp_table;
-
-      if (return_type == nullptr)
-        builder_.CreateRetVoid();
-
-    } catch (const std::bad_any_cast &e) {
-      builder_.CreateRetVoid(); // nullptr
-    }
-
+    // restore symbol table
+    name_value_ = tmp_table;
+    
     llvm::verifyFunction(*func);
     return func;
   }
@@ -272,70 +263,70 @@ public:
   }
 
 
-    std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) {
-      if (ctx->expression() != nullptr) {
-        try {
-          llvm::Value *val = std::any_cast<llvm::Value*>(visitExpression(ctx->expression()));
+  std::any visitPrintStatement(SynthtaxParser::PrintStatementContext *ctx) {
+    if (ctx->expression() != nullptr) {
+      try {
+        llvm::Value *val = std::any_cast<llvm::Value*>(visitExpression(ctx->expression()));
 
-          std::string type = getValType(val->getType());
-          auto M = builder_.GetInsertBlock()->getModule();
-          if (type == "int") {
-            llvm::FunctionCallee print_func = M->getOrInsertFunction("printint", builder_.getVoidTy(), builder_.getInt32Ty());
-            return builder_.CreateCall(print_func, val);
-          } else if (type == "float") {
-            llvm::FunctionCallee print_func = M->getOrInsertFunction("printfloat", builder_.getVoidTy(), builder_.getFloatTy());
-            return builder_.CreateCall(print_func, val);
-          } else if (type == "char") {
-            llvm::FunctionCallee print_func = M->getOrInsertFunction("printchar", builder_.getVoidTy(), builder_.getInt8Ty());
-            return builder_.CreateCall(print_func, val);
-          }
-
-          // TODO: print string
-          return NULL;
-        } catch (const std::bad_any_cast &e) {
-          std::cerr << "Error: " << e.what() << ", in visitPrintStatement()\n";
-          return NULL;
+        std::string type = getValType(val->getType());
+        auto M = builder_.GetInsertBlock()->getModule();
+        if (type == "int") {
+          llvm::FunctionCallee print_func = M->getOrInsertFunction("printint", builder_.getVoidTy(), builder_.getInt32Ty());
+          return builder_.CreateCall(print_func, val);
+        } else if (type == "float") {
+          llvm::FunctionCallee print_func = M->getOrInsertFunction("printfloat", builder_.getVoidTy(), builder_.getFloatTy());
+          return builder_.CreateCall(print_func, val);
+        } else if (type == "char") {
+          llvm::FunctionCallee print_func = M->getOrInsertFunction("printchar", builder_.getVoidTy(), builder_.getInt8Ty());
+          return builder_.CreateCall(print_func, val);
         }
-      } 
 
-      return NULL;
-    }
-
-    std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx) {
-      if (ctx->expression() != nullptr) {
-        try {
-          llvm::Value *val = std::any_cast<llvm::Value*>(visitExpression(ctx->expression()));
-
-          std::string type = getValType(val->getType());
-          auto M = builder_.GetInsertBlock()->getModule();
-          if (type == "int") {
-            llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnint", builder_.getVoidTy(), builder_.getInt32Ty());
-            return builder_.CreateCall(print_func, val);
-          } else if (type == "float") {
-            llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnfloat", builder_.getVoidTy(), builder_.getFloatTy());
-            return builder_.CreateCall(print_func, val);
-          } else if (type == "char") {
-            llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnchar", builder_.getVoidTy(), builder_.getInt8Ty());
-            return builder_.CreateCall(print_func, val);
-          }
-
-          // TODO: print string
-          return NULL;
-        } catch (const std::bad_any_cast &e) {
-          std::cerr << "Error: " << e.what() << ", in visitPrintLnStatement()\n";
-          return NULL;
-        }
-      } 
-
-      return NULL;
-    }
-
-    std::any visitBlock(SynthtaxParser::BlockContext *ctx) {
-      for (auto &s : ctx->statement()) {
-        visitStatement(s);
+        // TODO: print string
+        return NULL;
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitPrintStatement()\n";
+        return NULL;
       }
-      return NULL;
+    } 
+
+    return NULL;
+  }
+
+  std::any visitPrintLnStatement(SynthtaxParser::PrintLnStatementContext *ctx) {
+    if (ctx->expression() != nullptr) {
+      try {
+        llvm::Value *val = std::any_cast<llvm::Value*>(visitExpression(ctx->expression()));
+
+        std::string type = getValType(val->getType());
+        auto M = builder_.GetInsertBlock()->getModule();
+        if (type == "int") {
+          llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnint", builder_.getVoidTy(), builder_.getInt32Ty());
+          return builder_.CreateCall(print_func, val);
+        } else if (type == "float") {
+          llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnfloat", builder_.getVoidTy(), builder_.getFloatTy());
+          return builder_.CreateCall(print_func, val);
+        } else if (type == "char") {
+          llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnchar", builder_.getVoidTy(), builder_.getInt8Ty());
+          return builder_.CreateCall(print_func, val);
+        }
+
+        // TODO: print string
+        return NULL;
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitPrintLnStatement()\n";
+        return NULL;
+      }
+    } 
+
+    return NULL;
+  }
+
+  std::any visitBlock(SynthtaxParser::BlockContext *ctx) {
+    for (auto &s : ctx->statement()) {
+      visitStatement(s);
     }
+    return NULL;
+  }
 
 
   std::any visitExpression(SynthtaxParser::ExpressionContext *ctx) {
@@ -573,11 +564,25 @@ public:
       // }
 
       // others
-      // else {
-      // outfile << id << "(";
-      // if (ctx->expressionList() != nullptr)
-      //   visitExpressionList(ctx->expressionList());
-      // outfile << ")";
+      if (ctx->expressionList() != nullptr) {
+        try {
+          std::vector<llvm::Value*> args = std::any_cast<std::vector<llvm::Value*>>(visitExpressionList(ctx->expressionList()));
+          llvm::Function *callee = module_.getFunction(id);
+          llvm::Value * result = builder_.CreateCall(callee, args);
+          return result;
+        } catch (const std::bad_any_cast &e) {
+          std::cerr << "Error: " << e.what() << ", in visitAtom()\n";
+          return NULL;
+        }
+      }
+
+      // no arguments
+      else {
+        llvm::Function *callee = module_.getFunction(id);
+        llvm::Value * result = builder_.CreateCall(callee, {});
+        return result;
+      }
+        
       // }
     }
 
@@ -599,20 +604,22 @@ public:
     return NULL;
   }
 
-  /*
-    std::any visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) {
-      if (ctx->expression().size() > 0)
-        visitExpression(ctx->expression()[0]);
+  std::any visitExpressionList(SynthtaxParser::ExpressionListContext *ctx) {
+    std::vector<llvm::Value*> expr_list;      
 
-      for (int i = 1; i < ctx->expression().size(); ++i) {
-        outfile << ", ";
-        visitExpression(ctx->expression()[i]);
+    for (int i = 0; i < ctx->expression().size(); ++i) {
+      try {
+        llvm::Value *expr = std::any_cast<llvm::Value *>(visitExpression(ctx->expression()[i]));
+        expr_list.push_back(expr);
+      } catch (const std::bad_any_cast &e) {
+        std::cerr << "Error: " << e.what() << ", in visitMulDivExpression()\n";
+        return NULL;
       }
+    }
 
-      return NULL;
-    }  // else {
+    return expr_list;
+  }
 
-  */
 
   std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
     llvm::Value *result;
