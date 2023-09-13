@@ -258,12 +258,25 @@ Clone or download this project
 
 > **_NOTE:_**: If you want to compile LLVM from source, then follow this documentation [llvm.org/docs/checkout-llvm-from-git](https://llvm.org/docs/GettingStarted.html#checkout-llvm-from-git)
  
-## How to run
+## How to build and run
 
 1. `./generate.sh` : generate lexer, parser, visitor classes
 2. `cmake -S ./ -B build` : create build
 3. `cd build; make` : compile and link
-4. `./synthtax <input filepath> <output filepath>` : run the file
+4. `./synthtax -h` : run help menu
+
+```
+Usage:
+-i: input file path
+-o: output file path
+-m: (optional) mode "cpp" for transpiling to C++ or "ll" for generating LLVM IR. Default is "cpp"
+```
+
+Example:
+
+```bash
+./synthtax -i ../test/args.in -o ../out.cpp -m cpp
+```
 
 Compile `outfile.cpp` with your favourite C++ compiler. If you have `write_to_file()` function in `output.cpp` (i.e., if you want to write to a `.wav` file), you need to add `-lsndfile` flag to link with the `libsndfile` library. I will figure out how to link `libsndfile` in CMake in the future (probably include this [cmake folder](https://github.com/libsndfile/libsndfile/tree/master/cmake))
 

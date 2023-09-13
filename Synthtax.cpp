@@ -1,15 +1,18 @@
+#include "CppTranspilerVisitor.h"
+#include "IRBuilder.h"
 #include "antlr4-runtime.h"
 #include "libs/SynthtaxLexer.h"
 #include "libs/SynthtaxParser.h"
-#include "CppTranspilerVisitor.h"
-#include "IRBuilder.h"
 #include <fstream>
 #include <iostream>
+#include <string.h>
+#include <unistd.h>
 
 using namespace antlr4;
 using namespace llvm;
 
-void transpile(const char *filepath, synthtax_antlr::SynthtaxParser::ProgContext *prog) {
+void transpile(const std::string &filepath,
+               synthtax_antlr::SynthtaxParser::ProgContext *prog) {
   synthtax_antlr::CppTranspilerVisitor visitor;
   visitor.visitProg(prog);
 
@@ -19,7 +22,8 @@ void transpile(const char *filepath, synthtax_antlr::SynthtaxParser::ProgContext
   out.close();
 }
 
-void build_ir(const char *filepath, synthtax_antlr::SynthtaxParser::ProgContext *prog) {
+void build_ir(const std::string &filepath,
+              synthtax_antlr::SynthtaxParser::ProgContext *prog) {
   llvm::LLVMContext context;
   llvm::Module module("synthtax_module", context);
   llvm::IRBuilder<> builder(context);
@@ -37,29 +41,65 @@ void build_ir(const char *filepath, synthtax_antlr::SynthtaxParser::ProgContext 
   out.close();
 }
 
-int main(int argc, const char *argv[]) {
-	if (argc != 3) {
-		std::cout << "Invalid argument(s)\n";
-		return 0;
-	}
+void print_options() {
+  std::cout
+      << "Usage:\n"
+      << "-i: input file path\n"
+      << "-o: output file path\n"
+      << "-m: (optional) mode \"cpp\" for transpiling to C++ or \"ll\" for "
+         "generating LLVM IR. Default is \"cpp\"\n";
+}
 
+int main(int argc, char *argv[]) {
+  int opt;
+  std::string input_file, output_file;
+  bool is_ir;
+
+  // get arguments
+  while ((opt = getopt(argc, argv, "hi:o:m:")) != -1) {
+    switch (opt) {
+    case 'h':
+      print_options();
+      return 0;
+    case 'i':
+      input_file = optarg;
+      break;
+    case 'o':
+      output_file = optarg;
+      break;
+    case 'm':
+      is_ir = strcmp(optarg, "ll") == 0;
+      break;
+    default: // error
+      print_options();
+      return 1;
+    }
+  }
+
+  // check args
+  if (input_file.empty() || output_file.empty()) {
+    std::cout << "Error: missing arguments\n";
+    print_options();
+    return 1;
+  }
+
+  // compile
   std::ifstream stream;
-  stream.open(argv[1]);
+  stream.open(input_file);
 
   ANTLRInputStream input(stream);
   synthtax_antlr::SynthtaxLexer lexer(&input);
   CommonTokenStream tokens(&lexer);
 
   synthtax_antlr::SynthtaxParser parser(&tokens);
-	synthtax_antlr::SynthtaxParser::ProgContext *prog = parser.prog();
+  synthtax_antlr::SynthtaxParser::ProgContext *prog = parser.prog();
 
   stream.close();
 
-  // Uncomment the line below to transpile to C++ code
-  // transpile(argv[2], prog);
-
-  // Output LLVM IR
-  build_ir(argv[2], prog);
+  if (is_ir)
+    build_ir(output_file, prog);
+  else
+    transpile(output_file, prog);
 
   return 0;
 }
