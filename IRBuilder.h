@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <unordered_map>
 
@@ -16,8 +17,7 @@
 #include <llvm/IR/Value.h>
 #include <llvm/IR/Verifier.h>
 #include <llvm/Support/raw_ostream.h>
-
-#include <iostream> // DEBUG
+#include <llvm/Linker/Linker.h>
 
 namespace synthtax_antlr {
 class IRBuilder : public SynthtaxParserBaseVisitor {
@@ -27,15 +27,7 @@ public:
       : context_(context), module_(module), builder_(builder) {}
 
   std::any visitProg(SynthtaxParser::ProgContext *ctx) {
-    // TODO
-    /*
-    outfile << "#include \"include/synths/builtin.hpp\"\n";
-
-    if (ctx->cppHeader() != nullptr)
-      visitCppHeader(ctx->cppHeader());
-
-    outfile << "using namespace synths;\n\n";
-    */
+    // NOTE: Synthtax built-in functions are not supported with "ll" mode
 
     for (auto &f : ctx->function()) {
       visitFunction(f);
@@ -44,16 +36,8 @@ public:
     return nullptr;
   }
 
-  // TODO
   std::any visitCppHeader(SynthtaxParser::CppHeaderContext *ctx) {
-    /*
-    std::string header = ctx->getText();
-    std::string start = "@header";
-    std::string end = "@end_header";
-    outfile << header.substr(start.length(),
-                             header.length() - start.length() - end.length())
-            << '\n';
-    */
+    // NOTE: @header feature is not supported with "ll" mode
     return visitChildren(ctx);
   }
 
@@ -267,9 +251,9 @@ public:
     if (ctx->expression() != nullptr) {
       try {
         llvm::Value *val = std::any_cast<llvm::Value*>(visitExpression(ctx->expression()));
-
         std::string type = getValType(val->getType());
         auto M = builder_.GetInsertBlock()->getModule();
+
         if (type == "int") {
           llvm::FunctionCallee print_func = M->getOrInsertFunction("printint", builder_.getVoidTy(), builder_.getInt32Ty());
           return builder_.CreateCall(print_func, val);
@@ -279,9 +263,11 @@ public:
         } else if (type == "char") {
           llvm::FunctionCallee print_func = M->getOrInsertFunction("printchar", builder_.getVoidTy(), builder_.getInt8Ty());
           return builder_.CreateCall(print_func, val);
+        } else if (type == "string") {
+          llvm::FunctionCallee print_func = M->getOrInsertFunction("printstring", builder_.getVoidTy(), builder_.getInt8PtrTy());
+          return builder_.CreateCall(print_func, val);
         }
 
-        // TODO: print string
         return NULL;
       } catch (const std::bad_any_cast &e) {
         std::cerr << "Error: " << e.what() << ", in visitPrintStatement()\n";
@@ -296,9 +282,9 @@ public:
     if (ctx->expression() != nullptr) {
       try {
         llvm::Value *val = std::any_cast<llvm::Value*>(visitExpression(ctx->expression()));
-
         std::string type = getValType(val->getType());
         auto M = builder_.GetInsertBlock()->getModule();
+
         if (type == "int") {
           llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnint", builder_.getVoidTy(), builder_.getInt32Ty());
           return builder_.CreateCall(print_func, val);
@@ -308,9 +294,11 @@ public:
         } else if (type == "char") {
           llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnchar", builder_.getVoidTy(), builder_.getInt8Ty());
           return builder_.CreateCall(print_func, val);
+        } else if (type == "string") {
+          llvm::FunctionCallee print_func = M->getOrInsertFunction("printlnstring", builder_.getVoidTy(), builder_.getInt8PtrTy());
+          return builder_.CreateCall(print_func, val);
         }
 
-        // TODO: print string
         return NULL;
       } catch (const std::bad_any_cast &e) {
         std::cerr << "Error: " << e.what() << ", in visitPrintLnStatement()\n";
@@ -411,7 +399,6 @@ public:
           result = builder_.getInt32(1);
         }
 
-        // result = builder_.getInt32(1);
         return result;
       } catch (const std::bad_any_cast &e) {
         std::cerr << "Error: " << e.what() << ", in visitLessExpression()\n";
@@ -516,52 +503,12 @@ public:
     if (ctx->ID() != nullptr && ctx->OPENPAREN() != nullptr) {
       std::string id = ctx->ID()->getText();
 
-      // // if Osc()
-      // if (id == "Osc") {
-      //   outfile << "std::make_shared<Oscillator>("
-      //           << ctx->expressionList()->getText() << ")";
-      // }
-
-      // // if ADSR()
-      // else if (id == "ADSR") {
-      //   outfile << "std::make_shared<ADSR>(";
-      //   if (ctx->expressionList() != nullptr)
-      //     outfile << ctx->expressionList()->getText();
-      //   outfile << ")";
-      // }
-
-      // // if write()
-      // else if (id == "write") {
-      //   std::string args = ctx->expressionList()->getText();
-
-      //   int i = 0;
-      //   std::string osc_id;
-      //   while (i < args.length() && args[i] != ',') {
-      //     if (args[i] != ' ') {
-      //       osc_id.push_back(args[i]);
-      //     }
-      //     ++i;
-      //   }
-
-      //   outfile << osc_id << "->write_to_file(" << args.substr(i + 1) << ")";
-      // }
-
-      // // if apply()
-      // else if (id == "apply") {
-      //   std::string args = ctx->expressionList()->getText();
-
-      //   int i = 0;
-      //   std::string env_id;
-      //   while (i < args.length() && args[i] != ',') {
-      //     if (args[i] != ' ') {
-      //       env_id.push_back(args[i]);
-      //     }
-      //     ++i;
-      //   }
-
-      //   outfile << env_id << "->apply_with_ptr(" << args.substr(i + 1) <<
-      //   ")";
-      // }
+      // NOTE: Will not generate IR for Osc, ADSR, write, and apply
+      // Too much work for now :)
+      if (id == "Osc" || id == "ADSR" || id == "write" || id == "apply") {
+        std::cerr << "Generating IR for " << id << "() is not supported!\n";
+        return NULL;
+      }
 
       // others
       if (ctx->expressionList() != nullptr) {
@@ -582,8 +529,6 @@ public:
         llvm::Value * result = builder_.CreateCall(callee, {});
         return result;
       }
-        
-      // }
     }
 
     // assignment
@@ -623,7 +568,6 @@ public:
 
   std::any visitLiteral(SynthtaxParser::LiteralContext *ctx) {
     llvm::Value *result;
-
     if (ctx->STRING()) result = create_string(ctx->getText());
     else if (ctx->INT()) result = create_int(stoi(ctx->getText()));
     else if (ctx->FLOAT()) result = create_float(stof(ctx->getText()));
@@ -642,7 +586,23 @@ private:
   inline llvm::Value* create_float(const float x) { return llvm::ConstantFP::get(llvm::Type::getFloatTy(context_), x); }
   inline llvm::Value* create_int(const int x) { return llvm::ConstantInt::get(llvm::Type::getInt32Ty(context_), x); }
   inline llvm::Value* create_char(const char c) { return llvm::ConstantInt::get(llvm::Type::getInt8Ty(context_), c); }
-  inline llvm::Value* create_string(const std::string &s) { return llvm::ConstantDataArray::getString(context_, s); }
+  
+  llvm::Value* create_string(const std::string &s) {
+    llvm::Constant* const_str = llvm::ConstantDataArray::getString(context_, s);
+
+    // Create a global variable that points to the constant array (string)
+    llvm::GlobalVariable* glob_str = new llvm::GlobalVariable(
+        module_, const_str->getType(), true,
+        llvm::GlobalValue::PrivateLinkage, const_str, "string"
+    );
+
+    // Get a pointer to the string variable
+    llvm::Value* stringPtr = builder_.CreatePointerCast(
+        glob_str, llvm::Type::getInt8PtrTy(context_), "stringPtr"
+    );
+
+    return stringPtr;
+  }
 
   llvm::Type *getType(const std::string &type) {
     if (type == "int")
@@ -653,11 +613,10 @@ private:
       return llvm::Type::getInt8Ty(context_);
     else if (type == "void")
       return llvm::Type::getVoidTy(context_);
-    /*
-    else if (type == "string") return // TODO
-    else if (type == "osc") return // TODO
-    else if (type == "env") return // TODO
-    */
+    else if (type == "string")
+      return llvm::Type::getInt8PtrTy(context_);
+
+    // "osc" and "env" types are not supported
     return llvm::Type::getVoidTy(context_);
   }
 
@@ -665,8 +624,7 @@ private:
     if (type == llvm::Type::getInt32Ty(context_)) return "int";
     if (type == llvm::Type::getFloatTy(context_)) return "float";
     if (type == llvm::Type::getInt8Ty(context_)) return "char";
-
-    // TODO: string, other types
+    if (type == llvm::Type::getInt8PtrTy(context_)) return "string";
     return "unknown";
   }
 };
