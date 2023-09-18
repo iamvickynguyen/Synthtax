@@ -138,8 +138,7 @@ public:
       }
 
     } else {
-      // TODO: something...
-      // TODO: deal with array later
+      // NOTE: array is not supported
       llvm::AllocaInst *alloca_instruction = builder_.CreateAlloca(
           getType(ctx->TYPE()->getText()), nullptr, ctx->ID()->getText());
       name_value_[ctx->ID()->getText()] = alloca_instruction;
