@@ -9,7 +9,7 @@ I initially developed Synthtax as my final project in Synthesizer course in univ
 ## Table of Contents
 
 <!-- vim-markdown-toc GFM -->
-
+* [Demo](#demo)
 * [Grammar and Syntax](#grammar-and-syntax)
     * [Types](#types)
     * [Variables](#variables)
@@ -34,6 +34,12 @@ I initially developed Synthtax as my final project in Synthesizer course in univ
 * [Resources](#resources)
 
 <!-- vim-markdown-toc -->
+
+## Demo
+
+https://github.com/iamvickynguyen/Synthtax/assets/44889544/9b5ebef0-7422-4d49-adc9-9dadf724d5d4
+
+https://github.com/iamvickynguyen/Synthtax/assets/44889544/36026a43-4d03-492f-bc72-cc1e846467f5
 
 ## Grammar and Syntax
 
